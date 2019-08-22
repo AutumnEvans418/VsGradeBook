@@ -1,10 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Windows.Controls;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Shell;
+using Task = System.Threading.Tasks.Task;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
+    public interface IToolWindow
+    {
+        void ToPage(string page);
+    }
+
     [Guid(WindowGuidString)]
     public class SampleToolWindow : ToolWindowPane
     {
@@ -17,7 +25,9 @@ namespace AsyncToolWindowSample.ToolWindows
             Caption = Title;
             BitmapImageMoniker = KnownMonikers.ImageIcon;
             
-            Content = new SampleToolWindowControl(state);
+            Content = new MainWindow(state);
         }
+
+       
     }
 }
