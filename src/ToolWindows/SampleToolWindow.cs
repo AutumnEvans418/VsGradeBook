@@ -16,7 +16,7 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             Caption = Title;
             BitmapImageMoniker = KnownMonikers.ImageIcon;
-
+            
             Content = new SampleToolWindowControl(state);
         }
     }
