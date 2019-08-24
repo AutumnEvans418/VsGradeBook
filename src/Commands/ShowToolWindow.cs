@@ -46,7 +46,8 @@ namespace AsyncToolWindowSample
 
         private static void ShowAddDocumentationWindow(string document, TextViewSelection selection)
         {
-            throw new NotImplementedException();
+            var documentationControl = new AddDocumentationView();
+            documentationControl.ShowDialog();
         }
 
         private static async Task<TextViewSelection> GetSelection(AsyncPackage serviceProvider)

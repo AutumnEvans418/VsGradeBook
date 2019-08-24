@@ -64,6 +64,9 @@
     <Compile Include="Commands\ShowToolWindow.cs" />
     <Compile Include="TextViewPosition.cs" />
     <Compile Include="TextViewSelection.cs" />
+    <Compile Include="ToolWindows\AddDocumentationView.xaml.cs">
+      <DependentUpon>AddDocumentationView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ToolWindows\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -138,6 +141,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ToolWindows\AddDocumentationView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ToolWindows\LoginView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
