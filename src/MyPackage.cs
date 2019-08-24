@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.ToolWindows;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -14,6 +15,9 @@ namespace AsyncToolWindowSample
     [ProvideToolWindow(typeof(SampleToolWindow), Style = VsDockStyle.Tabbed, DockedWidth = 300, Window = "DocumentWell", Orientation = ToolWindowOrientation.Left)]
     [Guid("6e3b2e95-902b-4385-a966-30c06ab3c7a6")]
     [ProvideMenuResource("Menus.ctmenu", 1)]
+    //These allow this extension to load in the background when visual studio starts up: https://michaelscodingspot.com/visual-studio-2017-extension-development-tutorial-part-2-add-menu-item/
+    [ProvideAutoLoad(VSConstants.UICONTEXT.NoSolution_string, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class MyPackage : AsyncPackage
     {
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)

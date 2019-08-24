@@ -6,9 +6,33 @@
   <Include href="KnownImageIds.vsct"/>
 
   <Commands package="guidMyPackage">
+    <Groups>
+      <Group guid="CmdSet" id="MyMenuGroup" priority="0x0600">
+        <Parent guid="CmdSet" id="TopLevelMenu"/>
+      </Group>
+      <Group guid="CmdSet" id="EditorContextMenuGroup"
+             priority="0x0600">
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_CTXT_CODEWIN" />
+      </Group>
+    </Groups>
+    <Menus>
+      <Menu guid="CmdSet" id="TopLevelMenu" priority="0x700" type="Menu">
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_MM_TOOLSADDINS"/>
+        <Strings>
+          <ButtonText>TestMenu</ButtonText>
+          <CommandName>CodyDocs</CommandName>
+        </Strings>
+      </Menu>
+    </Menus>
     <Buttons>
-      <Button guid="guidMyPackageCmdSet" id="ShowToolWindowId" priority="0x0100" type="Button">
-        <!-- parent is View > Other Windows -->
+      <Button guid="CmdSet" id="EnableToolWindow" priority="0x0101" type="Button">
+        <Parent guid="CmdSet" id="MyMenuGroup"/>
+        <Strings>
+          <ButtonText>Enable/Disable Code Docs</ButtonText>
+        </Strings>
+      </Button>
+      <Button guid="CmdSet" id="ShowToolWindowId" priority="0x0100" type="Button">
+         parent is View > Other Windows 
         <Parent guid="guidSHLMainMenu" id="IDG_VS_WNDO_OTRWNDWS1"/>
         <Icon guid="ImageCatalogGuid" id="ImageIcon"/>
         <CommandFlag>IconIsMoniker</CommandFlag>
@@ -16,14 +40,26 @@
           <ButtonText>Sample Tool Window</ButtonText>
         </Strings>
       </Button>
+      <Button guid="CmdSet" id="AddDocumentation" priority="0x0100" type="Button">
+        <Parent guid="CmdSet" id="EditorContextMenuGroup" />
+        <Strings>
+          <ButtonText>Add Documentation</ButtonText>
+        </Strings>
+      </Button>
     </Buttons>
   </Commands>
+
 
   <Symbols>
     <GuidSymbol name="guidMyPackage" value="{6e3b2e95-902b-4385-a966-30c06ab3c7a6}" />
 
-    <GuidSymbol name="guidMyPackageCmdSet" value="{9cc1062b-4c82-46d2-adcb-f5c17d55fb85}">
+    <GuidSymbol name="CmdSet" value="{9cc1062b-4c82-46d2-adcb-f5c17d55fb85}">
       <IDSymbol name="ShowToolWindowId" value="0x0100" />
+      <IDSymbol name="TopLevelMenu" value="0x1021" />
+      <IDSymbol name="MyMenuGroup" value="0x1020"/>
+      <IDSymbol name="EnableToolWindow" value="0x0101"/>
+      <IDSymbol name ="AddDocumentation" value="0x0102"/>
+      <IDSymbol name="EditorContextMenuGroup" value="0x0103"/>
     </GuidSymbol>
   </Symbols>
 </CommandTable>
