@@ -57,6 +57,12 @@
     <Compile Include="MyPackage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Commands\ShowToolWindow.cs" />
+    <Compile Include="ToolWindows\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ToolWindows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ToolWindows\SampleToolWindow.cs" />
     <Compile Include="ToolWindows\SampleToolWindowControl.xaml.cs">
       <DependentUpon>SampleToolWindowControl.xaml</DependentUpon>
@@ -120,6 +126,14 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="ToolWindows\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ToolWindows\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="ToolWindows\SampleToolWindowControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

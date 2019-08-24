@@ -6,10 +6,35 @@
              xmlns:local="clr-namespace:AsyncToolWindowSample.ToolWindows"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="10"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="10"></Setter>
+            <Setter Property="FontSize" Value="18"></Setter>
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="FontSize" Value="18"></Setter>
+
+            <Setter Property="Margin" Value="10"></Setter>
+        </Style>
+
+    </UserControl.Resources>
     <Grid>
-        <StackPanel>
-            <Button Content="Click me" Click="Button_Click" HorizontalAlignment="Center" VerticalAlignment="Center" />
-            <Button Content="Next Page" Click="ButtonBase_OnClick"></Button>
+        
+        <StackPanel Margin="10">
+            <Label Content="Hello, Chris Evans!"></Label>
+            <Label Content="Class"></Label>
+            <ComboBox SelectedItem="CIS 690"></ComboBox>
+            <Label Content="Project"></Label>
+            <ComboBox SelectedItem="Project 1"/>
+            <TextBlock TextWrapping="Wrap" Text="create a program that calculates a 15% tax for sales.  ask for the user to enter the USD value and then output the correct value"></TextBlock>
+            <Button Content="Test Program"></Button>
+            <Button Content="Submit Program"></Button>
+            <Button Content="Click me" Click="Button_Click" />
+            <Button Content="Logout" Click="ButtonBase_OnClick"></Button>
         </StackPanel>
        
     </Grid>

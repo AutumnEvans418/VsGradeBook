@@ -16,23 +16,21 @@ using System.Windows.Shapes;
 namespace AsyncToolWindowSample.ToolWindows
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class MainWindow : UserControl, IToolWindow
+    public partial class LoginView : UserControl
     {
-      
-        public MainWindow(SampleToolWindowState state)
-        {
-            InitializeComponent();
+        private readonly IToolWindow _toolWindow;
 
-            pages.Add("Sample", () => new SampleToolWindowControl(state, this));
-            pages.Add("Login", () => new LoginView(this));
-            ToPage("Login");
-        }
-        private Dictionary<string, Func<Control>> pages = new Dictionary<string, Func<Control>>();
-        public void ToPage(string page)
+        public LoginView(IToolWindow toolWindow)
         {
-            Content = pages[page]();
+            _toolWindow = toolWindow;
+            InitializeComponent();
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            _toolWindow.ToPage("Sample");
         }
     }
 }
