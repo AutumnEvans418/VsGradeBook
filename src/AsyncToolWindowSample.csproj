@@ -54,6 +54,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="BaseDialogWindow.cs" />
+    <Compile Include="BindableBase.cs" />
     <Compile Include="GeneralSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -67,12 +69,17 @@
     <Compile Include="ToolWindows\AddDocumentationView.xaml.cs">
       <DependentUpon>AddDocumentationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ToolWindows\AddDocumentationViewModel.cs" />
+    <Compile Include="Prism\DelegateCommand.cs" />
+    <Compile Include="Prism\DelegateCommandBase.cs" />
     <Compile Include="ToolWindows\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ToolWindows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Prism\PropertyObserver.cs" />
+    <Compile Include="Prism\PropertyObserverNode.cs" />
     <Compile Include="ToolWindows\SampleToolWindow.cs" />
     <Compile Include="ToolWindows\SampleToolWindowControl.xaml.cs">
       <DependentUpon>SampleToolWindowControl.xaml</DependentUpon>

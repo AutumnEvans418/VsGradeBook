@@ -6,8 +6,23 @@
              xmlns:local="clr-namespace:AsyncToolWindowSample.ToolWindows"
              xmlns:asyncToolWindowSample="clr-namespace:AsyncToolWindowSample"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance local:AddDocumentationViewModel }">
     <Grid>
-            <TextBlock Text="Hello World!"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <Label Content="Add Documentation For"></Label>
+            <TextBox Text="{Binding Code}"></TextBox>
+        </StackPanel>
+        <Label Grid.Row="1" Content="Documentation"></Label>
+        <TextBox Grid.Row="2" Text="{Binding Documentation}" Margin="10"></TextBox>
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10">
+            <Button Command="{Binding SaveCommand}" Content="Save" MinWidth="100" Margin="0,0,10,0"/>
+            <Button Command="{Binding CancelCommand}" Content="Cancel" MinWidth="100"/>
+        </StackPanel>
     </Grid>
 </asyncToolWindowSample:BaseDialogWindow>

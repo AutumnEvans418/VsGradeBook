@@ -46,7 +46,7 @@ namespace AsyncToolWindowSample
 
         private static void ShowAddDocumentationWindow(string document, TextViewSelection selection)
         {
-            var documentationControl = new AddDocumentationView();
+            var documentationControl = new AddDocumentationView(document, selection);
             documentationControl.ShowDialog();
         }
 
