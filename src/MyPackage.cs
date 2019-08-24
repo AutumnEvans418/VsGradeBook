@@ -3,9 +3,11 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.ToolWindows;
+using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.TextManager.Interop;
 using Task = System.Threading.Tasks.Task;
 
 namespace AsyncToolWindowSample
@@ -36,8 +38,10 @@ namespace AsyncToolWindowSample
             return toolWindowType == typeof(SampleToolWindow) ? SampleToolWindow.Title : base.GetToolWindowTitle(toolWindowType, id);
         }
 
+      
         protected override async Task<object> InitializeToolWindowAsync(Type toolWindowType, int id, CancellationToken cancellationToken)
         {
+            
             // Perform as much work as possible in this method which is being run on a background thread.
             // The object returned from this method is passed into the constructor of the SampleToolWindow 
             var dte = await GetServiceAsync(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
