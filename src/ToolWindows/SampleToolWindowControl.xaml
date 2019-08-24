@@ -31,7 +31,7 @@
             <Label Content="Project"></Label>
             <ComboBox SelectedItem="Project 1"/>
             <TextBlock TextWrapping="Wrap" Text="create a program that calculates a 15% tax for sales.  ask for the user to enter the USD value and then output the correct value"></TextBlock>
-            <Button Content="Test Program"></Button>
+            <Button Content="Test Program" Click="TestProgram"></Button>
             <Button Content="Submit Program"></Button>
             <Button Content="Click me" Click="Button_Click" />
             <Button Content="Logout" Click="ButtonBase_OnClick"></Button>

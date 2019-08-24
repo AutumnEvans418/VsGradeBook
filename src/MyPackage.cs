@@ -37,7 +37,7 @@ namespace AsyncToolWindowSample
             // Perform as much work as possible in this method which is being run on a background thread.
             // The object returned from this method is passed into the constructor of the SampleToolWindow 
             var dte = await GetServiceAsync(typeof(EnvDTE.DTE)) as EnvDTE80.DTE2;
-
+            
             return new SampleToolWindowState
             {
                 DTE = dte

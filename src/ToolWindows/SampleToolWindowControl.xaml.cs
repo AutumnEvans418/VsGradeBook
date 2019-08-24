@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using EnvDTE;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
@@ -26,6 +27,12 @@ namespace AsyncToolWindowSample.ToolWindows
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             _toolWindow.ToPage("Login");
+        }
+
+        private void TestProgram(object sender, RoutedEventArgs e)
+        {
+            //var data = 
+            //_state.DTE.Solution.SolutionBuild.Build();
         }
     }
 }
