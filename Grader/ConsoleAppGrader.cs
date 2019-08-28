@@ -4,12 +4,16 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using System.IO;
+using System.Reflection;
+using System.Reflection.Metadata;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using TypeInfo = Microsoft.CodeAnalysis.TypeInfo;
+
 namespace Grader
 {
 
@@ -69,9 +73,9 @@ namespace Grader
     }
     public class ConsoleAppGrader
     {
+
         public ConsoleAppGrader()
         {
-            
         }
 
 
@@ -112,6 +116,21 @@ namespace HelloWorld
             Compilation test = CreateTestCompilation(root.SyntaxTree);
 
 
+
+            var stream = new MemoryStream();
+            var emitResult = test.Emit(stream);
+
+            if (emitResult.Success)
+            {
+                stream.Seek(0, SeekOrigin.Begin);
+                
+
+                var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(stream);
+                
+                
+            }
+
+
             foreach (SyntaxTree sourceTree in test.SyntaxTrees)
             {
                 SemanticModel model = test.GetSemanticModel(sourceTree);
@@ -139,7 +158,7 @@ namespace HelloWorld
 
             MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis };
 
-            return CSharpCompilation.Create("Test", new[] {tree}, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+            return CSharpCompilation.Create("Test", new[] {tree}, references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
         }
     }
 }
