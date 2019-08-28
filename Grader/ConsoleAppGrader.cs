@@ -82,13 +82,10 @@ namespace Grader
         public GradeResult Grade(string program)
         {
 
-           
 
-
-
-            NameSyntax name = IdentifierName("System");
-            name = QualifiedName(name, IdentifierName("Collections"));
-            name = QualifiedName(name, IdentifierName("Generic"));
+            NameSyntax name = SyntaxFactory.IdentifierName("System");
+            name = SyntaxFactory.QualifiedName(name, SyntaxFactory.IdentifierName("Collections"));
+            name = SyntaxFactory.QualifiedName(name, SyntaxFactory.IdentifierName("Generic"));
 
             SyntaxTree tree = CSharpSyntaxTree.ParseText(
                 @"using System;
@@ -123,32 +120,46 @@ namespace HelloWorld
             if (emitResult.Success)
             {
                 stream.Seek(0, SeekOrigin.Begin);
-                
 
-                var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(stream);
-                
-                
+
+                //var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(stream);
+
+                //var ass = assembly.Modules.First();
+                var assembly = Assembly.Load(stream.ToArray());
+                assembly.EntryPoint.Invoke(null, new object[] { new string[] { } });
             }
-
-
-            foreach (SyntaxTree sourceTree in test.SyntaxTrees)
+            else
             {
-                SemanticModel model = test.GetSemanticModel(sourceTree);
-
-                TypeInferenceRewriter rewriter = new TypeInferenceRewriter(model);
-                SyntaxNode newSource = rewriter.Visit(sourceTree.GetRoot());
-
-                if (newSource != sourceTree.GetRoot())
+                var msg = "";
+                foreach (var emitResultDiagnostic in emitResult.Diagnostics)
                 {
-                    File.WriteAllText(sourceTree.FilePath, newSource.ToFullString());
+                    msg += emitResultDiagnostic.GetMessage() + "\r\n";
                 }
+                throw new Exception(msg);
             }
-            
+            //foreach (SyntaxTree sourceTree in test.SyntaxTrees)
+            //{
+            //    SemanticModel model = test.GetSemanticModel(sourceTree);
+
+            //    TypeInferenceRewriter rewriter = new TypeInferenceRewriter(model);
+            //    SyntaxNode newSource = rewriter.Visit(sourceTree.GetRoot());
+
+            //    if (newSource != sourceTree.GetRoot())
+            //    {
+            //        File.WriteAllText(sourceTree.FilePath, newSource.ToFullString());
+            //    }
+            //}
+
             return null;
         }
 
         private Compilation CreateTestCompilation(SyntaxTree tree)
         {
+            
+           MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
+            MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+            MetadataReference system = MetadataReference.CreateFromFile(typeof(Console).Assembly.Location);
+                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
             MetadataReference mscorlib =
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
             MetadataReference codeAnalysis =
@@ -156,9 +167,9 @@ namespace HelloWorld
             MetadataReference csharpCodeAnalysis =
                 MetadataReference.CreateFromFile(typeof(CSharpSyntaxTree).Assembly.Location);
 
-            MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis };
+            MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime };
 
-            return CSharpCompilation.Create("Test", new[] {tree}, references, new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+            return CSharpCompilation.Create("Test", new[] {tree}, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
         }
     }
 }
