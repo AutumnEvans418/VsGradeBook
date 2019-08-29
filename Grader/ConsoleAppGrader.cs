@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.IO;
@@ -16,22 +17,22 @@ namespace Grader
         }
 
 
-        public GradeResult Grade(string program)
+        public IGradeResult Grade(string program, IEnumerable<IGradeCase> cases)
         {
 
 
-            NameSyntax name = SyntaxFactory.IdentifierName("System");
-            name = SyntaxFactory.QualifiedName(name, SyntaxFactory.IdentifierName("Collections"));
-            name = SyntaxFactory.QualifiedName(name, SyntaxFactory.IdentifierName("Generic"));
+            //NameSyntax name = SyntaxFactory.IdentifierName("System");
+            //name = SyntaxFactory.QualifiedName(name, SyntaxFactory.IdentifierName("Collections"));
+            //name = SyntaxFactory.QualifiedName(name, SyntaxFactory.IdentifierName("Generic"));
 
             SyntaxTree tree = CSharpSyntaxTree.ParseText(
                program);
 
             var root = (CompilationUnitSyntax)tree.GetRoot();
-            var oldUsing = root.Usings[1];
-            var newUsing = oldUsing.WithName(name);
+            //var oldUsing = root.Usings[1];
+            //var newUsing = oldUsing.WithName(name);
 
-            root = root.ReplaceNode(oldUsing, newUsing);
+            //root = root.ReplaceNode(oldUsing, newUsing);
 
             Compilation test = CreateTestCompilation(root.SyntaxTree);
 
@@ -94,5 +95,26 @@ namespace Grader
 
             return CSharpCompilation.Create("Test", new[] { tree }, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
         }
+    }
+
+    public interface IGradeCaseResult
+    {
+        IGradeCase Case { get; }
+        IEnumerable<string> ActualOutput { get; }
+        bool Pass { get; }
+        string Message { get; }
+    }
+
+    public interface IGradeCase
+    {
+        IEnumerable<string> Inputs { get; }
+        IEnumerable<string> ExpectedOutputs { get; }
+    }
+
+    public interface IGradeResult
+    {
+        double PercentPassing { get; }
+
+        IEnumerable<IGradeCaseResult> CaseResults { get; }
     }
 }

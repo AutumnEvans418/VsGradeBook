@@ -24,14 +24,31 @@ namespace Grader
                 var result = symbol.Symbol.ToString();
                 if (result.StartsWith("System.Console"))
                 {
+                    if (invoke.Expression is IdentifierNameSyntax methodId)
+                    {
+                        var grader = SyntaxFactory.IdentifierName("Grader");
+                        var console = SyntaxFactory.IdentifierName("Console");
+
+                        var consoleSpace = SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                            grader, console);
+                        var nameSpace = SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, consoleSpace, methodId);
+                        var newNode = node.ReplaceNode(invoke.Expression, nameSpace);
+                        return newNode;
+                    }
                     if (invoke.Expression is MemberAccessExpressionSyntax memberAccess)
                     {
-                        //if (memberAccess.Expression is IdentifierNameSyntax id)
-                        //{
-                        //    var newNode = node.ReplaceNode(id, IdentifierName("Grader.ConsoleGrade"));
-                        //    return newNode;
-                        //}
-                        //else 
+
+                        if (memberAccess.Expression is IdentifierNameSyntax id)
+                        {
+                            if (id.Identifier.Text == "Console")
+                            {
+                                var grader = SyntaxFactory.IdentifierName("Grader");
+                                var nameSpace = SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, grader, id);
+                                var newNode = node.ReplaceNode(memberAccess.Expression, nameSpace);
+                                return newNode;
+                            }
+                        }
+                        else
 
                         if (memberAccess.Expression is MemberAccessExpressionSyntax systemAccess)
                         {
