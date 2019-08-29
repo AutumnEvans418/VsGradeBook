@@ -88,21 +88,7 @@ namespace Grader
             name = SyntaxFactory.QualifiedName(name, SyntaxFactory.IdentifierName("Generic"));
 
             SyntaxTree tree = CSharpSyntaxTree.ParseText(
-                @"using System;
-using System.Collections;
-using System.Linq;
-using System.Text;
- 
-namespace HelloWorld
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine(""Hello, World!"");
-        }
-    }
-}");
+               program);
 
             var root = (CompilationUnitSyntax)tree.GetRoot();
             var oldUsing = root.Usings[1];
