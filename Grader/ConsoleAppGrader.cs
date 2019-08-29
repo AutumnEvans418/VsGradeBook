@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
 using Microsoft.CodeAnalysis;
@@ -24,6 +25,46 @@ namespace Grader
         public TypeInferenceRewriter(SemanticModel model)
         {
             _model = model;
+        }
+
+
+        public override SyntaxNode VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
+        {
+            return base.VisitLocalFunctionStatement(node);
+        }
+
+        public override SyntaxNode DefaultVisit(SyntaxNode node)
+        {
+            return base.DefaultVisit(node);
+        }
+
+        public override SyntaxNode Visit(SyntaxNode node)
+        {
+            return base.Visit(node);
+        }
+
+        public override SyntaxNode VisitExpressionStatement(ExpressionStatementSyntax node)
+        {
+            if (node.Expression is InvocationExpressionSyntax invoke)
+            {
+                var symbol = _model.GetSymbolInfo(invoke);
+                if (invoke.Expression is MemberAccessExpressionSyntax memberAccess)
+                {
+                    if (memberAccess.Expression is IdentifierNameSyntax id)
+                    {
+                        if (id.Identifier.Text == "Console")
+                        {
+
+                        }
+                    }
+                }
+            }
+            return base.VisitExpressionStatement(node);
+        }
+
+        public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
+        {
+            return base.VisitMethodDeclaration(node);
         }
 
         public override SyntaxNode VisitLocalDeclarationStatement(LocalDeclarationStatementSyntax node)
@@ -100,8 +141,18 @@ namespace Grader
 
 
 
+            var newTree = test.SyntaxTrees.First();
+
+
+            SemanticModel model = test.GetSemanticModel(newTree);
+
+            TypeInferenceRewriter reWriter = new TypeInferenceRewriter(model);
+            SyntaxNode newSource = reWriter.Visit(newTree.GetRoot());
+
+            var finalCompile = CreateTestCompilation(newSource.SyntaxTree);
+
             var stream = new MemoryStream();
-            var emitResult = test.Emit(stream);
+            var emitResult = finalCompile.Emit(stream);
 
             if (emitResult.Success)
             {
@@ -123,29 +174,18 @@ namespace Grader
                 }
                 throw new Exception(msg);
             }
-            //foreach (SyntaxTree sourceTree in test.SyntaxTrees)
-            //{
-            //    SemanticModel model = test.GetSemanticModel(sourceTree);
 
-            //    TypeInferenceRewriter rewriter = new TypeInferenceRewriter(model);
-            //    SyntaxNode newSource = rewriter.Visit(sourceTree.GetRoot());
-
-            //    if (newSource != sourceTree.GetRoot())
-            //    {
-            //        File.WriteAllText(sourceTree.FilePath, newSource.ToFullString());
-            //    }
-            //}
 
             return null;
         }
 
         private Compilation CreateTestCompilation(SyntaxTree tree)
         {
-            
-           MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
+
+            MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
             MetadataReference system = MetadataReference.CreateFromFile(typeof(Console).Assembly.Location);
-                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+            MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
             MetadataReference mscorlib =
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
             MetadataReference codeAnalysis =
@@ -155,7 +195,7 @@ namespace Grader
 
             MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime };
 
-            return CSharpCompilation.Create("Test", new[] {tree}, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+            return CSharpCompilation.Create("Test", new[] { tree }, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
         }
     }
 }
