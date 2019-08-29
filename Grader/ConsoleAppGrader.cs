@@ -1,117 +1,13 @@
-﻿using System;
-using Microsoft.CodeAnalysis;
+﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using TypeInfo = Microsoft.CodeAnalysis.TypeInfo;
 
 namespace Grader
 {
-
-    public class TypeInferenceRewriter : CSharpSyntaxRewriter
-    {
-        private readonly SemanticModel _model;
-
-        public TypeInferenceRewriter(SemanticModel model)
-        {
-            _model = model;
-        }
-
-
-        public override SyntaxNode VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
-        {
-            return base.VisitLocalFunctionStatement(node);
-        }
-
-        public override SyntaxNode DefaultVisit(SyntaxNode node)
-        {
-            return base.DefaultVisit(node);
-        }
-
-        public override SyntaxNode Visit(SyntaxNode node)
-        {
-            return base.Visit(node);
-        }
-
-        public override SyntaxNode VisitExpressionStatement(ExpressionStatementSyntax node)
-        {
-            if (node.Expression is InvocationExpressionSyntax invoke)
-            {
-                var symbol = _model.GetSymbolInfo(invoke);
-                if (invoke.Expression is MemberAccessExpressionSyntax memberAccess)
-                {
-                    if (memberAccess.Expression is IdentifierNameSyntax id)
-                    {
-                        if (id.Identifier.Text == "Console")
-                        {
-
-                        }
-                    }
-                }
-            }
-            return base.VisitExpressionStatement(node);
-        }
-
-        public override SyntaxNode VisitMethodDeclaration(MethodDeclarationSyntax node)
-        {
-            return base.VisitMethodDeclaration(node);
-        }
-
-        public override SyntaxNode VisitLocalDeclarationStatement(LocalDeclarationStatementSyntax node)
-        {
-            if (node.Declaration.Variables.Count > 1)
-            {
-                return node;
-            }
-            if (node.Declaration.Variables[0].Initializer == null)
-            {
-                return node;
-            }
-
-            VariableDeclaratorSyntax declarator = node.Declaration.Variables.First();
-            TypeSyntax variableTypeName = node.Declaration.Type;
-
-            ITypeSymbol variableType =
-                (ITypeSymbol)_model.GetSymbolInfo(variableTypeName)
-                    .Symbol;
-
-            TypeInfo initializerInfo =
-                _model.GetTypeInfo(declarator
-                    .Initializer
-                    .Value);
-
-            if (variableType == initializerInfo.Type)
-            {
-                TypeSyntax varTypeName =
-                    IdentifierName("var")
-                        .WithLeadingTrivia(
-                            variableTypeName.GetLeadingTrivia())
-                        .WithTrailingTrivia(
-                            variableTypeName.GetTrailingTrivia());
-
-                return node.ReplaceNode(variableTypeName, varTypeName);
-            }
-            else
-            {
-                return node;
-            }
-        }
-    }
-
-    public class GradeResult
-    {
-
-    }
     public class ConsoleAppGrader
     {
 
@@ -172,7 +68,7 @@ namespace Grader
                 {
                     msg += emitResultDiagnostic.GetMessage() + "\r\n";
                 }
-                throw new Exception(msg);
+                throw new CompilationException(msg);
             }
 
 
@@ -183,6 +79,7 @@ namespace Grader
         {
 
             MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
+            MetadataReference grader = MetadataReference.CreateFromFile(typeof(ConsoleAppGrader).Assembly.Location);
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
             MetadataReference system = MetadataReference.CreateFromFile(typeof(Console).Assembly.Location);
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
@@ -193,7 +90,7 @@ namespace Grader
             MetadataReference csharpCodeAnalysis =
                 MetadataReference.CreateFromFile(typeof(CSharpSyntaxTree).Assembly.Location);
 
-            MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime };
+            MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, grader };
 
             return CSharpCompilation.Create("Test", new[] { tree }, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
         }
