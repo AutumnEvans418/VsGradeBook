@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="ConsoleAppGraderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TaxProgram.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="FluentAssertions">

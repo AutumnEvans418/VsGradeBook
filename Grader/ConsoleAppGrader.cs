@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Reflection.Metadata;
+using System.Threading.Tasks;
 
 namespace Grader
 {
@@ -17,63 +16,28 @@ namespace Grader
         }
 
 
-        public IGradeResult Grade(string program, IEnumerable<IGradeCase> cases)
+        public async Task<IGradeResult> Grade(string program, IEnumerable<IGradeCase> cases)
         {
-
-
-            //NameSyntax name = SyntaxFactory.IdentifierName("System");
-            //name = SyntaxFactory.QualifiedName(name, SyntaxFactory.IdentifierName("Collections"));
-            //name = SyntaxFactory.QualifiedName(name, SyntaxFactory.IdentifierName("Generic"));
-
-            SyntaxTree tree = CSharpSyntaxTree.ParseText(
-               program);
-
-            var root = (CompilationUnitSyntax)tree.GetRoot();
-            //var oldUsing = root.Usings[1];
-            //var newUsing = oldUsing.WithName(name);
-
-            //root = root.ReplaceNode(oldUsing, newUsing);
-
-            Compilation test = CreateTestCompilation(root.SyntaxTree);
-
-
-
-            var newTree = test.SyntaxTrees.First();
-
-
-            SemanticModel model = test.GetSemanticModel(newTree);
-
-            TypeInferenceRewriter reWriter = new TypeInferenceRewriter(model);
-            SyntaxNode newSource = reWriter.Visit(newTree.GetRoot());
-
-            var finalCompile = CreateTestCompilation(newSource.SyntaxTree);
-
-            var stream = new MemoryStream();
-            var emitResult = finalCompile.Emit(stream);
-
-            if (emitResult.Success)
+            if (cases.Any() != true)
             {
-                stream.Seek(0, SeekOrigin.Begin);
-
-
-                //var assembly = Mono.Cecil.AssemblyDefinition.ReadAssembly(stream);
-
-                //var ass = assembly.Modules.First();
-                var assembly = Assembly.Load(stream.ToArray());
-                assembly.EntryPoint.Invoke(null, new object[] { new string[] { } });
+                throw new ArgumentException("cases cannot be empty");
             }
-            else
+            var generator = new CSharpGenerator();
+            var runProgram = generator.Generate(program);
+
+            var list = new List<IGradeCaseResult>();
+            foreach (var gradeCase in cases)
             {
-                var msg = "";
-                foreach (var emitResultDiagnostic in emitResult.Diagnostics)
-                {
-                    msg += emitResultDiagnostic.GetMessage() + "\r\n";
-                }
-                throw new CompilationException(msg);
+                Console.Outputs.Clear();
+                Console.Inputs = gradeCase.Inputs.ToList();
+                await runProgram();
+
+
+                var outputs = Console.Outputs.ToList();
+                list.Add(new GradeCaseResult(gradeCase, outputs));
             }
 
-
-            return null;
+            return new GradeResult(list);
         }
 
         private Compilation CreateTestCompilation(SyntaxTree tree)
@@ -95,26 +59,5 @@ namespace Grader
 
             return CSharpCompilation.Create("Test", new[] { tree }, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
         }
-    }
-
-    public interface IGradeCaseResult
-    {
-        IGradeCase Case { get; }
-        IEnumerable<string> ActualOutput { get; }
-        bool Pass { get; }
-        string Message { get; }
-    }
-
-    public interface IGradeCase
-    {
-        IEnumerable<string> Inputs { get; }
-        IEnumerable<string> ExpectedOutputs { get; }
-    }
-
-    public interface IGradeResult
-    {
-        double PercentPassing { get; }
-
-        IEnumerable<IGradeCaseResult> CaseResults { get; }
     }
 }

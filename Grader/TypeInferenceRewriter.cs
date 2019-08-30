@@ -19,93 +19,120 @@ namespace Grader
         {
             if (node.Expression is InvocationExpressionSyntax invoke)
             {
-                var symbol = _model.GetSymbolInfo(invoke);
+                if (InvocationExpressionStatementSyntax(node, invoke, out var syntaxNode)) return syntaxNode;
+            }
+            return base.VisitExpressionStatement(node);
+        }
 
-                var result = symbol.Symbol.ToString();
-                if (result.StartsWith("System.Console"))
+        private bool InvocationExpressionStatementSyntax(SyntaxNode node, InvocationExpressionSyntax invoke,
+            out SyntaxNode syntaxNode)
+        {
+            syntaxNode = null;
+            var symbol = _model.GetSymbolInfo(invoke);
+
+            var result = symbol.Symbol.ToString();
+            if (result.StartsWith("System.Console"))
+            {
+                if (invoke.Expression is IdentifierNameSyntax methodId)
                 {
-                    if (invoke.Expression is IdentifierNameSyntax methodId)
-                    {
-                        var grader = SyntaxFactory.IdentifierName("Grader");
-                        var console = SyntaxFactory.IdentifierName("Console");
+                    var grader = SyntaxFactory.IdentifierName("Grader");
+                    var console = SyntaxFactory.IdentifierName("Console");
 
-                        var consoleSpace = SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                            grader, console);
-                        var nameSpace = SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, consoleSpace, methodId);
-                        var newNode = node.ReplaceNode(invoke.Expression, nameSpace);
-                        return newNode;
+                    var consoleSpace = SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
+                        grader, console);
+                    var nameSpace =
+                        SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, consoleSpace, methodId);
+                    var newNode = node.ReplaceNode(invoke.Expression, nameSpace);
+                    {
+                        syntaxNode = newNode;
+                        return true;
                     }
-                    if (invoke.Expression is MemberAccessExpressionSyntax memberAccess)
-                    {
+                }
 
-                        if (memberAccess.Expression is IdentifierNameSyntax id)
+                if (invoke.Expression is MemberAccessExpressionSyntax memberAccess)
+                {
+                    if (memberAccess.Expression is IdentifierNameSyntax id)
+                    {
+                        if (id.Identifier.Text == "Console")
                         {
-                            if (id.Identifier.Text == "Console")
+                            var grader = SyntaxFactory.IdentifierName("Grader");
+                            var nameSpace =
+                                SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, grader, id);
+                            var newNode = node.ReplaceNode(memberAccess.Expression, nameSpace);
                             {
-                                var grader = SyntaxFactory.IdentifierName("Grader");
-                                var nameSpace = SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression, grader, id);
-                                var newNode = node.ReplaceNode(memberAccess.Expression, nameSpace);
-                                return newNode;
+                                syntaxNode = newNode;
+                                return true;
                             }
                         }
-                        else
-
-                        if (memberAccess.Expression is MemberAccessExpressionSyntax systemAccess)
+                    }
+                    else if (memberAccess.Expression is MemberAccessExpressionSyntax systemAccess)
+                    {
+                        if (systemAccess.Expression is IdentifierNameSyntax systemId)
                         {
-                            if (systemAccess.Expression is IdentifierNameSyntax systemId)
+                            if (systemId.Identifier.Text == "System")
                             {
-                                if (systemId.Identifier.Text == "System")
+                                var newNode = node.ReplaceNode(systemId, SyntaxFactory.IdentifierName("Grader"));
                                 {
-                                    var newNode = node.ReplaceNode(systemId, SyntaxFactory.IdentifierName("Grader"));
-                                    return newNode;
+                                    syntaxNode = newNode;
+                                    return true;
                                 }
                             }
                         }
                     }
                 }
-
             }
-            return base.VisitExpressionStatement(node);
+
+            return false;
         }
 
         public override SyntaxNode VisitLocalDeclarationStatement(LocalDeclarationStatementSyntax node)
         {
-            if (node.Declaration.Variables.Count > 1)
+            foreach (var variableDeclaratorSyntax in node.Declaration.Variables)
             {
-                return node;
+                var value = variableDeclaratorSyntax.Initializer.Value;
+                if (value is InvocationExpressionSyntax invoke)
+                {
+                    if (InvocationExpressionStatementSyntax(node, invoke, out var syntaxNode)) return syntaxNode;
+                }
             }
-            if (node.Declaration.Variables[0].Initializer == null)
-            {
-                return node;
-            }
 
-            VariableDeclaratorSyntax declarator = node.Declaration.Variables.First();
-            TypeSyntax variableTypeName = node.Declaration.Type;
+            return base.VisitLocalDeclarationStatement(node);
+            //if (node.Declaration.Variables.Count > 1)
+            //{
+            //    return node;
+            //}
+            //if (node.Declaration.Variables[0].Initializer == null)
+            //{
+            //    return node;
+            //}
 
-            ITypeSymbol variableType =
-                (ITypeSymbol)_model.GetSymbolInfo(variableTypeName)
-                    .Symbol;
+            //VariableDeclaratorSyntax declarator = node.Declaration.Variables.First();
+            //TypeSyntax variableTypeName = node.Declaration.Type;
 
-            TypeInfo initializerInfo =
-                _model.GetTypeInfo(declarator
-                    .Initializer
-                    .Value);
+            //ITypeSymbol variableType =
+            //    (ITypeSymbol)_model.GetSymbolInfo(variableTypeName)
+            //        .Symbol;
 
-            if (variableType == initializerInfo.Type)
-            {
-                TypeSyntax varTypeName =
-                    SyntaxFactory.IdentifierName("var")
-                        .WithLeadingTrivia(
-                            variableTypeName.GetLeadingTrivia())
-                        .WithTrailingTrivia(
-                            variableTypeName.GetTrailingTrivia());
+            //TypeInfo initializerInfo =
+            //    _model.GetTypeInfo(declarator
+            //        .Initializer
+            //        .Value);
 
-                return node.ReplaceNode(variableTypeName, varTypeName);
-            }
-            else
-            {
-                return node;
-            }
+            //if (variableType == initializerInfo.Type)
+            //{
+            //    TypeSyntax varTypeName =
+            //        SyntaxFactory.IdentifierName("var")
+            //            .WithLeadingTrivia(
+            //                variableTypeName.GetLeadingTrivia())
+            //            .WithTrailingTrivia(
+            //                variableTypeName.GetTrailingTrivia());
+
+            //    return node.ReplaceNode(variableTypeName, varTypeName);
+            //}
+            //else
+            //{
+            //    return node;
+            //}
         }
     }
 }

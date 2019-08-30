@@ -50,7 +50,13 @@
     <Compile Include="ConsoleAppGrader.cs" />
     <Compile Include="CompilationException.cs" />
     <Compile Include="Console.cs" />
+    <Compile Include="CSharpGenerator.cs" />
+    <Compile Include="GradeCase.cs" />
+    <Compile Include="GradeCaseResult.cs" />
     <Compile Include="GradeResult.cs" />
+    <Compile Include="IGradeCase.cs" />
+    <Compile Include="IGradeCaseResult.cs" />
+    <Compile Include="IGradeResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeInferenceRewriter.cs" />
   </ItemGroup>
