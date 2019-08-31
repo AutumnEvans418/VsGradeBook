@@ -1,4 +1,5 @@
 ﻿using System;
+using Grader;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
@@ -24,10 +25,11 @@ namespace AsyncToolWindowSample.ToolWindows
 
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand CancelCommand { get; }
-        
 
+        private ConsoleAppGrader grader;
         public AddDocumentationViewModel(Action exit, string path, TextViewSelection selection)
         {
+            grader = new ConsoleAppGrader();
             _exit = exit;
             _path = path;
             _selection = selection;
