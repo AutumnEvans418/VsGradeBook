@@ -2,16 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.IO;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.ToolWindows;
 using EnvDTE;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Windows;
 using EnvDTE80;
+using Grader;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
+using Console = System.Console;
 using Task = System.Threading.Tasks.Task;
 
 namespace AsyncToolWindowSample
@@ -46,12 +50,22 @@ namespace AsyncToolWindowSample
 
         static async void ExecuteAddDocumentation(AsyncPackage package)
         {
+            var codes = await GetCode(package);
+
+
+            var selection = await GetSelection(package);
+            string document = await GetActiveFilePath(package);
+            ShowAddDocumentationWindow(document, selection);
+        }
+
+        private static async Task<IEnumerable<string>> GetCode(AsyncPackage package)
+        {
             var dte = await package.GetServiceAsync(typeof(DTE)) as DTE2;
             //var project = await SelectedProject(package);
             var enumer = dte.Solution.Projects.GetEnumerator();
             enumer.MoveNext();
             var project = enumer.Current;
-            var projectItems =new List<ProjectItem>();
+            var projectItems = new List<ProjectItem>();
             var items = ((Project)project).ProjectItems.GetEnumerator();
             while (items.MoveNext())
             {
@@ -60,13 +74,13 @@ namespace AsyncToolWindowSample
                 projectItems.Add(GetFiles(item, projectItems));
             }
 
-            var code = projectItems.Select(p => new {p.Name, p.Document});
-
-            var selection = await GetSelection(package);
-            string document = await GetActiveFilePath(package);
-            ShowAddDocumentationWindow(document, selection);
+            var code = projectItems
+                .Where(p => Path.GetExtension(p.Name)?.ToLower() == ".cs")
+                .Select(p => File.ReadAllText(p.Properties.Item("FullPath").Value.ToString())).ToList();
+            return code;
         }
-       static ProjectItem GetFiles(ProjectItem item , List<ProjectItem> projectItems)
+
+        static ProjectItem GetFiles(ProjectItem item, List<ProjectItem> projectItems)
         {
             //base case
             if (item.ProjectItems == null)

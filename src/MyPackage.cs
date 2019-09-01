@@ -21,6 +21,7 @@ namespace AsyncToolWindowSample
     //These allow this extension to load in the background when visual studio starts up: https://michaelscodingspot.com/visual-studio-2017-extension-development-tutorial-part-2-add-menu-item/
     [ProvideAutoLoad(VSConstants.UICONTEXT.NoSolution_string, PackageAutoLoadFlags.BackgroundLoad)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionExists_string, PackageAutoLoadFlags.BackgroundLoad)]
+    [ProvideBindingPath]
     public sealed class MyPackage : AsyncPackage
     {
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
