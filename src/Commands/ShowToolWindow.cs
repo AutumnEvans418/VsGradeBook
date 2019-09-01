@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.ToolWindows;
 using EnvDTE;
+using System.Linq;
+using System.Runtime.InteropServices;
 using EnvDTE80;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Task = System.Threading.Tasks.Task;
 
@@ -40,14 +46,73 @@ namespace AsyncToolWindowSample
 
         static async void ExecuteAddDocumentation(AsyncPackage package)
         {
-            var result = await package.GetServiceAsync(typeof(DTE)) as DTE2;
+            var dte = await package.GetServiceAsync(typeof(DTE)) as DTE2;
+            //var project = await SelectedProject(package);
+            var enumer = dte.Solution.Projects.GetEnumerator();
+            enumer.MoveNext();
+            var project = enumer.Current;
+            var projectItems =new List<ProjectItem>();
+            var items = ((Project)project).ProjectItems.GetEnumerator();
+            while (items.MoveNext())
+            {
+                var item = (ProjectItem)items.Current;
+                //Recursion to get all ProjectItems
+                projectItems.Add(GetFiles(item, projectItems));
+            }
 
-           
+            var code = projectItems.Select(p => new {p.Name, p.Document});
+
             var selection = await GetSelection(package);
             string document = await GetActiveFilePath(package);
             ShowAddDocumentationWindow(document, selection);
         }
+       static ProjectItem GetFiles(ProjectItem item , List<ProjectItem> projectItems)
+        {
+            //base case
+            if (item.ProjectItems == null)
+                return item;
 
+            var items = item.ProjectItems.GetEnumerator();
+            while (items.MoveNext())
+            {
+                var currentItem = (ProjectItem)items.Current;
+                projectItems.Add(GetFiles(currentItem, projectItems));
+            }
+
+            return item;
+        }
+        //public static async Task<Project> SelectedProject(AsyncPackage package)
+        //{
+        //    await package.JoinableTaskFactory.SwitchToMainThreadAsync();
+        //    IntPtr hierarchyPointer, selectionContainerPointer;
+        //    Object selectedObject = null;
+        //    IVsMultiItemSelect multiItemSelect;
+        //    uint projectItemId;
+
+        //    IVsMonitorSelection monitorSelection =
+        //        (IVsMonitorSelection)Package.GetGlobalService(
+        //            typeof(SVsShellMonitorSelection));
+
+        //    monitorSelection.GetCurrentSelection(out hierarchyPointer,
+        //        out projectItemId,
+        //        out multiItemSelect,
+        //        out selectionContainerPointer);
+
+        //    IVsHierarchy selectedHierarchy = Marshal.GetTypedObjectForIUnknown(
+        //        hierarchyPointer,
+        //        typeof(IVsHierarchy)) as IVsHierarchy;
+
+        //    if (selectedHierarchy != null)
+        //    {
+        //        ErrorHandler.ThrowOnFailure(selectedHierarchy.GetProperty(
+        //            projectItemId,
+        //            (int)__VSHPROPID.VSHPROPID_ExtObject,
+        //            out selectedObject));
+        //    }
+
+        //    Project selectedProject = selectedObject as Project;
+        //    return selectedProject;
+        //}
         private static void ShowAddDocumentationWindow(string document, TextViewSelection selection)
         {
             var documentationControl = new AddDocumentationView(document, selection);
