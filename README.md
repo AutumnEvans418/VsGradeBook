@@ -8,15 +8,20 @@ Simplyifing grading code in visual studio.  No more sending compressed files, do
 - Teachers can then create assignments for students to complete
 - When students create the program, they'll be able to test it within visual studio with the inputs the teacher created.  This inputs can be made invisible or visible.
 - Students will get a percent of passing cases based on the inputs the teacher provided
-- Once the students are finished with their program, they can submit the program within visual studio
+- Once the students are finished with their program, 
+  they can submit the program within visual studio
+- You can use [VsGradeBook.com]("www.VsGradeBook.com") to see the APIs
+  and options to submit the code
 
 ## Integrations
 
 - Submit with GitHub
 - Test with Unit Tests
 - OAuth for authentication
+- Integrate assignments with Canvas
 
-# Async Tool Window example
+
+# Async Tool Window example (Original Documentation)
 
 **Applies to Visual Studio 2017.6 and newer**
 
