@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Windows;
 using Grader;
+using Console = System.Console;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
@@ -14,28 +16,41 @@ namespace AsyncToolWindowSample.ToolWindows
         public string Code
         {
             get => _code;
-            set => SetProperty(ref _code,value);
+            set => SetProperty(ref _code, value);
         }
 
         public string Documentation
         {
             get => _documentation;
-            set => SetProperty(ref _documentation,value);
+            set => SetProperty(ref _documentation, value);
         }
 
         public DelegateCommand SaveCommand { get; }
         public DelegateCommand CancelCommand { get; }
 
-        private ConsoleAppGrader grader;
         public AddDocumentationViewModel(Action exit, string path, TextViewSelection selection)
         {
-            grader = new ConsoleAppGrader();
             _exit = exit;
             _path = path;
             _selection = selection;
             SaveCommand = new DelegateCommand(Save);
             CancelCommand = new DelegateCommand(Cancel);
             Code = selection.Text;
+            Grade();
+        }
+
+        private async void Grade()
+        {
+            var grader = new ConsoleAppGrader();
+            try
+            {
+                await grader.Grade(Code, new[] { new GradeCase(), });
+            }
+            catch (CompilationException e)
+            {
+                Console.WriteLine(e);
+                MessageBox.Show(e.Message);
+            }
         }
 
         private void Cancel()
@@ -45,7 +60,7 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private void Save()
         {
-            
+
         }
     }
 }
