@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -13,26 +14,27 @@ namespace Grader
 {
     public class CSharpGenerator
     {
-        public Func<Task> Generate(string program)
+        public Func<Task> Generate(IEnumerable<string> program)
         {
-            SyntaxTree tree = CSharpSyntaxTree.ParseText(
-                program);
+          
 
-            var root = (CompilationUnitSyntax)tree.GetRoot();
-
-            Compilation test = CreateTestCompilation(root.SyntaxTree);
+            Compilation test = CreateTestCompilation(program.Select(p=> CSharpSyntaxTree.ParseText(p)).ToArray());
 
 
 
-            var newTree = test.SyntaxTrees.First();
+            var newTrees = test.SyntaxTrees.Select(p =>
+            {
+                SemanticModel model = test.GetSemanticModel(p);
+
+                TypeInferenceRewriter reWriter = new TypeInferenceRewriter(model);
+                SyntaxNode newSource = reWriter.Visit(p.GetRoot());
+                return newSource.SyntaxTree;
+            });
 
 
-            SemanticModel model = test.GetSemanticModel(newTree);
+           
 
-            TypeInferenceRewriter reWriter = new TypeInferenceRewriter(model);
-            SyntaxNode newSource = reWriter.Visit(newTree.GetRoot());
-
-            var finalCompile = CreateTestCompilation(newSource.SyntaxTree);
+            var finalCompile = CreateTestCompilation(newTrees.ToArray());
 
             var stream = new MemoryStream();
             var emitResult = finalCompile.Emit(stream);
@@ -77,7 +79,7 @@ namespace Grader
                 throw new CompilationException(msg);
             }
         }
-        private Compilation CreateTestCompilation(SyntaxTree tree)
+        private Compilation CreateTestCompilation(SyntaxTree[] trees)
         {
 
             MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
@@ -94,7 +96,7 @@ namespace Grader
 
             MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, grader };
 
-            return CSharpCompilation.Create("Test", new[] { tree }, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+            return CSharpCompilation.Create("Test", trees, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
         }
     }
 }

@@ -66,7 +66,7 @@ namespace AsyncToolWindowSample
             TextViewSelection selection = new TextViewSelection(start, end, selectedText);
             return selection;
         }
-        static private async Task<string> GetActiveFilePath(AsyncPackage serviceProvider)
+        private static async Task<string> GetActiveFilePath(AsyncPackage serviceProvider)
         {
             EnvDTE80.DTE2 applicationObject = await serviceProvider.GetServiceAsync(typeof(DTE)) as EnvDTE80.DTE2;
             return applicationObject.ActiveDocument.FullName;

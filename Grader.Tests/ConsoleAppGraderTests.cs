@@ -19,6 +19,42 @@ namespace Grader.Tests
             grader = new ConsoleAppGrader();
             Grader.Console.Outputs.Clear();
         }
+
+
+        [Test]
+        public async Task MultipleFiles_Should_NotThrowException()
+        {
+            var src = @"
+using System.Collections;
+using System.Linq;
+using System.Text;
+ 
+namespace HelloWorld
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var t = new Test();
+            System.Console.WriteLine(""Hello, World!"");
+        }
+    }
+}";
+            var src2 = @"
+namespace HelloWorld
+{
+    public class Test
+    {
+       
+    }
+}";
+
+            var result = await grader.Grade(new []{src, src2}, new List<IGradeCase>() { gradeCase });
+
+            Assert.AreEqual(1, Grader.Console.Outputs.Count);
+            Assert.Pass();
+        }
+
         [Test]
         public async Task Grade_Should_NotThrowException()
         {

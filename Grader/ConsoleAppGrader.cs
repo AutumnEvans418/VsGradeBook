@@ -15,8 +15,7 @@ namespace Grader
         {
         }
 
-
-        public async Task<IGradeResult> Grade(string program, IEnumerable<IGradeCase> cases)
+        public async Task<IGradeResult> Grade(IEnumerable<string> program, IEnumerable<IGradeCase> cases)
         {
             if (cases.Any() != true)
             {
@@ -38,6 +37,12 @@ namespace Grader
             }
 
             return new GradeResult(list);
+        }
+
+
+        public  Task<IGradeResult> Grade(string program, IEnumerable<IGradeCase> cases)
+        {
+            return Grade(new[] {program}, cases);
         }
 
         private Compilation CreateTestCompilation(SyntaxTree tree)
