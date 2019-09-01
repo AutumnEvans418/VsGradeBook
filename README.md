@@ -1,4 +1,20 @@
-# Test
+# Visual Studio GradeBook
+Simplyifing grading code in visual studio.  No more sending compressed files, downlowding, and opening student's code.
+
+## Features
+
+- Teachers can create master programs to compare to students
+- Teachers can create inputs for their program that will be tested against the student's program.  
+- Teachers can then create assignments for students to complete
+- When students create the program, they'll be able to test it within visual studio with the inputs the teacher created.  This inputs can be made invisible or visible.
+- Students will get a percent of passing cases based on the inputs the teacher provided
+- Once the students are finished with their program, they can submit the program within visual studio
+
+## Integrations
+
+- Submit with GitHub
+- Test with Unit Tests
+- OAuth for authentication
 
 # Async Tool Window example
 
