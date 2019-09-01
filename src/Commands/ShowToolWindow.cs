@@ -3,6 +3,7 @@ using System.ComponentModel.Design;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.ToolWindows;
 using EnvDTE;
+using EnvDTE80;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.TextManager.Interop;
 using Task = System.Threading.Tasks.Task;
@@ -24,7 +25,7 @@ namespace AsyncToolWindowSample
             {
                 //create the checkbox menu item the command id matches the id in the symbolids
                 var cmdId = new CommandID(Guid.Parse(guidMyPackageCmdSet), 0x0101);
-                var cmd = new MenuCommand((s, e) => ExecuteEnableCodyDocs(s,package), cmdId);
+                var cmd = new MenuCommand((s, e) => ExecuteEnableCodyDocs(s, package), cmdId);
                 cmd.Checked = GeneralSettings.Default.EnableToolWindow;
                 commandService.AddCommand(cmd);
             }
@@ -34,11 +35,14 @@ namespace AsyncToolWindowSample
                 commandService.AddCommand(cmd);
             }
 
-           
+
         }
 
         static async void ExecuteAddDocumentation(AsyncPackage package)
         {
+            var result = await package.GetServiceAsync(typeof(DTE)) as DTE2;
+
+           
             var selection = await GetSelection(package);
             string document = await GetActiveFilePath(package);
             ShowAddDocumentationWindow(document, selection);
@@ -71,11 +75,11 @@ namespace AsyncToolWindowSample
             EnvDTE80.DTE2 applicationObject = await serviceProvider.GetServiceAsync(typeof(DTE)) as EnvDTE80.DTE2;
             return applicationObject.ActiveDocument.FullName;
         }
-        private static void ExecuteEnableCodyDocs(object sender ,AsyncPackage package)
+        private static void ExecuteEnableCodyDocs(object sender, AsyncPackage package)
         {
             GeneralSettings.Default.EnableToolWindow = !GeneralSettings.Default.EnableToolWindow;
             GeneralSettings.Default.Save();
-            if(sender is MenuCommand cmd)
+            if (sender is MenuCommand cmd)
             {
                 cmd.Checked = GeneralSettings.Default.EnableToolWindow;
             }
