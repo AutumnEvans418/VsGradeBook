@@ -1,3 +1,5 @@
+# Test
+
 # Async Tool Window example
 
 **Applies to Visual Studio 2017.6 and newer**
