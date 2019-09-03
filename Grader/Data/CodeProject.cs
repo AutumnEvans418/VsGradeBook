@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Grader
 {
@@ -12,5 +13,6 @@ namespace Grader
         public string CsvExpectedOutput { get; set; }
         public DateTimeOffset DueDate { get; set; }
         public bool IsPublished { get; set; }
+        public virtual IList<Submission> Submissions { get; set; }
     }
 }

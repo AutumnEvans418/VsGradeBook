@@ -1,6 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoFixture;
 using AutoFixture.AutoMoq;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 
 namespace Grader.Tests
@@ -15,6 +18,17 @@ namespace Grader.Tests
         {
             fixture = new Fixture();
             fixture.Customize(new AutoMoqCustomization() {ConfigureMembers = true, GenerateDelegates = true});
+
+            var sqlcon = new SqliteConnection("DataSource=:memory:");
+            sqlcon.Open();
+            var options = new DbContextOptionsBuilder().UseSqlite(sqlcon).Options;
+            fixture.Inject<Func<GradeBookDbContext>>(() =>
+            {
+                var db = new GradeBookDbContext(options);
+                db.Database.EnsureCreated();
+                return db;
+            });
+            
             repository = fixture.Create<GradeBookRepository>();
         }
 
