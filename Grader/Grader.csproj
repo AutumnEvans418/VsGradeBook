@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CsvParser.cs" />
     <Compile Include="Data\Class.cs" />
     <Compile Include="Data\CodeProject.cs" />
     <Compile Include="ConsoleAppGrader.cs" />
