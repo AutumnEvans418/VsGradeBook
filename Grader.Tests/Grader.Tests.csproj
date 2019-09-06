@@ -49,6 +49,7 @@
     <Compile Include="ConsoleAppGraderTests.cs" />
     <Compile Include="CsvParserTests.cs" />
     <Compile Include="GradeBookRepositoryTests.cs" />
+    <Compile Include="ProjectViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxProgram.cs" />
   </ItemGroup>
@@ -76,6 +77,10 @@
     <ProjectReference Include="..\Grader\Grader.csproj">
       <Project>{5b635451-d5d8-48b9-94fa-150154208fd4}</Project>
       <Name>Grader</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\src\AsyncToolWindowSample.csproj">
+      <Project>{5ce4ed47-6a68-4f09-b0ee-501cacaa3ebd}</Project>
+      <Name>AsyncToolWindowSample</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

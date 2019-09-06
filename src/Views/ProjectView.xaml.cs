@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AsyncToolWindowSample.ToolWindows;
 
 namespace AsyncToolWindowSample.Views
 {
@@ -20,8 +21,9 @@ namespace AsyncToolWindowSample.Views
     /// </summary>
     public partial class ProjectView : UserControl
     {
-        public ProjectView()
+        public ProjectView(ProjectViewModel vm)
         {
+            DataContext = vm;
             InitializeComponent();
         }
     }

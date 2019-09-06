@@ -4,9 +4,23 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AsyncToolWindowSample.Views"
+             xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance toolWindows:ProjectViewModel}">
+    <Grid Background="White">
+        <StackPanel Margin="10">
+            <Label Content="Input"/>
+            <TextBox  Text="{Binding InputCases}"/>
+            <Label Content="Expected Output"/>
+            <TextBox Text="{Binding ExpectedOutput}"/>
+            <Button Content="Test" Command="{Binding TestCommand}"/>
+            <Button Content="Submit" Command="{Binding SubmitCommand}"/>
+            <Label Content="Error Message"/>
+            <TextBlock Text="{Binding ErrorMessage}"/>
+            <Label Content="Percent Passing"></Label>
+            <Label Content="{Binding PercentPass}"/>
+            <Label Content="Actual Output"/>
+            <TextBlock Text="{Binding ActualOutput}"/>
+        </StackPanel>
     </Grid>
 </UserControl>

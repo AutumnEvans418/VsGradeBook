@@ -30,7 +30,7 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            _toolWindow.ToPage("Sample");
+            _toolWindow.ToPage("ProjectView");
         }
     }
 }
