@@ -1,4 +1,5 @@
-﻿using AsyncToolWindowSample.Models;
+﻿using System;
+using AsyncToolWindowSample.Models;
 using Grader;
 
 namespace AsyncToolWindowSample.ToolWindows
@@ -19,7 +20,7 @@ namespace AsyncToolWindowSample.ToolWindows
             _visualStudioService = visualStudioService;
             _grader = grader;
             InputCases = "";
-            ExpectedOutput = "Hello, World!";
+            ExpectedOutput = "Hello World!";
 
             TestCommand = new DelegateCommand(Test);
             SubmitCommand = new DelegateCommand(Submit);
@@ -30,9 +31,11 @@ namespace AsyncToolWindowSample.ToolWindows
             
         }
 
-        private void Test()
+        private async void Test()
         {
-            
+            var codes = await _visualStudioService.GetCSharpFilesAsync();
+            var cases = InputCases.Split(new string[]{Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+            var result = await _grader.Grade(codes, )
         }
 
         public double PercentPass
