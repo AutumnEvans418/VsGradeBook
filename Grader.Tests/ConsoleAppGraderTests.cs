@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AsyncToolWindowSample.Models;
+using AsyncToolWindowSample.ToolWindows;
 using FluentAssertions;
+using Moq;
 using NUnit.Framework;
 
 namespace Grader.Tests
@@ -55,6 +58,52 @@ namespace HelloWorld
             Assert.Pass();
         }
 
+        [Test]
+        public async Task WithinFuntion_Should_ChangeToGrader()
+        {
+            var src = @"
+using System;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var price = double.Parse(Console.ReadLine());
+        }
+    }
+}
+";
+            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(){"0"},new List<string>() ), });
+
+        }
+
+        [Test]
+        public async Task EmptyGradeCase_Should_HaveErrorMessage()
+        {
+            var src = @"
+using System;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(""Enter Price"");
+            var price = double.Parse(Console.ReadLine());
+
+            Console.WriteLine((price * 1.10));
+        }
+    }
+}
+";
+
+            var result = await grader.Grade(src, new[] { new GradeCase(), });
+
+            result.CaseResults.First().Message.Should().Be("There was no input");
+        }
         [Test]
         public async Task Grade_Should_NotThrowException()
         {

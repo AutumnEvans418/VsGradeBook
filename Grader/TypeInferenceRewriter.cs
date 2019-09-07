@@ -13,7 +13,19 @@ namespace Grader
             _model = model;
         }
 
+        public override SyntaxNode VisitArgument(ArgumentSyntax node)
+        {
+            if (node.Expression is InvocationExpressionSyntax syntax)
+            {
+                if (InvocationExpressionStatementSyntax(node, syntax, out var newNode)) return newNode;
+            }
+            return base.VisitArgument(node);
+        }
 
+        public override SyntaxNode Visit(SyntaxNode node)
+        {
+            return base.Visit(node);
+        }
 
         public override SyntaxNode VisitExpressionStatement(ExpressionStatementSyntax node)
         {
@@ -97,42 +109,7 @@ namespace Grader
             }
 
             return base.VisitLocalDeclarationStatement(node);
-            //if (node.Declaration.Variables.Count > 1)
-            //{
-            //    return node;
-            //}
-            //if (node.Declaration.Variables[0].Initializer == null)
-            //{
-            //    return node;
-            //}
-
-            //VariableDeclaratorSyntax declarator = node.Declaration.Variables.First();
-            //TypeSyntax variableTypeName = node.Declaration.Type;
-
-            //ITypeSymbol variableType =
-            //    (ITypeSymbol)_model.GetSymbolInfo(variableTypeName)
-            //        .Symbol;
-
-            //TypeInfo initializerInfo =
-            //    _model.GetTypeInfo(declarator
-            //        .Initializer
-            //        .Value);
-
-            //if (variableType == initializerInfo.Type)
-            //{
-            //    TypeSyntax varTypeName =
-            //        SyntaxFactory.IdentifierName("var")
-            //            .WithLeadingTrivia(
-            //                variableTypeName.GetLeadingTrivia())
-            //            .WithTrailingTrivia(
-            //                variableTypeName.GetTrailingTrivia());
-
-            //    return node.ReplaceNode(variableTypeName, varTypeName);
-            //}
-            //else
-            //{
-            //    return node;
-            //}
+          
         }
     }
 }
