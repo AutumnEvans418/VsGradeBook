@@ -44,5 +44,64 @@ namespace HelloWorld
 
             model.PercentPass.Should().Be(1);
         }
+
+
+        [Test]
+        public async Task InvalidNumberOfInputs_ShouldGiveErrorMessage()
+        {
+            var src = @"
+using System;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(""Enter Price"");
+            var price = double.Parse(Console.ReadLine());
+
+            Console.WriteLine((price * 1.10));
+        }
+    }
+}
+";
+            var code = new Mock<IVisualStudioService>();
+
+            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { src }.AsEnumerable()));
+
+
+            ProjectViewModel model = new ProjectViewModel(code.Object, new ConsoleAppGrader());
+
+
+            await model.TestCommand.ExecuteAsync();
+            model.ErrorMessage.Should().Be("Case 1: There was no input");
+        }
+
+        [Test]
+        public void InvalidNumberOfInputs_Should_NotFailAllCases()
+        {
+            var src = @"
+using System;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(""Enter Price"");
+            var price = double.Parse(Console.ReadLine());
+
+            Console.WriteLine((price * 1.10));
+        }
+    }
+}
+";
+            var code = new Mock<IVisualStudioService>();
+
+            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { src }.AsEnumerable()));
+            Assert.Fail();
+        }
     }
 }

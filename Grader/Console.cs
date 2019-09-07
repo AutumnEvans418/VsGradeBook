@@ -13,7 +13,12 @@ namespace Grader
         }
         public static string ReadLine()
         {
+            if (Inputs.Any() != true)
+            {
+                throw new MissingConsoleInputException("Missing input");
+            }
             var first = Inputs.First();
+            
             Inputs.Remove(first);
             return first;
         }

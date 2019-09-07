@@ -29,11 +29,19 @@ namespace Grader
             {
                 Console.Outputs.Clear();
                 Console.Inputs = gradeCase.Inputs.ToList();
-                await runProgram();
+                var message = "";
+                try
+                {
+                    await runProgram();
+                }
+                catch (ConsoleRuntimeException e)
+                {
+                    message = e.Message;
+                }
 
 
                 var outputs = Console.Outputs.ToList();
-                list.Add(new GradeCaseResult(gradeCase, outputs));
+                list.Add(new GradeCaseResult(gradeCase, outputs){Message = message});
             }
 
             return new GradeResult(list);
