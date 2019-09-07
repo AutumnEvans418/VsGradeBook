@@ -207,6 +207,8 @@
     <ProjectReference Include="..\Grader\Grader.csproj">
       <Project>{5b635451-d5d8-48b9-94fa-150154208fd4}</Project>
       <Name>Grader</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <IncludeOutputGroupsInVSIX>VSIXContainerProjectOutputGroup%3b</IncludeOutputGroupsInVSIX>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
