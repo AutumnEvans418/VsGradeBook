@@ -12,6 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AsyncToolWindowSample.Views;
+using Grader;
+using Microsoft.VisualStudio.Shell;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
@@ -24,9 +27,10 @@ namespace AsyncToolWindowSample.ToolWindows
         public MainWindow(SampleToolWindowState state)
         {
             InitializeComponent();
-
+            
             pages.Add("Sample", () => new SampleToolWindowControl(state, this));
             pages.Add("Login", () => new LoginView(this));
+            pages.Add("ProjectView", () => new ProjectView(new ProjectViewModel(new VisualStudioService(state.AsyncPackage), new ConsoleAppGrader())));
             ToPage("Login");
         }
         private Dictionary<string, Func<Control>> pages = new Dictionary<string, Func<Control>>();

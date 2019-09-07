@@ -12,25 +12,19 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AsyncToolWindowSample.ToolWindows;
 
-namespace AsyncToolWindowSample.ToolWindows
+namespace AsyncToolWindowSample.Views
 {
     /// <summary>
-    /// Interaction logic for LoginView.xaml
+    /// Interaction logic for ProjectView.xaml
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class ProjectView : UserControl
     {
-        private readonly IToolWindow _toolWindow;
-
-        public LoginView(IToolWindow toolWindow)
+        public ProjectView(ProjectViewModel vm)
         {
-            _toolWindow = toolWindow;
+            DataContext = vm;
             InitializeComponent();
-        }
-
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            _toolWindow.ToPage("Sample");
         }
     }
 }

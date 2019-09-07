@@ -50,7 +50,8 @@ namespace AsyncToolWindowSample
             
             return new SampleToolWindowState
             {
-                DTE = dte
+                DTE = dte,
+                AsyncPackage = this
             };
         }
     }
