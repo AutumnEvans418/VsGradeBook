@@ -77,6 +77,8 @@
     <Compile Include="Data\Submission.cs" />
     <Compile Include="TypeInferenceRewriter.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
+    <Compile Include="ViewModels\StudentHomeViewModel.cs" />
+    <Compile Include="ViewModels\StudentProjectViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
