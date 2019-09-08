@@ -34,9 +34,9 @@ namespace Grader
                 {
                     await runProgram();
                 }
-                catch (ConsoleRuntimeException e)
+                catch (Exception e)
                 {
-                    message = e.Message;
+                    message = e.InnerException?.Message;
                 }
 
 
