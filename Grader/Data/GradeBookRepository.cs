@@ -82,6 +82,46 @@ namespace Grader
                             (p.Submission.StudentId == studentId || p.Submission == null));
             }
         }
+
+        public Task<Person> CreateTeacher(Person person)
+        {
+            return Add(person);
+        }
+
+        public Task<Class> CreateClass(Class classs)
+        {
+            return Add(classs);
+        }
+
+        public Task<CodeProject> CreateProject(CodeProject codeProject)
+        {
+            return Add(codeProject);
+        }
+
+        async Task<T> Add<T>(T item) where T : class
+        {
+            using (var db = _dbFunc())
+            {
+                db.Set<T>().Add(item);
+                await db.SaveChangesAsync();
+                return item;
+            }
+        }
+        public Task<Submission> CreateSubmission(Submission submission)
+        {
+            return Add(submission);
+        }
+
+        public Task<Person> CreateStudent(Person person)
+        {
+            return Add(person);
+        }
+
+        public Task<Enrollment> CreateEnrollment(int studentId, string newClassId)
+        {
+            var enroll = new Enrollment(){ClassId = newClassId, StudentId = studentId};
+            return Add(enroll);
+        }
     }
 
     public class ProjectSubmissionDto
