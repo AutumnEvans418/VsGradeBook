@@ -6,19 +6,26 @@
              xmlns:local="clr-namespace:AsyncToolWindowSample.Views"
              xmlns:toolWindows1="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance toolWindows1:ProjectViewModel}">
+             d:DesignHeight="450" d:DesignWidth="400" d:DataContext="{d:DesignInstance toolWindows1:ProjectViewModel}">
     <Grid Background="White">
         <StackPanel Margin="10">
+            <StackPanel.Resources>
+                <Style TargetType="TextBox">
+                    <Setter Property="AcceptsTab" Value="True"/>
+                    <Setter Property="AcceptsReturn" Value="True"/>
+                    <Setter Property="MinHeight" Value="80"></Setter>
+                </Style>
+            </StackPanel.Resources>
             <Label Content="Input"/>
-            <TextBox  Text="{Binding InputCases}"/>
+            <TextBox  Text="{Binding InputCases}" />
             <Label Content="Expected Output"/>
             <TextBox Text="{Binding ExpectedOutput}"/>
             <Button Content="Test" Command="{Binding TestCommand}"/>
             <Button Content="Submit" Command="{Binding SubmitCommand}"/>
             <Label Content="Error Message"/>
-            <TextBlock Text="{Binding ErrorMessage}"/>
+            <TextBlock Text="{Binding ErrorMessage}" Foreground="Red"/>
             <Label Content="Percent Passing"></Label>
-            <Label Content="{Binding PercentPass}"/>
+            <Label Content="{Binding PercentPass}" ContentStringFormat="{}{0:P2}" FontWeight="Bold"/>
             <Label Content="Actual Output"/>
             <TextBlock Text="{Binding ActualOutput}"/>
         </StackPanel>

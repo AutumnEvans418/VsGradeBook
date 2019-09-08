@@ -6,6 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Grader
 {
+    public enum RepositoryStatus
+    {
+        Success,
+        MissingUser
+    }
+    public class RepositoryResult<T>
+    {
+        public T Data { get; set; }
+        public string Message { get; set; }
+        public RepositoryStatus Status { get; set; }
+    }
+
     public class GradeBookRepository : IGradeBookRepository
     {
         private readonly Func<GradeBookDbContext> _dbFunc;
@@ -14,19 +26,30 @@ namespace Grader
         {
             _dbFunc = dbFunc;
         }
-        public async Task<IEnumerable<StudentProjectDto>> StudentLogin(string userName, string classCode)
+
+        public async Task<RepositoryResult<IEnumerable<StudentProjectDto>>> StudentLogin(string userName,
+            string classCode)
         {
             using (var db = _dbFunc())
             {
                 var person = await db.People.FirstOrDefaultAsync(p => p.IsStudent && p.Name == userName);
+                if (person == null)
+                {
+                    return new RepositoryResult<IEnumerable<StudentProjectDto>>()
+                    {
+                        Message = $"Student with userName '{userName}' does not exist",
+                        Status = RepositoryStatus.MissingUser,
+                        Data = null
+                    };
+                }
 
                 var projects = db.CodeProjects.Where(p => p.ClassId == classCode);
                 var submissions = db.Submissions.Where(p => p.StudentId == person.Id);
 
                 var studentProjects = projects
                     .GroupJoin(submissions, p => p.Id, p => p.ProjectId,
-                        (project, enumerable) => new {project, submissions = enumerable});
-                return studentProjects.Select(p => new StudentProjectDto()
+                        (project, enumerable) => new { project, submissions = enumerable });
+                var data = studentProjects.Select(p => new StudentProjectDto()
                 {
                     Name = p.project.Name,
                     Id = p.project.Id,
@@ -36,7 +59,10 @@ namespace Grader
                     Status = "",
 
                 }).ToList();
-
+                return new RepositoryResult<IEnumerable<StudentProjectDto>>()
+                {
+                    Data = data,
+                };
             }
         }
 
