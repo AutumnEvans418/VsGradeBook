@@ -84,6 +84,9 @@
       <DependentUpon>SampleToolWindowControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SampleToolWindowState.cs" />
+    <Compile Include="Views\StudentHomeView.xaml.cs">
+      <DependentUpon>StudentHomeView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="..\LICENSE">
@@ -168,6 +171,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SampleToolWindowControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\StudentHomeView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

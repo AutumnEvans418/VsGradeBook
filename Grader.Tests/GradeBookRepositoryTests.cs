@@ -129,6 +129,29 @@ namespace Grader.Tests
         }
 
         [Test]
+        public async Task TeacherLogin_Should_ReturnProjects()
+        {
+            var name = "cevans";
+
+            var result = await repository.CreateTeacher(new Person() { Name = name });
+            var newClass = await repository.CreateClass(new Class() { TeacherId = result.Id });
+            var project = await repository.CreateProject(new CodeProject()
+            {
+                Name = "test",
+                ClassId = newClass.Id,
+                CsvCases = "10\r\n12",
+                CsvExpectedOutput = "11\r\n13.2",
+                Description = "Create an app that takes one parameter: the price of the item.  Then, add a 10% tax to the item and display the final value",
+                DueDate = DateTimeOffset.Now.AddDays(1),
+                IsPublished = true,
+            });
+
+            var loginResult = await repository.TeacherLogin(name, newClass.Id);
+
+            loginResult.Data.Should().HaveCount(1);
+        }
+
+        [Test]
         public async Task EnrollInClass()
         {
             var name = "cevans";

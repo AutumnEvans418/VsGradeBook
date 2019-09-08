@@ -119,8 +119,28 @@ namespace Grader
 
         public Task<Enrollment> CreateEnrollment(int studentId, string newClassId)
         {
-            var enroll = new Enrollment(){ClassId = newClassId, StudentId = studentId};
+            var enroll = new Enrollment() { ClassId = newClassId, StudentId = studentId };
             return Add(enroll);
+        }
+
+        public async Task<RepositoryResult<IEnumerable<CodeProject>>> TeacherLogin(string userName, string classId)
+        {
+            using (var db = _dbFunc())
+            {
+                var result = new RepositoryResult<IEnumerable<CodeProject>>();
+                var person = await db.People.FirstOrDefaultAsync(p => p.IsStudent != true && p.Name == userName);
+                if (person == null)
+                {
+                    result.Message = $"Teacher with userName '{userName}' does not exist";
+                    result.Status = RepositoryStatus.MissingUser;
+                    result.Data = null;
+                    return result;
+                }
+
+                var data = db.CodeProjects.Include(p=>p.Submissions).Where(p => p.ClassId == classId).ToList();
+                result.Data = data;
+                return result;
+            }
         }
     }
 
