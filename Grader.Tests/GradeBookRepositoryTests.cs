@@ -21,7 +21,7 @@ namespace Grader.Tests
 
             var sqlcon = new SqliteConnection("DataSource=:memory:");
             sqlcon.Open();
-            var options = new DbContextOptionsBuilder().UseSqlite(sqlcon).Options;
+            var options = new DbContextOptionsBuilder().UseSqlite(sqlcon).EnableSensitiveDataLogging().Options;
             fixture.Inject<Func<GradeBookDbContext>>(() =>
             {
                 var db = new GradeBookDbContext(options);
