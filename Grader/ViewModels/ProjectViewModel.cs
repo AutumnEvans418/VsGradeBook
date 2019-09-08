@@ -37,8 +37,8 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             var gradeCases = new List<IGradeCase>();
             var codes = await _visualStudioService.GetCSharpFilesAsync();
-            var inputs = InputCases.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            var outputs = ExpectedOutput.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var inputs = InputCases.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            var outputs = ExpectedOutput.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
             for (var index = 0; index < outputs.Length; index++)
             {
                 var input = "";
@@ -47,7 +47,20 @@ namespace AsyncToolWindowSample.ToolWindows
                     input = inputs[index];
                 }
                 var output = outputs[index];
-                gradeCases.Add(new GradeCase(input.Split(new[] { "," }, StringSplitOptions.None), output.Split(new[] { "," }, StringSplitOptions.None)));
+
+
+                string[] inputArray = new string[0];
+                if (!string.IsNullOrEmpty(input))
+                {
+                    inputArray = input.Split(new[] { "," }, StringSplitOptions.None);
+                }
+                string[] outputArray = new string[0];
+
+                if (!string.IsNullOrEmpty(output))
+                {
+                    outputArray = output.Split(new[] { "," }, StringSplitOptions.None);
+                }
+                gradeCases.Add(new GradeCase(inputArray, outputArray));
             }
 
 
@@ -58,7 +71,7 @@ namespace AsyncToolWindowSample.ToolWindows
             ActualOutput = "";
             foreach (var resultCaseResult in result.CaseResults)
             {
-                ErrorMessage += resultCaseResult.Message + "\r\n";
+                ErrorMessage += resultCaseResult.ErrorMessage + "\r\n";
                 if (resultCaseResult.ActualOutput.Any())
                     this.ActualOutput += resultCaseResult.ActualOutput.Aggregate((f, s) => f + "," + s) + "\r\n";
             }
@@ -73,7 +86,7 @@ namespace AsyncToolWindowSample.ToolWindows
         public string ErrorMessage
         {
             get => _errorMessage;
-            set => SetProperty(ref _errorMessage, value);
+            private set => SetProperty(ref _errorMessage, value);
         }
 
         public string InputCases
@@ -91,7 +104,7 @@ namespace AsyncToolWindowSample.ToolWindows
         public string ActualOutput
         {
             get => _actualOutput;
-            set => SetProperty(ref _actualOutput, value);
+            private set => SetProperty(ref _actualOutput, value);
         }
 
         public DelegateCommandAsync TestCommand { get; set; }

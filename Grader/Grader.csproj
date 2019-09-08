@@ -65,10 +65,18 @@
     <Compile Include="IGradeCaseResult.cs" />
     <Compile Include="IGradeResult.cs" />
     <Compile Include="Data\Person.cs" />
+    <Compile Include="IVisualStudioService.cs" />
+    <Compile Include="Prism\BindableBase.cs" />
+    <Compile Include="Prism\DelegateCommand.cs" />
+    <Compile Include="Prism\DelegateCommandAsync.cs" />
+    <Compile Include="Prism\DelegateCommandBase.cs" />
+    <Compile Include="Prism\PropertyObserver.cs" />
+    <Compile Include="Prism\PropertyObserverNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Data\StudentProjectDto.cs" />
     <Compile Include="Data\Submission.cs" />
     <Compile Include="TypeInferenceRewriter.cs" />
+    <Compile Include="ViewModels\ProjectViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">

@@ -17,7 +17,8 @@ namespace Grader
 
         public async Task<IGradeResult> Grade(IEnumerable<string> program, IEnumerable<IGradeCase> cases)
         {
-            if (cases.Any() != true)
+            var caseList = cases.ToList();
+            if (caseList.Any() != true)
             {
                 throw new ArgumentException("cases cannot be empty");
             }
@@ -25,8 +26,9 @@ namespace Grader
             var runProgram = generator.Generate(program);
 
             var list = new List<IGradeCaseResult>();
-            foreach (var gradeCase in cases)
+            for (var i=0; i < caseList.ToList().Count; i++)
             {
+                var gradeCase = caseList[i];
                 Console.Outputs.Clear();
                 Console.Inputs = gradeCase.Inputs.ToList();
                 var message = "";
@@ -36,12 +38,12 @@ namespace Grader
                 }
                 catch (Exception e)
                 {
-                    message = e.InnerException?.Message;
+                    message = $"Case {i+1}: " + e.InnerException?.Message;
                 }
 
 
                 var outputs = Console.Outputs.ToList();
-                list.Add(new GradeCaseResult(gradeCase, outputs){Message = message});
+                list.Add(new GradeCaseResult(gradeCase, outputs, message));
             }
 
             return new GradeResult(list);

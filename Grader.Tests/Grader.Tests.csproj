@@ -78,10 +78,6 @@
       <Project>{5b635451-d5d8-48b9-94fa-150154208fd4}</Project>
       <Name>Grader</Name>
     </ProjectReference>
-    <ProjectReference Include="..\src\AsyncToolWindowSample.csproj">
-      <Project>{5ce4ed47-6a68-4f09-b0ee-501cacaa3ebd}</Project>
-      <Name>AsyncToolWindowSample</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

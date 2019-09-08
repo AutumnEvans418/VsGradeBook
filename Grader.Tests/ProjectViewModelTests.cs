@@ -75,11 +75,11 @@ namespace ConsoleApp1
 
 
             await model.TestCommand.ExecuteAsync();
-            model.ErrorMessage.Should().Be("Case 1: There was no input");
+            model.ErrorMessage.Should().Be("Case 1: Missing input\r\n");
         }
 
         [Test]
-        public void InvalidNumberOfInputs_Should_NotFailAllCases()
+        public async Task InvalidNumberOfInputs_Should_NotFailAllCases()
         {
             var src = @"
 using System;
@@ -101,7 +101,15 @@ namespace ConsoleApp1
             var code = new Mock<IVisualStudioService>();
 
             code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { src }.AsEnumerable()));
-            Assert.Fail();
+
+            var model = new ProjectViewModel(code.Object, new ConsoleAppGrader());
+
+            model.InputCases = "10\r\n12\r\ntest";
+            model.ExpectedOutput = "11\r\n13.2\r\n";
+
+            await model.Test();
+
+            model.PercentPass.Should().BeInRange(.65, .67);
         }
     }
 }

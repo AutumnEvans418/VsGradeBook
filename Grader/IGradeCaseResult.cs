@@ -7,6 +7,6 @@ namespace Grader
         IGradeCase Case { get; }
         IEnumerable<string> ActualOutput { get; }
         bool Pass { get; }
-        string Message { get; }
+        string ErrorMessage { get; }
     }
 }

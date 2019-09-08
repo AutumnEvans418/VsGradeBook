@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AsyncToolWindowSample.Models;
-using AsyncToolWindowSample.ToolWindows;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -102,7 +100,7 @@ namespace ConsoleApp1
 
             var result = await grader.Grade(src, new[] { new GradeCase(), });
 
-            result.CaseResults.First().Message.Should().Be("Missing input");
+            result.CaseResults.First().ErrorMessage.Should().Be("Case 1: Missing input");
         }
         [Test]
         public async Task Grade_Should_NotThrowException()
