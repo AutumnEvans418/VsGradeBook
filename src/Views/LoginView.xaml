@@ -4,10 +4,27 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AsyncToolWindowSample.ToolWindows"
+             xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             Background="White"
+             d:DesignHeight="450" 
+             d:DesignWidth="800" 
+             d:DataContext="{d:DesignInstance toolWindows:LoginViewModel}">
     <Grid>
-        <StackPanel HorizontalAlignment="Center" MinWidth="200" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+            <CheckBox Content="I'm a Student" IsChecked="{Binding IsStudent}" Height="30"/>
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center" MinWidth="200" VerticalAlignment="Center">
             <StackPanel.Resources>
                 <Style TargetType="Label">
                     <Setter Property="Margin" Value="10"></Setter>
@@ -27,7 +44,7 @@
             <TextBox Text=""></TextBox>
             <Label Content="Password"/>
             <TextBox Text=""/>
-            <Button Content="Login" Click="ButtonBase_OnClick"></Button>
+            <Button Content="Login" ></Button>
         </StackPanel>
     </Grid>
 </UserControl>

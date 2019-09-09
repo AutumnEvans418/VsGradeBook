@@ -28,9 +28,10 @@ namespace AsyncToolWindowSample.ToolWindows
         public MainWindow(SampleToolWindowState state)
         {
             InitializeComponent();
-            
+            var db = new CreateDatabase();
+            db.Initialize();
             pages.Add("Sample", () => new SampleToolWindowControl(state, this));
-            pages.Add("Login", () => new LoginView(this));
+            pages.Add("Login", () => new LoginView(new LoginViewModel(this, new GradeBookRepository(db.GetGradeBookDbContext))));
             pages.Add("ProjectView", () => new ProjectView(new ProjectViewModel(new VisualStudioService(state.AsyncPackage), new ConsoleAppGrader())));
             ToPage("Login");
         }

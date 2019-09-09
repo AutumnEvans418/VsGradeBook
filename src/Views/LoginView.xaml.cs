@@ -20,17 +20,13 @@ namespace AsyncToolWindowSample.ToolWindows
     /// </summary>
     public partial class LoginView : UserControl
     {
-        private readonly IToolWindow _toolWindow;
 
-        public LoginView(IToolWindow toolWindow)
+        public LoginView(LoginViewModel loginViewModel)
         {
-            _toolWindow = toolWindow;
+            DataContext = loginViewModel;
             InitializeComponent();
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
-        {
-            _toolWindow.ToPage("ProjectView");
-        }
+       
     }
 }
