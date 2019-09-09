@@ -27,8 +27,7 @@ namespace Grader
             _dbFunc = dbFunc;
         }
 
-        public async Task<RepositoryResult<IEnumerable<StudentProjectDto>>> StudentLogin(string userName,
-            string classCode)
+        public async Task<RepositoryResult<IEnumerable<StudentProjectDto>>> StudentLogin(string userName,string classCode)
         {
             using (var db = _dbFunc())
             {
@@ -56,8 +55,8 @@ namespace Grader
                     DueDate = p.project.DueDate,
                     IsBeingGraded = p.submissions.FirstOrDefault().IsSubmitted,
                     DateGraded = p.submissions.FirstOrDefault().DateGraded,
-                    Status = "",
-
+                    Status = StudentProjectStatus.Todo,
+                    DateSubmitted = p.submissions.FirstOrDefault().SubmissionDate
                 }).ToList();
                 return new RepositoryResult<IEnumerable<StudentProjectDto>>()
                 {

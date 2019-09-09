@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using AsyncToolWindowSample.Views;
 using Grader;
 using Microsoft.VisualStudio.Shell;
+using Task = System.Threading.Tasks.Task;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
@@ -34,9 +35,26 @@ namespace AsyncToolWindowSample.ToolWindows
             ToPage("Login");
         }
         private Dictionary<string, Func<Control>> pages = new Dictionary<string, Func<Control>>();
-        public void ToPage(string page)
+        public Task ToPage(string page)
+        {
+           return ToPage(page, new NavigationParameter());
+        }
+
+        public async Task ToPage(string page, INavigationParameter parameter)
         {
             Content = pages[page]();
+            if (Content is Control c)
+            {
+                if (c.DataContext is INavigationAware aware)
+                {
+                    aware.Initialize(parameter);
+                }
+
+                if (c.DataContext is INavigationAwareAsync awareAsync)
+                {
+                    await awareAsync.InitializeAsync(parameter);
+                }
+            }
         }
     }
 }

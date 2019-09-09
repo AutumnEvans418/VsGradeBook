@@ -8,11 +8,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
-    public interface IToolWindow
-    {
-        void ToPage(string page);
-    }
-
     [Guid(WindowGuidString)]
     public class SampleToolWindow : ToolWindowPane
     {

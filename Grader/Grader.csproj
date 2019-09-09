@@ -65,6 +65,7 @@
     <Compile Include="IGradeCaseResult.cs" />
     <Compile Include="IGradeResult.cs" />
     <Compile Include="Data\Person.cs" />
+    <Compile Include="IToolWindow.cs" />
     <Compile Include="IVisualStudioService.cs" />
     <Compile Include="Prism\BindableBase.cs" />
     <Compile Include="Prism\DelegateCommand.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Data\StudentProjectDto.cs" />
     <Compile Include="Data\Submission.cs" />
     <Compile Include="TypeInferenceRewriter.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
     <Compile Include="ViewModels\ProjectViewModel.cs" />
     <Compile Include="ViewModels\StudentHomeViewModel.cs" />
     <Compile Include="ViewModels\StudentProjectViewModel.cs" />

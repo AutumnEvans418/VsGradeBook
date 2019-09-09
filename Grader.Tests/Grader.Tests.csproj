@@ -53,8 +53,10 @@
     <Compile Include="CreateDatabaseTests.cs" />
     <Compile Include="CsvParserTests.cs" />
     <Compile Include="GradeBookRepositoryTests.cs" />
+    <Compile Include="LoginViewModelTests.cs" />
     <Compile Include="ProjectViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StudentHomeViewModelTests.cs" />
     <Compile Include="TaxProgram.cs" />
   </ItemGroup>
   <ItemGroup>
