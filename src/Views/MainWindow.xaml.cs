@@ -31,9 +31,10 @@ namespace AsyncToolWindowSample.ToolWindows
             var db = new CreateDatabase();
             db.Initialize();
             pages.Add("Sample", () => new SampleToolWindowControl(state, this));
-            pages.Add("Login", () => new LoginView(new LoginViewModel(this, new GradeBookRepository(db.GetGradeBookDbContext))));
+            pages.Add("LoginView", () => new LoginView(new LoginViewModel(this, new GradeBookRepository(db.GetGradeBookDbContext))));
+            pages.Add("CreateAccountView", () => new CreateAccountView(new CreateAccountViewModel(this, new GradeBookRepository(db.GetGradeBookDbContext))));;
             pages.Add("ProjectView", () => new ProjectView(new ProjectViewModel(new VisualStudioService(state.AsyncPackage), new ConsoleAppGrader())));
-            ToPage("Login");
+            ToPage("LoginView");
         }
         private Dictionary<string, Func<Control>> pages = new Dictionary<string, Func<Control>>();
         public Task ToPage(string page)

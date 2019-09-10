@@ -13,6 +13,12 @@ namespace AsyncToolWindowSample.ToolWindows
             _toolWindow = toolWindow;
             _repository = repository;
             LoginCommand = new DelegateCommandAsync(Login);
+            CreateAccountCommand = new DelegateCommandAsync(CreateAccount);
+        }
+
+        private async Task CreateAccount()
+        {
+            await _toolWindow.ToPage("CreateAccountView", new NavigationParameter(){{"IsStudent", IsStudent}});
         }
 
         private async Task Login()

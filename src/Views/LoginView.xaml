@@ -7,10 +7,27 @@
              xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader"
              mc:Ignorable="d" 
              Background="White"
-             d:DesignHeight="450" 
-             d:DesignWidth="800" 
+             d:DesignHeight="800" 
+             d:DesignWidth="400" 
              d:DataContext="{d:DesignInstance toolWindows:LoginViewModel}">
-    <Grid>
+    <Grid Margin="10">
+        <Grid.Resources>
+            <Style TargetType="Label">
+                <Setter Property="Margin" Value="10"></Setter>
+                <Setter Property="FontSize" Value="18"></Setter>
+            </Style>
+            <Style TargetType="Button">
+                <Setter Property="Margin" Value="10"></Setter>
+                <Setter Property="FontSize" Value="18"></Setter>
+                <Setter Property="MaxHeight" Value="50"></Setter>
+                <Setter Property="Background" Value="#82D365"></Setter>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="FontSize" Value="18"></Setter>
+                <Setter Property="Margin" Value="10"></Setter>
+            </Style>
+            
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
@@ -20,31 +37,27 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-            <CheckBox Content="I'm a Student" IsChecked="{Binding IsStudent}" Height="30"/>
-        <StackPanel Grid.Column="1" HorizontalAlignment="Center" MinWidth="200" VerticalAlignment="Center">
+        <CheckBox Content="I'm a Student" IsChecked="{Binding IsStudent}" Height="30"/>
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2">
+            <Label Content="Name"/>
+            <TextBox Text="{Binding Name}"></TextBox>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
+            <Label Content="Course Code"/>
+            <TextBox Text="{Binding CourseCode}"></TextBox>
+        </StackPanel>
+        <Button Grid.Row="3" Content="Login" Command="{Binding LoginCommand}"/>
+        <Button Grid.Row="3" Grid.Column="1" Content="Create Account" Command="{Binding CreateAccountCommand}"/>
+        <!--<StackPanel Grid.Column="1" HorizontalAlignment="Center" MinWidth="200" VerticalAlignment="Center">
             <StackPanel.Resources>
-                <Style TargetType="Label">
-                    <Setter Property="Margin" Value="10"></Setter>
-                    <Setter Property="FontSize" Value="18"></Setter>
-                </Style>
-                <Style TargetType="Button">
-                    <Setter Property="Margin" Value="10"></Setter>
-                    <Setter Property="FontSize" Value="18"></Setter>
-                </Style>
-                <Style TargetType="TextBox">
-                    <Setter Property="FontSize" Value="18"></Setter>
-
-                    <Setter Property="Margin" Value="10"></Setter>
-                </Style>
+              
             </StackPanel.Resources>
             <Label Content="UserName"/>
             <TextBox Text=""></TextBox>
             <Label Content="Password"/>
             <TextBox Text=""/>
             <Button Content="Login" ></Button>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </UserControl>
