@@ -12,13 +12,13 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Grader
 {
-    public class CSharpGenerator
+    public class CSharpGenerator : ICSharpGenerator
     {
-        public Func<Task> Generate(IEnumerable<string> program)
+        public Action Generate(IEnumerable<string> program)
         {
-          
 
-            Compilation test = CreateTestCompilation(program.Select(p=> CSharpSyntaxTree.ParseText(p)).ToArray());
+
+            Compilation test = CreateTestCompilation(program.Select(p => CSharpSyntaxTree.ParseText(p)).ToArray());
 
 
 
@@ -32,7 +32,7 @@ namespace Grader
             });
 
 
-           
+
 
             var finalCompile = CreateTestCompilation(newTrees.ToArray());
 
@@ -45,29 +45,12 @@ namespace Grader
 
 
                 var assembly = Assembly.Load(stream.ToArray());
-                return async () =>
+                return () =>
                 {
-                    assembly.EntryPoint.Invoke(null, new object[] {new string[] { }});
-                    //var cancellationToken = new CancellationTokenSource();
-
-                    //int timeout = 1000;
-                    //var task = Task.Run(()=> 
-                    //    assembly.EntryPoint.Invoke(null, new object[] { new string[] { } }), cancellationToken.Token);
-                    //if (await Task.WhenAny(task, Task.Delay(timeout, cancellationToken.Token)) == task)
-                    //{
-                    //    // Task completed within timeout.
-                    //    // Consider that the task may have faulted or been canceled.
-                    //    // We re-await the task so that any exceptions/cancellation is rethrown.
-                    //    await task;
-
-                    //}
-                    //else
-                    //{
-                    //    cancellationToken.Cancel();
-                    //    // timeout/cancellation logic
-                    //}
-
+                    assembly.EntryPoint.Invoke(null, new object[] { new string[] { } });
                 };
+                // assembly.EntryPoint.Invoke(null, new object[] { new string[] { } });
+
             }
             else
             {
@@ -79,9 +62,10 @@ namespace Grader
                 throw new CompilationException(msg);
             }
         }
+
         private Compilation CreateTestCompilation(SyntaxTree[] trees)
         {
-
+            MetadataReference NetStandard = MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.0.0.0").Location);
             MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
             MetadataReference grader = MetadataReference.CreateFromFile(typeof(ConsoleAppGrader).Assembly.Location);
             MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
@@ -94,7 +78,7 @@ namespace Grader
             MetadataReference csharpCodeAnalysis =
                 MetadataReference.CreateFromFile(typeof(CSharpSyntaxTree).Assembly.Location);
 
-            MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, grader };
+            MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, grader, NetStandard };
 
             return CSharpCompilation.Create("Test", trees, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
         }

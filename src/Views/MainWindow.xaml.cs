@@ -33,7 +33,7 @@ namespace AsyncToolWindowSample.ToolWindows
             pages.Add("Sample", () => new SampleToolWindowControl(state, this));
             pages.Add("LoginView", () => new LoginView(new LoginViewModel(this, new GradeBookRepository(db.GetGradeBookDbContext))));
             pages.Add("CreateAccountView", () => new CreateAccountView(new CreateAccountViewModel(this, new GradeBookRepository(db.GetGradeBookDbContext))));;
-            pages.Add("ProjectView", () => new ProjectView(new ProjectViewModel(new VisualStudioService(state.AsyncPackage), new ConsoleAppGrader())));
+            pages.Add("ProjectView", () => new ProjectView(new ProjectViewModel(new VisualStudioService(state.AsyncPackage), new ConsoleAppGrader(new CSharpGenerator()))));
             ToPage("LoginView");
         }
         private Dictionary<string, Func<Control>> pages = new Dictionary<string, Func<Control>>();

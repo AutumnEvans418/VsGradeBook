@@ -4,12 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AsyncToolWindowSample.ToolWindows"
-             xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader"
+             xmlns:toolWindows1="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader.Core"
              mc:Ignorable="d" 
              Background="White"
              d:DesignHeight="800" 
              d:DesignWidth="400" 
-             d:DataContext="{d:DesignInstance toolWindows:LoginViewModel}">
+             d:DataContext="{d:DesignInstance toolWindows1:LoginViewModel}">
     <Grid Margin="10">
         <Grid.Resources>
             <Style TargetType="Label">

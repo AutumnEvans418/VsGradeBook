@@ -111,8 +111,9 @@ namespace AsyncToolWindowSample
       
         private static void ShowAddDocumentationWindow(string document, TextViewSelection selection)
         {
-            var documentationControl = new AddDocumentationView(document, selection);
-            documentationControl.ShowDialog();
+            AddDocumentationView view =null;
+             view = new AddDocumentationView(new AddDocumentationViewModel(()=> view.Close(), document, selection, new CSharpGenerator()));
+            view.ShowDialog();
         }
 
         private static async Task<TextViewSelection> GetSelection(AsyncPackage serviceProvider)

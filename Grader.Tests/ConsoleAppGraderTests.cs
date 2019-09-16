@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Moq;
@@ -17,7 +18,7 @@ namespace Grader.Tests
         public void Setup()
         {
             gradeCase = new GradeCase(new string[0], new[] {"Hello, World!"});
-            grader = new ConsoleAppGrader();
+            grader = new ConsoleAppGrader(new CSharpGenerator());
             Grader.Console.Outputs.Clear();
         }
 

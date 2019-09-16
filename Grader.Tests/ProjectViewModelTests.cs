@@ -35,7 +35,7 @@ namespace HelloWorld
             code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new []{src}.AsEnumerable()));
 
 
-            ProjectViewModel model = new ProjectViewModel(code.Object, new ConsoleAppGrader());
+            ProjectViewModel model = new ProjectViewModel(code.Object, new ConsoleAppGrader(new CSharpGenerator()));
 
             model.ExpectedOutput = output;
 
@@ -71,7 +71,7 @@ namespace ConsoleApp1
             code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { src }.AsEnumerable()));
 
 
-            ProjectViewModel model = new ProjectViewModel(code.Object, new ConsoleAppGrader());
+            ProjectViewModel model = new ProjectViewModel(code.Object, new ConsoleAppGrader(new CSharpGenerator()));
 
 
             await model.TestCommand.ExecuteAsync();
@@ -102,7 +102,7 @@ namespace ConsoleApp1
 
             code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { src }.AsEnumerable()));
 
-            var model = new ProjectViewModel(code.Object, new ConsoleAppGrader());
+            var model = new ProjectViewModel(code.Object, new ConsoleAppGrader(new CSharpGenerator()));
 
             model.InputCases = "10\r\n12\r\ntest";
             model.ExpectedOutput = "11\r\n13.2\r\n";

@@ -1,18 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using System.Linq;
-using System.Reflection.Metadata;
 using System.Threading.Tasks;
 
 namespace Grader
 {
-    public class ConsoleAppGrader
+    public class ConsoleAppGrader : IConsoleAppGrader
     {
+        private readonly ICSharpGenerator _cSharpGenerator;
 
-        public ConsoleAppGrader()
+        public ConsoleAppGrader(ICSharpGenerator cSharpGenerator)
         {
+            _cSharpGenerator = cSharpGenerator;
         }
 
         public async Task<IGradeResult> Grade(IEnumerable<string> program, IEnumerable<IGradeCase> cases)
@@ -22,8 +22,8 @@ namespace Grader
             {
                 throw new ArgumentException("cases cannot be empty");
             }
-            var generator = new CSharpGenerator();
-            var runProgram = generator.Generate(program);
+            var generator = _cSharpGenerator;
+            var runProgram =generator.Generate(program);
 
             var list = new List<IGradeCaseResult>();
             for (var i=0; i < caseList.ToList().Count; i++)
@@ -34,7 +34,7 @@ namespace Grader
                 var message = "";
                 try
                 {
-                    await runProgram();
+                     runProgram();
                 }
                 catch (Exception e)
                 {
@@ -55,24 +55,24 @@ namespace Grader
             return Grade(new[] {program}, cases);
         }
 
-        private Compilation CreateTestCompilation(SyntaxTree tree)
-        {
+        //private Compilation CreateTestCompilation(SyntaxTree tree)
+        //{
 
-            MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
-            MetadataReference grader = MetadataReference.CreateFromFile(typeof(ConsoleAppGrader).Assembly.Location);
-            MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-            MetadataReference system = MetadataReference.CreateFromFile(typeof(Console).Assembly.Location);
-            MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-            MetadataReference mscorlib =
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-            MetadataReference codeAnalysis =
-                MetadataReference.CreateFromFile(typeof(SyntaxTree).Assembly.Location);
-            MetadataReference csharpCodeAnalysis =
-                MetadataReference.CreateFromFile(typeof(CSharpSyntaxTree).Assembly.Location);
+        //    MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
+        //    MetadataReference grader = MetadataReference.CreateFromFile(typeof(ConsoleAppGrader).Assembly.Location);
+        //    MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+        //    MetadataReference system = MetadataReference.CreateFromFile(typeof(Console).Assembly.Location);
+        //    MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+        //    MetadataReference mscorlib =
+        //        MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+        //    MetadataReference codeAnalysis =
+        //        MetadataReference.CreateFromFile(typeof(SyntaxTree).Assembly.Location);
+        //    MetadataReference csharpCodeAnalysis =
+        //        MetadataReference.CreateFromFile(typeof(CSharpSyntaxTree).Assembly.Location);
 
-            MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, grader };
+        //    MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, grader };
 
-            return CSharpCompilation.Create("Test", new[] { tree }, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
-        }
+        //    return CSharpCompilation.Create("Test", new[] { tree }, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+        //}
     }
 }

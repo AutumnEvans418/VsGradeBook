@@ -5,10 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AsyncToolWindowSample.Views"
              xmlns:grader="clr-namespace:Grader;assembly=Grader"
+             xmlns:grader1="clr-namespace:Grader;assembly=Grader.Core"
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="400" Background="White">
     <UserControl.Resources>
-        <DataTemplate DataType="grader:StudentProjectDto" x:Key="StudentProject">
+        <DataTemplate DataType="grader1:StudentProjectDto" x:Key="StudentProject">
             <Grid>
                 <Label Content="{Binding Id}"></Label>
                 <Label Content="{Binding Name}"></Label>

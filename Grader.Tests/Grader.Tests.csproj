@@ -83,6 +83,10 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Grader.Core\Grader.Core.csproj">
+      <Project>{29cf6a7a-ac05-4569-9738-a4b15629f914}</Project>
+      <Name>Grader.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Grader\Grader.csproj">
       <Project>{5b635451-d5d8-48b9-94fa-150154208fd4}</Project>
       <Name>Grader</Name>

@@ -10,14 +10,14 @@ namespace AsyncToolWindowSample.ToolWindows
     public class ProjectViewModel : BindableBase
     {
         private readonly IVisualStudioService _visualStudioService;
-        private readonly ConsoleAppGrader _grader;
+        private readonly IConsoleAppGrader _grader;
         private string _inputCases;
         private string _expectedOutput;
         private string _actualOutput;
         private double _percentPass;
         private string _errorMessage;
 
-        public ProjectViewModel(IVisualStudioService visualStudioService, ConsoleAppGrader grader)
+        public ProjectViewModel(IVisualStudioService visualStudioService, IConsoleAppGrader grader)
         {
             _visualStudioService = visualStudioService;
             _grader = grader;
