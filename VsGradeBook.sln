@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsyncToolWindowSample", "src\AsyncToolWindowSample.csproj", "{5CE4ED47-6A68-4F09-B0EE-501CACAA3EBD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grader.Extension", "src\Grader.Extension.csproj", "{5CE4ED47-6A68-4F09-B0EE-501CACAA3EBD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EDE420A2-0953-46FE-B91B-92E19703EE05}"
 	ProjectSection(SolutionItems) = preProject
@@ -13,6 +13,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grader.Tests", "Grader.Tests\Grader.Tests.csproj", "{BF79DDE7-CA71-4DC5-A9DA-DF748A3EFFA4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grader", "Grader\Grader.csproj", "{5B635451-D5D8-48B9-94FA-150154208FD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grader.Web", "Grader.Web\Grader.Web.csproj", "{8E023220-EC69-4436-88F6-33398B00326A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +34,10 @@ Global
 		{5B635451-D5D8-48B9-94FA-150154208FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B635451-D5D8-48B9-94FA-150154208FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B635451-D5D8-48B9-94FA-150154208FD4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E023220-EC69-4436-88F6-33398B00326A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E023220-EC69-4436-88F6-33398B00326A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E023220-EC69-4436-88F6-33398B00326A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E023220-EC69-4436-88F6-33398B00326A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
