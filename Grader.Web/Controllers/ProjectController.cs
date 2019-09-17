@@ -9,8 +9,16 @@ namespace Grader.Web.Controllers
         [HttpGet]
         public IActionResult GetStudentProjects(int studentId)
         {
-            return Ok(new StudentProjectsDto(new []{new StudentProjectDto(), new StudentProjectDto(), }));
+            return Ok(new StudentProjectsDto(new []{new StudentProjectSummaryDto(), new StudentProjectSummaryDto(), }));
         }
+
+        [HttpGet("{projectId}")]
+        public ProjectSubmissionDto GetStudentSubmission(int projectId, int studentId)
+        {
+            return new ProjectSubmissionDto();
+        }
+
+
         
     }
 }

@@ -27,14 +27,14 @@ namespace Grader
             _dbFunc = dbFunc;
         }
 
-        public async Task<RepositoryResult<IEnumerable<StudentProjectDto>>> StudentLogin(string userName,string classCode)
+        public async Task<RepositoryResult<IEnumerable<StudentProjectSummaryDto>>> StudentLogin(string userName,string classCode)
         {
             using (var db = _dbFunc())
             {
                 var person = await db.People.FirstOrDefaultAsync(p => p.IsStudent && p.Name == userName);
                 if (person == null)
                 {
-                    return new RepositoryResult<IEnumerable<StudentProjectDto>>()
+                    return new RepositoryResult<IEnumerable<StudentProjectSummaryDto>>()
                     {
                         Message = $"Student with userName '{userName}' does not exist",
                         Status = RepositoryStatus.MissingUser,
@@ -48,7 +48,7 @@ namespace Grader
                 var studentProjects = projects
                     .GroupJoin(submissions, p => p.Id, p => p.ProjectId,
                         (project, enumerable) => new { project, submissions = enumerable });
-                var data = studentProjects.Select(p => new StudentProjectDto()
+                var data = studentProjects.Select(p => new StudentProjectSummaryDto()
                 {
                     Name = p.project.Name,
                     Id = p.project.Id,
@@ -59,7 +59,7 @@ namespace Grader
                     SubmissionPublished = p.submissions.FirstOrDefault().IsSubmitted,
                     HasSubmission = p.submissions.Any()
                 }).ToList();
-                return new RepositoryResult<IEnumerable<StudentProjectDto>>()
+                return new RepositoryResult<IEnumerable<StudentProjectSummaryDto>>()
                 {
                     Data = data,
                 };
@@ -144,9 +144,5 @@ namespace Grader
         }
     }
 
-    public class ProjectSubmissionDto
-    {
-        public CodeProject CodeProject { get; set; }
-        public Submission Submission { get; set; }
-    }
+   
 }

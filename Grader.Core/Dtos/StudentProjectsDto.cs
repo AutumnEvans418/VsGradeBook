@@ -4,16 +4,22 @@ using System.Linq;
 
 namespace Grader
 {
+
+    public class ProjectSubmissionDto
+    {
+        public CodeProject CodeProject { get; set; }
+        public Submission Submission { get; set; }
+    }
     public class StudentProjectsDto
     {
-        public StudentProjectsDto(IEnumerable<StudentProjectDto> projects)
+        public StudentProjectsDto(IEnumerable<StudentProjectSummaryDto> projects)
         {
-            ToDo = new ObservableCollection<StudentProjectDto>(projects.Where(p=>p.Status == StudentProjectStatus.Todo));
-            InProgress = new ObservableCollection<StudentProjectDto>(projects.Where(p=>p.Status == StudentProjectStatus.InProgress));
-            Submitted = new ObservableCollection<StudentProjectDto>(projects.Where(p=>p.Status == StudentProjectStatus.Submitted));
+            ToDo = new ObservableCollection<StudentProjectSummaryDto>(projects.Where(p=>p.Status == StudentProjectStatus.Todo));
+            InProgress = new ObservableCollection<StudentProjectSummaryDto>(projects.Where(p=>p.Status == StudentProjectStatus.InProgress));
+            Submitted = new ObservableCollection<StudentProjectSummaryDto>(projects.Where(p=>p.Status == StudentProjectStatus.Submitted));
         }
-        public ObservableCollection<StudentProjectDto> ToDo { get; set; }
-        public ObservableCollection<StudentProjectDto> InProgress { get; set; }
-        public ObservableCollection<StudentProjectDto> Submitted { get; set; }
+        public ObservableCollection<StudentProjectSummaryDto> ToDo { get; set; }
+        public ObservableCollection<StudentProjectSummaryDto> InProgress { get; set; }
+        public ObservableCollection<StudentProjectSummaryDto> Submitted { get; set; }
     }
 }

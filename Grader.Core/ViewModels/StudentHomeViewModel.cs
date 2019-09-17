@@ -48,7 +48,7 @@ namespace AsyncToolWindowSample.ToolWindows
 
         public override void Initialize(INavigationParameter parameter)
         {
-            if (parameter["Projects"] is IEnumerable<StudentProjectDto> projects)
+            if (parameter["Projects"] is IEnumerable<StudentProjectSummaryDto> projects)
             {
                 ToDoList.Clear();
                 InProgressList.Clear();

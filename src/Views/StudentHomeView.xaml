@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="600" d:DesignWidth="400" Background="White">
     <UserControl.Resources>
-        <DataTemplate DataType="grader1:StudentProjectDto" x:Key="StudentProject">
+        <DataTemplate DataType="grader1:StudentProjectSummaryDto" x:Key="StudentProject">
             <Grid>
                 <Label Content="{Binding Id}"></Label>
                 <Label Content="{Binding Name}"></Label>

@@ -4,7 +4,7 @@ namespace AsyncToolWindowSample.ToolWindows
 {
     public class StudentProjectViewModel : BindableBase
     {
-        public StudentProjectDto Project { get; }
+        public StudentProjectSummaryDto Project { get; }
 
         public int Id => Project.Id;
         public string Name => Project.Name;
@@ -12,7 +12,7 @@ namespace AsyncToolWindowSample.ToolWindows
         public string Date { get; set; }
         public string CommandText { get; set; }
         public DelegateCommand NavigateToProjectViewCommand { get; set; }
-        public StudentProjectViewModel(StudentProjectDto studentProjectDto)
+        public StudentProjectViewModel(StudentProjectSummaryDto studentProjectDto)
         {
             Project = studentProjectDto;
         }

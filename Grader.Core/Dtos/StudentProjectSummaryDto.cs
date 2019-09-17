@@ -15,9 +15,9 @@ namespace Grader
         public string CourseCode { get; set; }
     }
 
-    public class StudentProjectDto
+    public class StudentProjectSummaryDto
     {
-        public StudentProjectDto()
+        public StudentProjectSummaryDto()
         {
             
         }

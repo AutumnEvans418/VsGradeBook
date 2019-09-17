@@ -31,7 +31,7 @@ namespace Grader.Tests
         [Test]
         public void Initialize_ShouldSetLists()
         {
-            model.Initialize(new NavigationParameter(){{"Projects", fixture.CreateMany<StudentProjectDto>()}});
+            model.Initialize(new NavigationParameter(){{"Projects", fixture.CreateMany<StudentProjectSummaryDto>()}});
 
             model.InProgressList.Should().NotBeEmpty();
             model.SubmittedList.Should().NotBeEmpty();
