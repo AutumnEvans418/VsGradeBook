@@ -12,9 +12,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AsyncToolWindowSample.Models;
 using AsyncToolWindowSample.Views;
 using Grader;
 using Microsoft.VisualStudio.Shell;
+using Unity;
 using Task = System.Threading.Tasks.Task;
 
 namespace AsyncToolWindowSample.ToolWindows
@@ -24,19 +26,26 @@ namespace AsyncToolWindowSample.ToolWindows
     /// </summary>
     public partial class MainWindow : UserControl, IToolWindow
     {
-      
-        public MainWindow(SampleToolWindowState state)
+        private IUnityContainer _container;
+        public MainWindow(IUnityContainer bootstrapper)
         {
+            _container = bootstrapper;
             InitializeComponent();
-            var db = new CreateDatabase();
-            db.Initialize();
-            pages.Add("Sample", () => new SampleToolWindowControl(state, this));
-            pages.Add("LoginView", () => new LoginView(new LoginViewModel(this, new GradeBookRepository(db.GetGradeBookDbContext))));
-            pages.Add("CreateAccountView", () => new CreateAccountView(new CreateAccountViewModel(this, new GradeBookRepository(db.GetGradeBookDbContext))));;
-            pages.Add("ProjectView", () => new ProjectView(new ProjectViewModel(new VisualStudioService(state.AsyncPackage), new ConsoleAppGrader(new CSharpGenerator()))));
-            ToPage("LoginView");
+            _container.RegisterType<ProjectViewModel>();
+            _container.RegisterType<IVisualStudioService, VisualStudioService>();
+            _container.RegisterType<IConsoleAppGrader, ConsoleAppGrader>();
+            _container.RegisterType<ICSharpGenerator, CSharpGenerator>();
+            
+            Add<ProjectView>();
+            ToPage("ProjectView");
         }
         private Dictionary<string, Func<Control>> pages = new Dictionary<string, Func<Control>>();
+        void Add<T>() where T : Control
+        {
+            _container.RegisterSingleton<T>();
+            pages.Add(typeof(T).Name, () => _container.Resolve<T>());
+        }
+
         public Task ToPage(string page)
         {
            return ToPage(page, new NavigationParameter());

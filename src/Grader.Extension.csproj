@@ -66,7 +66,7 @@
     <Compile Include="Commands\ShowToolWindow.cs" />
     <Compile Include="TextViewPosition.cs" />
     <Compile Include="TextViewSelection.cs" />
-    <Compile Include="Views\AddDocumentationView.xaml.cs">
+    <Compile Include="AddDocumentationView.xaml.cs">
       <DependentUpon>AddDocumentationView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\AddDocumentationViewModel.cs" />
@@ -82,11 +82,11 @@
     <Compile Include="Views\ProjectView.xaml.cs">
       <DependentUpon>ProjectView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SampleToolWindow.cs" />
+    <Compile Include="SampleToolWindow.cs" />
     <Compile Include="Views\SampleToolWindowControl.xaml.cs">
       <DependentUpon>SampleToolWindowControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SampleToolWindowState.cs" />
+    <Compile Include="SampleToolWindowState.cs" />
     <Compile Include="Views\StudentHomeView.xaml.cs">
       <DependentUpon>StudentHomeView.xaml</DependentUpon>
     </Compile>
@@ -94,6 +94,14 @@
   <ItemGroup>
     <Content Include="..\LICENSE">
       <Link>Resources\LICENSE</Link>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Unity.Abstractions.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Unity.Container.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
     <VSCTCompile Include="VSCommandTable.vsct">
@@ -181,7 +189,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\AddDocumentationView.xaml">
+    <Page Include="AddDocumentationView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

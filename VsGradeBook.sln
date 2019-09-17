@@ -16,7 +16,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grader", "Grader\Grader.csp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grader.Web", "Grader.Web\Grader.Web.csproj", "{8E023220-EC69-4436-88F6-33398B00326A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grader.Core", "Grader.Core\Grader.Core.csproj", "{29CF6A7A-AC05-4569-9738-A4B15629F914}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grader.Core", "Grader.Core\Grader.Core.csproj", "{29CF6A7A-AC05-4569-9738-A4B15629F914}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grader.Wpf", "Grader.Wpf\Grader.Wpf.csproj", "{2F534F50-7896-4A9D-823D-BD44C9255EA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{29CF6A7A-AC05-4569-9738-A4B15629F914}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29CF6A7A-AC05-4569-9738-A4B15629F914}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29CF6A7A-AC05-4569-9738-A4B15629F914}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F534F50-7896-4A9D-823D-BD44C9255EA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F534F50-7896-4A9D-823D-BD44C9255EA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F534F50-7896-4A9D-823D-BD44C9255EA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F534F50-7896-4A9D-823D-BD44C9255EA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

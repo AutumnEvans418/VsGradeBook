@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Controls;
+using Grader;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Shell;
+using Unity;
 using Task = System.Threading.Tasks.Task;
 
 namespace AsyncToolWindowSample.ToolWindows
@@ -19,8 +21,10 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             Caption = Title;
             BitmapImageMoniker = KnownMonikers.ImageIcon;
-            
-            Content = new MainWindow(state);
+            var boot = new Bootstrapper();
+            var container = boot.Initialize();
+            container.RegisterInstance(state.AsyncPackage);
+            Content = new MainWindow(container);
         }
 
        

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Boostrapper.cs" />
     <Compile Include="ConsoleAppGrader.cs" />
     <Compile Include="CsvParser.cs" />
     <Compile Include="CSharpGenerator.cs" />
