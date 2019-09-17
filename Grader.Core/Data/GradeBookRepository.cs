@@ -55,8 +55,9 @@ namespace Grader
                     DueDate = p.project.DueDate,
                     IsBeingGraded = p.submissions.FirstOrDefault().IsSubmitted,
                     DateGraded = p.submissions.FirstOrDefault().DateGraded,
-                    Status = StudentProjectStatus.Todo,
-                    DateSubmitted = p.submissions.FirstOrDefault().SubmissionDate
+                    DateSubmitted = p.submissions.FirstOrDefault().SubmissionDate,
+                    SubmissionPublished = p.submissions.FirstOrDefault().IsSubmitted,
+                    HasSubmission = p.submissions.Any()
                 }).ToList();
                 return new RepositoryResult<IEnumerable<StudentProjectDto>>()
                 {
