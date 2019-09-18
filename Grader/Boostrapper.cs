@@ -1,17 +1,21 @@
-﻿using Unity;
+﻿using AsyncToolWindowSample.ToolWindows;
+using Unity;
 
 namespace Grader
 {
     public class Bootstrapper
     {
-        private IUnityContainer unityContainer;
+        private IUnityContainer _container;
         public IUnityContainer Initialize()
         {
-            unityContainer = new UnityContainer();
+            _container = new UnityContainer();
 
+            _container.RegisterType<ProjectViewModel>();
+            _container.RegisterType<IConsoleAppGrader, ConsoleAppGrader>();
+            _container.RegisterType<ICSharpGenerator, CSharpGenerator>();
+            _container.RegisterType<MainView>();
 
-
-            return unityContainer;
+            return _container;
         }
 
 

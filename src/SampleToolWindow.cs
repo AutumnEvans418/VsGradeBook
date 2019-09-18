@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows.Controls;
+using AsyncToolWindowSample.Models;
 using Grader;
 using Microsoft.VisualStudio.Imaging;
 using Microsoft.VisualStudio.Shell;
@@ -23,8 +24,9 @@ namespace AsyncToolWindowSample.ToolWindows
             BitmapImageMoniker = KnownMonikers.ImageIcon;
             var boot = new Bootstrapper();
             var container = boot.Initialize();
+            container.RegisterType<IVisualStudioService, VisualStudioService>();
             container.RegisterInstance(state.AsyncPackage);
-            Content = new MainWindow(container);
+            Content = new MainView(container);
         }
 
        

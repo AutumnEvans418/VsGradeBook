@@ -15,7 +15,6 @@ using System.Windows.Shapes;
 using AsyncToolWindowSample.Models;
 using AsyncToolWindowSample.Views;
 using Grader;
-using Microsoft.VisualStudio.Shell;
 using Unity;
 using Task = System.Threading.Tasks.Task;
 
@@ -24,18 +23,14 @@ namespace AsyncToolWindowSample.ToolWindows
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : UserControl, IToolWindow
+    public partial class MainView : UserControl, IToolWindow
     {
         private IUnityContainer _container;
-        public MainWindow(IUnityContainer bootstrapper)
+        public MainView(IUnityContainer bootstrapper)
         {
             _container = bootstrapper;
             InitializeComponent();
-            _container.RegisterType<ProjectViewModel>();
-            _container.RegisterType<IVisualStudioService, VisualStudioService>();
-            _container.RegisterType<IConsoleAppGrader, ConsoleAppGrader>();
-            _container.RegisterType<ICSharpGenerator, CSharpGenerator>();
-            
+          
             Add<ProjectView>();
             ToPage("ProjectView");
         }

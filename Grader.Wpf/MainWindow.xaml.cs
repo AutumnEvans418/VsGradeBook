@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AsyncToolWindowSample.ToolWindows;
+using Unity;
 
 namespace Grader.Wpf
 {
@@ -23,6 +25,9 @@ namespace Grader.Wpf
         public MainWindow()
         {
             InitializeComponent();
+            var boot = new Bootstrapper();
+            var container = boot.Initialize();
+            Content = container.Resolve<MainView>();
         }
     }
 }
