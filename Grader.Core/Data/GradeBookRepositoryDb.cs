@@ -6,23 +6,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Grader
 {
-    public enum RepositoryStatus
-    {
-        Success,
-        MissingUser
-    }
-    public class RepositoryResult<T>
-    {
-        public T Data { get; set; }
-        public string Message { get; set; }
-        public RepositoryStatus Status { get; set; }
-    }
-
-    public class GradeBookRepository : IGradeBookRepository
+    public class GradeBookRepositoryDb : IGradeBookRepository
     {
         private readonly Func<GradeBookDbContext> _dbFunc;
 
-        public GradeBookRepository(Func<GradeBookDbContext> dbFunc)
+        public GradeBookRepositoryDb(Func<GradeBookDbContext> dbFunc)
         {
             _dbFunc = dbFunc;
         }

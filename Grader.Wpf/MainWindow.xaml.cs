@@ -43,7 +43,7 @@ namespace Grader.Wpf
 
 
             var view = container.Resolve<MainView>();
-            await view.ToPage("ProjectView");
+            await view.ToPage("LoginView");
 
 
 

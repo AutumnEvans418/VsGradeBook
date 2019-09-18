@@ -15,7 +15,7 @@ namespace Grader.Tests
     [TestFixture]
     public class GradeBookRepositoryTests
     {
-        private GradeBookRepository repository;
+        private GradeBookRepositoryDb _repositoryDb;
         private Fixture fixture;
         [SetUp]
         public void Setup()
@@ -33,7 +33,7 @@ namespace Grader.Tests
                 return db;
             });
 
-            repository = fixture.Create<GradeBookRepository>();
+            _repositoryDb = fixture.Create<GradeBookRepositoryDb>();
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace Grader.Tests
                 db.SaveChanges();
             }
 
-            var projects = await repository.StudentLogin(userName, classCode);
+            var projects = await _repositoryDb.StudentLogin(userName, classCode);
             projects.Data.Should().BeEmpty();
         }
 
@@ -61,7 +61,7 @@ namespace Grader.Tests
         public async Task CreateTeacher()
         {
             var name = "cevans";
-            var result = await repository.CreateTeacher(new Person() { Name = name });
+            var result = await _repositoryDb.CreateTeacher(new Person() { Name = name });
 
             result.Name.Should().Be(name);
         }
@@ -70,9 +70,9 @@ namespace Grader.Tests
         public async Task AddClass()
         {
             var name = "cevans";
-            var result = await repository.CreateTeacher(new Person() { Name = name });
+            var result = await _repositoryDb.CreateTeacher(new Person() { Name = name });
 
-            var newClass = await repository.CreateClass(new Class() { TeacherId = result.Id });
+            var newClass = await _repositoryDb.CreateClass(new Class() { TeacherId = result.Id });
             newClass.Id.Should().NotBeNullOrEmpty();
         }
 
@@ -80,11 +80,11 @@ namespace Grader.Tests
         public async Task AddProject()
         {
             var name = "cevans";
-            var result = await repository.CreateTeacher(new Person() { Name = name });
+            var result = await _repositoryDb.CreateTeacher(new Person() { Name = name });
 
-            var newClass = await repository.CreateClass(new Class() { TeacherId = result.Id });
+            var newClass = await _repositoryDb.CreateClass(new Class() { TeacherId = result.Id });
 
-            var project = await repository.CreateProject(new CodeProject()
+            var project = await _repositoryDb.CreateProject(new CodeProject()
             {
                 Name = "test",
                 ClassId = newClass.Id,
@@ -102,11 +102,11 @@ namespace Grader.Tests
         public async Task AddSubmission()
         {
             var name = "cevans";
-            var result = await repository.CreateTeacher(new Person() { Name = name });
+            var result = await _repositoryDb.CreateTeacher(new Person() { Name = name });
 
-            var newClass = await repository.CreateClass(new Class() { TeacherId = result.Id });
+            var newClass = await _repositoryDb.CreateClass(new Class() { TeacherId = result.Id });
 
-            var project = await repository.CreateProject(new CodeProject()
+            var project = await _repositoryDb.CreateProject(new CodeProject()
             {
                 Name = "test",
                 ClassId = newClass.Id,
@@ -117,9 +117,9 @@ namespace Grader.Tests
                 IsPublished = true,
             });
 
-            var student = await repository.CreateStudent(new Person() { IsStudent = true, Name = "student" });
+            var student = await _repositoryDb.CreateStudent(new Person() { IsStudent = true, Name = "student" });
 
-            var submission = await repository.CreateSubmission(new Submission()
+            var submission = await _repositoryDb.CreateSubmission(new Submission()
             {
                 ProjectId = project.Id,
                 StudentId = student.Id
@@ -133,9 +133,9 @@ namespace Grader.Tests
         {
             var name = "cevans";
 
-            var result = await repository.CreateTeacher(new Person() { Name = name });
-            var newClass = await repository.CreateClass(new Class() { TeacherId = result.Id });
-            var project = await repository.CreateProject(new CodeProject()
+            var result = await _repositoryDb.CreateTeacher(new Person() { Name = name });
+            var newClass = await _repositoryDb.CreateClass(new Class() { TeacherId = result.Id });
+            var project = await _repositoryDb.CreateProject(new CodeProject()
             {
                 Name = "test",
                 ClassId = newClass.Id,
@@ -146,7 +146,7 @@ namespace Grader.Tests
                 IsPublished = true,
             });
 
-            var loginResult = await repository.TeacherLogin(name, newClass.Id);
+            var loginResult = await _repositoryDb.TeacherLogin(name, newClass.Id);
 
             loginResult.Data.Should().HaveCount(1);
         }
@@ -156,19 +156,19 @@ namespace Grader.Tests
         {
             var name = "cevans";
 
-            var result = await repository.CreateTeacher(new Person() { Name = name });
-            var student = await repository.CreateStudent(new Person() { IsStudent = true, Name = "student" });
+            var result = await _repositoryDb.CreateTeacher(new Person() { Name = name });
+            var student = await _repositoryDb.CreateStudent(new Person() { IsStudent = true, Name = "student" });
 
-            var newClass = await repository.CreateClass(new Class() { TeacherId = result.Id });
+            var newClass = await _repositoryDb.CreateClass(new Class() { TeacherId = result.Id });
 
-            var enrollment = await repository.CreateEnrollment(student.Id, newClass.Id);
+            var enrollment = await _repositoryDb.CreateEnrollment(student.Id, newClass.Id);
         }
 
 
         [Test]
         public async Task Login_NoStudent_Should_ThrowException()
         {
-            var result = await repository.StudentLogin(fixture.Create<string>(), fixture.Create<string>());
+            var result = await _repositoryDb.StudentLogin(fixture.Create<string>(), fixture.Create<string>());
 
             result.Status.Should().Be(RepositoryStatus.MissingUser);
         }

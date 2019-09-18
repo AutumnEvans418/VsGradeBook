@@ -31,7 +31,9 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             _container = bootstrapper;
             InitializeComponent();
-          
+
+            _container.RegisterInstance<INavigationService>(this);
+            Add<LoginView>();
             Add<ProjectView>();
             Add<ClassesView>();
         }

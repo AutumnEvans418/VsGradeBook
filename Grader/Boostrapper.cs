@@ -11,6 +11,8 @@ namespace Grader
             _container = new UnityContainer();
 
             _container.RegisterType<ProjectViewModel>();
+            _container.RegisterType<LoginViewModel>();
+            _container.RegisterType<ClassesViewModel>();
             _container.RegisterType<IConsoleAppGrader, ConsoleAppGrader>();
             _container.RegisterType<ICSharpGenerator, CSharpGenerator>();
             _container.RegisterType<MainView>();
