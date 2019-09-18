@@ -22,5 +22,24 @@ namespace Grader.Web.Controllers
         {
             return _gradeBookRepository.GetPersonId(userName);
         }
+
+        [HttpPost]
+        public Task<Person> AddPerson([FromBody] Person person)
+        {
+            return _gradeBookRepository.AddPerson(person);
+        }
+
+
+        [HttpPut]
+        public Task<Person> UpdatePerson([FromBody] Person person)
+        {
+            return _gradeBookRepository.UpdatePerson(person);
+        }
+
+        [HttpDelete]
+        public Task DeletePerson(int personId)
+        {
+            return _gradeBookRepository.DeletePerson(personId);
+        }
     }
 }

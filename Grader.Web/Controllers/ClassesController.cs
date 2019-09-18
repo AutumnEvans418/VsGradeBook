@@ -23,5 +23,23 @@ namespace Grader.Web.Controllers
         {
             return _gradeBookRepository.GetClasses(personId);
         }
+
+        [HttpPut]
+        public Task<Class> UpdateClass([FromBody] Class cClass)
+        {
+            return _gradeBookRepository.UpdateClass(cClass);
+        }
+
+        [HttpPost]
+        public Task<Class> AddClass([FromBody] Class cClass)
+        {
+            return _gradeBookRepository.AddClass(cClass);
+        }
+
+        [HttpDelete]
+        public Task DeleteClass(string id)
+        {
+            return _gradeBookRepository.DeleteClass(id);
+        }
     }
 }

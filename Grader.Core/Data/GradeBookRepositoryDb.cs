@@ -24,7 +24,32 @@ namespace Grader
             }
         }
 
-        public async Task<RepositoryResult<IEnumerable<StudentProjectSummaryDto>>> StudentLogin(string userName,string classCode)
+        public Task<Person> AddPerson(Person person)
+        {
+            return Add(person);
+        }
+
+        public async Task<Person> UpdatePerson(Person person)
+        {
+            using (var db = _dbFunc())
+            {
+                db.People.Update(person);
+                await db.SaveChangesAsync();
+                return person;
+            }
+        }
+
+        public async Task DeletePerson(int personId)
+        {
+            using (var db = _dbFunc())
+            {
+                var person = await db.People.FirstOrDefaultAsync(p => p.Id == personId);
+                db.People.Remove(person);
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public async Task<RepositoryResult<IEnumerable<StudentProjectSummaryDto>>> StudentLogin(string userName, string classCode)
         {
             using (var db = _dbFunc())
             {
@@ -134,7 +159,7 @@ namespace Grader
                     return result;
                 }
 
-                var data = db.CodeProjects.Include(p=>p.Submissions).Where(p => p.ClassId == classId).ToList();
+                var data = db.CodeProjects.Include(p => p.Submissions).Where(p => p.ClassId == classId).ToList();
                 result.Data = data;
                 return result;
             }
@@ -150,7 +175,37 @@ namespace Grader
                 return classes;
             }
         }
+
+        public async Task<Class> UpdateClass(Class cClass)
+        {
+            using (var db = _dbFunc())
+            {
+                db.Classes.Update(cClass);
+                await db.SaveChangesAsync();
+                return cClass;
+            }
+        }
+
+        public async Task<Class> AddClass(Class cClass)
+        {
+            using (var db = _dbFunc())
+            {
+                db.Classes.Add(cClass);
+                await db.SaveChangesAsync();
+                return cClass;
+            }
+        }
+
+        public async Task DeleteClass(string id)
+        {
+            using (var db = _dbFunc())
+            {
+                var classs = await db.Classes.FirstOrDefaultAsync(p => p.Id == id);
+                db.Classes.Remove(classs);
+                await db.SaveChangesAsync();
+            }
+        }
     }
 
-   
+
 }
