@@ -12,13 +12,13 @@ namespace Grader.Tests
     {
         private LoginViewModel model;
         private Fixture fixture;
-        private Mock<IToolWindow> toolWindow;
+        private Mock<INavigationService> toolWindow;
         [SetUp]
         public void Setup()
         {
             fixture = new Fixture();
             fixture.Customize(new AutoMoqCustomization() { ConfigureMembers = true, GenerateDelegates = true });
-            toolWindow = fixture.Freeze<Mock<IToolWindow>>();
+            toolWindow = fixture.Freeze<Mock<INavigationService>>();
             model = fixture.Build<LoginViewModel>().OmitAutoProperties().Create();
         }
 

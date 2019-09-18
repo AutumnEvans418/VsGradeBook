@@ -5,12 +5,12 @@ namespace AsyncToolWindowSample.ToolWindows
 {
     public class LoginViewModel : BindableViewModel
     {
-        private readonly IToolWindow _toolWindow;
+        private readonly INavigationService _navigationService;
         private readonly IGradeBookRepository _repository;
 
-        public LoginViewModel(IToolWindow toolWindow, IGradeBookRepository repository)
+        public LoginViewModel(INavigationService navigationService, IGradeBookRepository repository)
         {
-            _toolWindow = toolWindow;
+            _navigationService = navigationService;
             _repository = repository;
             LoginCommand = new DelegateCommandAsync(Login);
             CreateAccountCommand = new DelegateCommandAsync(CreateAccount);
@@ -18,35 +18,39 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private async Task CreateAccount()
         {
-            await _toolWindow.ToPage("CreateAccountView", new NavigationParameter(){{"IsStudent", IsStudent}});
+            await _navigationService.ToPage("CreateAccountView", new NavigationParameter(){{"IsStudent", IsStudent}});
         }
 
         private async Task Login()
         {
-            if (IsStudent)
-            {
-                var project = await _repository.StudentLogin(Name, CourseCode);
-                if (project.Status == RepositoryStatus.Success)
-                {
-                    await _toolWindow.ToPage("StudentHomeView", new NavigationParameter() { { "Projects", project.Data } });
-                }
-                else
-                {
-                    ErrorMessage = project.Message;
-                }
-            }
-            else
-            {
-                var project = await _repository.TeacherLogin(Name, CourseCode);
-                if (project.Status == RepositoryStatus.Success)
-                {
-                    await _toolWindow.ToPage("TeacherHomeView", new NavigationParameter() { { "Projects", project.Data } });
-                }
-                else
-                {
-                    ErrorMessage = project.Message;
-                }
-            }
+
+            var id = await _repository.GetPersonId(Name);
+
+            await _navigationService.ToPage("ClassesView", new NavigationParameter() {{"PersonId", id}});
+            //if (IsStudent)
+            //{
+            //    var project = await _repository.StudentLogin(Name, CourseCode);
+            //    if (project.Status == RepositoryStatus.Success)
+            //    {
+            //        await _navigationService.ToPage("StudentHomeView", new NavigationParameter() { { "Projects", project.Data } });
+            //    }
+            //    else
+            //    {
+            //        ErrorMessage = project.Message;
+            //    }
+            //}
+            //else
+            //{
+            //    var project = await _repository.TeacherLogin(Name, CourseCode);
+            //    if (project.Status == RepositoryStatus.Success)
+            //    {
+            //        await _navigationService.ToPage("TeacherHomeView", new NavigationParameter() { { "Projects", project.Data } });
+            //    }
+            //    else
+            //    {
+            //        ErrorMessage = project.Message;
+            //    }
+            //}
 
         }
 

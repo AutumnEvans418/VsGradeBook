@@ -6,12 +6,12 @@ namespace AsyncToolWindowSample.ToolWindows
     public partial class SampleToolWindowControl : UserControl
     {
         private SampleToolWindowState _state;
-        private readonly IToolWindow _toolWindow;
+        private readonly INavigationService _navigationService;
 
-        public SampleToolWindowControl(SampleToolWindowState state, IToolWindow toolWindow)
+        public SampleToolWindowControl(SampleToolWindowState state, INavigationService navigationService)
         {
             _state = state;
-            _toolWindow = toolWindow;
+            _navigationService = navigationService;
 
             InitializeComponent();
         }
@@ -25,7 +25,7 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            _toolWindow.ToPage("Login");
+            _navigationService.ToPage("Login");
         }
 
         private void TestProgram(object sender, RoutedEventArgs e)

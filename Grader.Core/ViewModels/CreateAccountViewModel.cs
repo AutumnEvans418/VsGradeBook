@@ -5,13 +5,13 @@ namespace AsyncToolWindowSample.ToolWindows
 {
     public class CreateAccountViewModel : BindableViewModel
     {
-        private readonly IToolWindow _toolWindow;
+        private readonly INavigationService _navigationService;
         private readonly IGradeBookRepository _gradeBookRepository;
         public Person Person { get; set; }
 
-        public CreateAccountViewModel(IToolWindow toolWindow, IGradeBookRepository gradeBookRepository)
+        public CreateAccountViewModel(INavigationService navigationService, IGradeBookRepository gradeBookRepository)
         {
-            _toolWindow = toolWindow;
+            _navigationService = navigationService;
             _gradeBookRepository = gradeBookRepository;
             Person = new Person();
              CreateAccountCommand = new DelegateCommandAsync(CreateAccount);
@@ -29,12 +29,12 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private async Task Back()
         {
-            await _toolWindow.ToPage("LoginView");
+            await _navigationService.ToPage("LoginView");
         }
 
         private async Task CreateAccount()
         {
-            await _toolWindow.ToPage("StudentHomeView", new NavigationParameter());
+            await _navigationService.ToPage("StudentHomeView", new NavigationParameter());
         }
 
 

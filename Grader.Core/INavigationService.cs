@@ -2,7 +2,7 @@
 
 namespace AsyncToolWindowSample.ToolWindows
 {
-    public interface IToolWindow
+    public interface INavigationService
     {
         Task ToPage(string page);
         Task ToPage(string page, INavigationParameter parameter);

@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using AsyncToolWindowSample.Models;
 using AsyncToolWindowSample.Views;
 using Grader;
+using Grader.Views;
 using Unity;
 using Task = System.Threading.Tasks.Task;
 
@@ -23,7 +24,7 @@ namespace AsyncToolWindowSample.ToolWindows
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainView : UserControl, IToolWindow
+    public partial class MainView : UserControl, INavigationService
     {
         private IUnityContainer _container;
         public MainView(IUnityContainer bootstrapper)
@@ -32,6 +33,7 @@ namespace AsyncToolWindowSample.ToolWindows
             InitializeComponent();
           
             Add<ProjectView>();
+            Add<ClassesView>();
         }
         private Dictionary<string, Func<Control>> pages = new Dictionary<string, Func<Control>>();
         void Add<T>() where T : Control

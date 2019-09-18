@@ -27,6 +27,15 @@ namespace Grader
             _dbFunc = dbFunc;
         }
 
+        public async Task<int> GetPersonId(string userName)
+        {
+            using (var db = _dbFunc())
+            {
+                var id = await db.People.FirstOrDefaultAsync(p => p.Name == userName);
+                return id.Id;
+            }
+        }
+
         public async Task<RepositoryResult<IEnumerable<StudentProjectSummaryDto>>> StudentLogin(string userName,string classCode)
         {
             using (var db = _dbFunc())
@@ -140,6 +149,17 @@ namespace Grader
                 var data = db.CodeProjects.Include(p=>p.Submissions).Where(p => p.ClassId == classId).ToList();
                 result.Data = data;
                 return result;
+            }
+        }
+
+        public async Task<IEnumerable<Class>> GetClasses(int personId)
+        {
+            using (var db = _dbFunc())
+            {
+                var classes = await db.Classes
+                    .Where(p => p.TeacherId == personId || p.Enrollments.Any(r => r.StudentId == personId))
+                    .ToListAsync();
+                return classes;
             }
         }
     }
