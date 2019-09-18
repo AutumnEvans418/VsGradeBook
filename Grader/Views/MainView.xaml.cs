@@ -32,7 +32,6 @@ namespace AsyncToolWindowSample.ToolWindows
             InitializeComponent();
           
             Add<ProjectView>();
-            ToPage("ProjectView");
         }
         private Dictionary<string, Func<Control>> pages = new Dictionary<string, Func<Control>>();
         void Add<T>() where T : Control

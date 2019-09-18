@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="139*"/>
+            <ColumnDefinition Width="257*"/>
+        </Grid.ColumnDefinitions>
+        <ContentControl Name="Region"></ContentControl>
+        <TextBox Grid.Column="1" AcceptsReturn="True" AcceptsTab="True" Text="{Binding Code}"></TextBox>
     </Grid>
 </Window>

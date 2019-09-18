@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.Models;
 using Grader;
+using Console = System.Console;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
@@ -35,46 +36,60 @@ namespace AsyncToolWindowSample.ToolWindows
 
         public async Task Test()
         {
-            var gradeCases = new List<IGradeCase>();
-            var codes = await _visualStudioService.GetCSharpFilesAsync();
-            var inputs = InputCases.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            var outputs = ExpectedOutput.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-            for (var index = 0; index < outputs.Length; index++)
+            try
             {
-                var input = "";
-                if (index < inputs.Length)
+                var gradeCases = new List<IGradeCase>();
+                var codes = await _visualStudioService.GetCSharpFilesAsync();
+                var inputs = InputCases.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                var outputs = ExpectedOutput.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                for (var index = 0; index < outputs.Length; index++)
                 {
-                    input = inputs[index];
-                }
-                var output = outputs[index];
+                    var input = "";
+                    if (index < inputs.Length)
+                    {
+                        input = inputs[index];
+                    }
+
+                    var output = outputs[index];
 
 
-                string[] inputArray = new string[0];
-                if (!string.IsNullOrEmpty(input))
-                {
-                    inputArray = input.Split(new[] { "," }, StringSplitOptions.None);
-                }
-                string[] outputArray = new string[0];
+                    string[] inputArray = new string[0];
+                    if (!string.IsNullOrEmpty(input))
+                    {
+                        inputArray = input.Split(new[] { "," }, StringSplitOptions.None);
+                    }
 
-                if (!string.IsNullOrEmpty(output))
-                {
-                    outputArray = output.Split(new[] { "," }, StringSplitOptions.None);
+                    string[] outputArray = new string[0];
+
+                    if (!string.IsNullOrEmpty(output))
+                    {
+                        outputArray = output.Split(new[] { "," }, StringSplitOptions.None);
+                    }
+
+                    gradeCases.Add(new GradeCase(inputArray, outputArray));
                 }
-                gradeCases.Add(new GradeCase(inputArray, outputArray));
+
+
+                var result = await _grader.Grade(codes, gradeCases);
+
+                PercentPass = result.PercentPassing;
+                ErrorMessage = "";
+                ActualOutput = "";
+                foreach (var resultCaseResult in result.CaseResults)
+                {
+                    ErrorMessage += resultCaseResult.ErrorMessage + "\r\n";
+                    if (resultCaseResult.ActualOutput.Any())
+                        this.ActualOutput += resultCaseResult.ActualOutput.Aggregate((f, s) => f + "," + s) + "\r\n";
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+
+                ErrorMessage = e.Message;
             }
 
-
-            var result = await _grader.Grade(codes, gradeCases);
-
-            PercentPass = result.PercentPassing;
-            ErrorMessage = "";
-            ActualOutput = "";
-            foreach (var resultCaseResult in result.CaseResults)
-            {
-                ErrorMessage += resultCaseResult.ErrorMessage + "\r\n";
-                if (resultCaseResult.ActualOutput.Any())
-                    this.ActualOutput += resultCaseResult.ActualOutput.Aggregate((f, s) => f + "," + s) + "\r\n";
-            }
         }
 
         public double PercentPass

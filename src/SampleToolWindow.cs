@@ -20,15 +20,20 @@ namespace AsyncToolWindowSample.ToolWindows
         // "state" parameter is the object returned from MyPackage.InitializeToolWindowAsync
         public SampleToolWindow(SampleToolWindowState state) : base()
         {
+            Setup(state);
+        }
+
+        private async void Setup(SampleToolWindowState state)
+        {
             Caption = Title;
             BitmapImageMoniker = KnownMonikers.ImageIcon;
             var boot = new Bootstrapper();
             var container = boot.Initialize();
             container.RegisterType<IVisualStudioService, VisualStudioService>();
             container.RegisterInstance(state.AsyncPackage);
-            Content = new MainView(container);
+            var view = container.Resolve<MainView>();
+            await view.ToPage("ProjectView");
+            Content = view;
         }
-
-       
     }
 }

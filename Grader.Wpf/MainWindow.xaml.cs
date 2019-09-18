@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AsyncToolWindowSample.Models;
 using AsyncToolWindowSample.ToolWindows;
 using Unity;
 
@@ -22,12 +23,33 @@ namespace Grader.Wpf
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainWindowViewModel vm;
         public MainWindow()
         {
+            
             InitializeComponent();
+            Setup();
+        }
+
+        private async void Setup()
+        {
+          
             var boot = new Bootstrapper();
             var container = boot.Initialize();
-            Content = container.Resolve<MainView>();
+
+            vm = new MainWindowViewModel();
+            container.RegisterInstance<IVisualStudioService>(vm);
+            DataContext = vm;
+
+
+            var view = container.Resolve<MainView>();
+            await view.ToPage("ProjectView");
+
+
+
+            Region.Content = view;
         }
+
+        
     }
 }
