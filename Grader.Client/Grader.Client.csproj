@@ -13,7 +13,7 @@
   </ItemGroup>
   
   <Target Name="NSwag" AfterTargets="Build">
-    <Exec Command="$(NSwagExe_Core20) aspnetcore2openapi /assembly:C:\Source\VSSDK-Extensibility-Samples-master\VSSDK-Extensibility-Samples-master\AsyncToolWindow\Grader.Web/bin/Debug/netcoreapp2.1/Grader.Web.dll /output:swagger.json" />
-    <Exec Command="$(NSwagExe_Core20) openapi2csclient /input:swagger.json /output:GraderClient.cs" />
+    <Exec Command="$(NSwagExe_Core20) aspnetcore2swagger /assembly:C:\Source\VSSDK-Extensibility-Samples-master\VSSDK-Extensibility-Samples-master\AsyncToolWindow\Grader.Web/bin/Debug/netcoreapp2.1/Grader.Web.dll /output:swagger.json" />
+    <Exec Command="$(NSwagExe_Core20) swagger2csclient /input:swagger.json /output:GraderClient.cs" />
   </Target>
 </Project>
