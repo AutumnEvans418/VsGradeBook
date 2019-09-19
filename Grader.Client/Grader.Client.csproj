@@ -9,9 +9,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+   
   </ItemGroup>
+  
   <Target Name="NSwag" AfterTargets="Build">
-    <Exec Command="$(NSwagExe) aspnetcore2openapi /assembly:$(OutDir)Grader.Web/bin/Debug/netcoreapp2.1/Grader.Web.dll /output:swagger.json" />
-    <Exec Command="$(NSwagExe) openapi2csclient /input:swagger.json /output:GraderClient.cs" />
+    <Exec Command="$(NSwagExe_Core20) aspnetcore2openapi /assembly:C:\Source\VSSDK-Extensibility-Samples-master\VSSDK-Extensibility-Samples-master\AsyncToolWindow\Grader.Web/bin/Debug/netcoreapp2.1/Grader.Web.dll /output:swagger.json" />
+    <Exec Command="$(NSwagExe_Core20) openapi2csclient /input:swagger.json /output:GraderClient.cs" />
   </Target>
 </Project>

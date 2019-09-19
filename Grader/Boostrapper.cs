@@ -1,4 +1,6 @@
-﻿using AsyncToolWindowSample.ToolWindows;
+﻿using System;
+using System.Net.Http;
+using AsyncToolWindowSample.ToolWindows;
 using Unity;
 
 namespace Grader
@@ -15,6 +17,9 @@ namespace Grader
             _container.RegisterType<ClassesViewModel>();
             _container.RegisterType<IConsoleAppGrader, ConsoleAppGrader>();
             _container.RegisterType<ICSharpGenerator, CSharpGenerator>();
+
+            _container.RegisterInstance(new HttpClient(){BaseAddress = new Uri("https://localhost:44301/") });
+            _container.RegisterType<IGradeBookRepository, GradeBookRepositoryHttpClient>();
             _container.RegisterType<MainView>();
 
             return _container;
