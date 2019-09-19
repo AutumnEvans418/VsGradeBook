@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace Grader
             using (var db = _dbFunc())
             {
                 var id = await db.People.FirstOrDefaultAsync(p => p.Name == userName);
+                if (id == null) throw new Exception($"Could not find user with userName '{userName}'");
                 return id.Id;
             }
         }
@@ -188,12 +190,7 @@ namespace Grader
 
         public async Task<Class> AddClass(Class cClass)
         {
-            using (var db = _dbFunc())
-            {
-                db.Classes.Add(cClass);
-                await db.SaveChangesAsync();
-                return cClass;
-            }
+            return await Add(cClass);
         }
 
         public async Task DeleteClass(string id)
@@ -202,6 +199,47 @@ namespace Grader
             {
                 var classs = await db.Classes.FirstOrDefaultAsync(p => p.Id == id);
                 db.Classes.Remove(classs);
+                await db.SaveChangesAsync();
+            }
+        }
+
+        public async Task<IEnumerable<Enrollment>> GetEnrollments()
+        {
+            using (var db = _dbFunc())
+            {
+                return await db.Enrollments.ToListAsync();
+            }
+        }
+
+        public async Task<Enrollment> GetEnrollment(int enrollmentId)
+        {
+            using (var db = _dbFunc())
+            {
+                return await db.Enrollments.FirstOrDefaultAsync(p => p.Id == enrollmentId);
+            }
+        }
+
+        public async Task<Enrollment> AddEnrollment(Enrollment enrollment)
+        {
+            return await Add(enrollment);
+        }
+
+        public async Task<Enrollment> UpdateEnrollment(Enrollment enroll)
+        {
+            using (var db = _dbFunc())
+            {
+                db.Enrollments.Update(enroll);
+                await db.SaveChangesAsync();
+                return enroll;
+            }
+        }
+
+        public async Task DeleteEnrollment(int enrollmentId)
+        {
+            using (var db = _dbFunc())
+            {
+                var enroll = await db.Enrollments.FirstOrDefaultAsync(p => p.Id == enrollmentId);
+                db.Enrollments.Remove(enroll);
                 await db.SaveChangesAsync();
             }
         }

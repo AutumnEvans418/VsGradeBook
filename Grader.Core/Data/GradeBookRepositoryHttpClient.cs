@@ -72,5 +72,40 @@ namespace Grader
             var result = await _client.DeleteAsync($"api/Classes?classId={id}");
 
         }
+
+        public async Task<IEnumerable<Enrollment>> GetEnrollments()
+        {
+            var str = await _client.GetStringAsync($"api/enrollments");
+            return JsonConvert.DeserializeObject<IEnumerable<Enrollment>>(str);
+        }
+
+        public async Task<Enrollment> GetEnrollment(int enrollmentId)
+        {
+            var str = await _client.GetStringAsync($"api/enrollments/{enrollmentId}");
+            return JsonConvert.DeserializeObject<Enrollment>(str);
+        }
+
+        public async Task<Enrollment> AddEnrollment(Enrollment enrollment)
+        {
+            var result = await _client.PostAsync($"api/enrollments", new StringContent(JsonConvert.SerializeObject(enrollment)));
+
+            var content = await result.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<Enrollment>(content);
+        }
+
+        public async Task<Enrollment> UpdateEnrollment(Enrollment enroll)
+        {
+            var result = await _client.PutAsync($"api/enrollments/{enroll.Id}", new StringContent(JsonConvert.SerializeObject(enroll)));
+
+            var content = await result.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<Enrollment>(content);
+        }
+
+        public async Task DeleteEnrollment(int enrollmentId)
+        {
+            var result = await _client.DeleteAsync($"api/enrollments/{enrollmentId}");
+        }
     }
 }

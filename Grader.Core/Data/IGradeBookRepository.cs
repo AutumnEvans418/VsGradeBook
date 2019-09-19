@@ -16,5 +16,10 @@ namespace Grader
         Task<Class> UpdateClass(Class cClass);
         Task<Class> AddClass(Class cClass);
         Task DeleteClass(string id);
+        Task<IEnumerable<Enrollment>> GetEnrollments();
+        Task<Enrollment> GetEnrollment(int enrollmentId);
+        Task<Enrollment> AddEnrollment(Enrollment enrollment);
+        Task<Enrollment> UpdateEnrollment(Enrollment enroll);
+        Task DeleteEnrollment(int enrollmentId);
     }
 }
