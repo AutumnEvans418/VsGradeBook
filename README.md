@@ -35,3 +35,39 @@ Simplyifing grading code in visual studio.  No more sending compressed files, do
 - POST api/submission
 - PUT api/submission/submissionId
 
+## Packages/Tools Used
+
+### HttpClient/Api packages
+- NSwag.MSBuild
+- NSwagStudio
+- Swashbuckle
+
+### Database
+- Sql server
+- EntityFrameworkCore
+
+### Dependency Service
+- Unity
+
+### UI
+- Xaml
+- WPF
+- Visual Studio ToolWindow
+
+### Compiler tools
+- Microsoft.CodeAnalysis.Analyzers
+- Microsoft.CodeAnalysis.CSharp
+- Mono.Cecil
+- Microsoft.Net.Compilers
+
+### Testing
+- Autofixture
+- FluentAssertions
+- NUnit
+
+## Helpful Resources
+
+- [Developing Visual Studio Extensions](https://michaelscodingspot.com/visual-studio-2017-extension-development-tutorial-part-1/)
+- [Analyzing and changing the c# programs](https://github.com/dotnet/roslyn/wiki/Getting-Started-C%23-Syntax-Transformation)
+- [In memory compilation](https://josephwoodward.co.uk/2016/12/in-memory-c-sharp-compilation-using-roslyn)
+

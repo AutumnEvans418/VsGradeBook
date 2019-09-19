@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NSwag.MSBuild" Version="13.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+  <Target Name="NSwag" AfterTargets="Build">
+    <Exec Command="$(NSwagExe) aspnetcore2openapi /assembly:$(OutDir)Grader.Web/bin/Debug/netcoreapp2.1/Grader.Web.dll /output:swagger.json" />
+    <Exec Command="$(NSwagExe) openapi2csclient /input:swagger.json /output:GraderClient.cs" />
+  </Target>
+</Project>
