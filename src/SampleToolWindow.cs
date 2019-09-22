@@ -20,10 +20,10 @@ namespace AsyncToolWindowSample.ToolWindows
         // "state" parameter is the object returned from MyPackage.InitializeToolWindowAsync
         public SampleToolWindow(SampleToolWindowState state) : base()
         {
-            Setup(state);
+            Setup(state).GetAwaiter().GetResult();
         }
 
-        private async void Setup(SampleToolWindowState state)
+        private async Task Setup(SampleToolWindowState state)
         {
             Caption = Title;
             BitmapImageMoniker = KnownMonikers.ImageIcon;
@@ -32,7 +32,7 @@ namespace AsyncToolWindowSample.ToolWindows
             container.RegisterType<IVisualStudioService, VisualStudioService>();
             container.RegisterInstance(state.AsyncPackage);
             var view = container.Resolve<MainView>();
-            await view.ToPage("LoginView");
+            await view.ToPage("ProjectView");
             Content = view;
         }
     }
