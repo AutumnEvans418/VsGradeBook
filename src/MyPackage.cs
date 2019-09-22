@@ -24,6 +24,10 @@ namespace AsyncToolWindowSample
     [ProvideBindingPath]
     public sealed class MyPackage : AsyncPackage
     {
+        public MyPackage()
+        {
+            
+        }
         protected override async Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
             await JoinableTaskFactory.SwitchToMainThreadAsync();

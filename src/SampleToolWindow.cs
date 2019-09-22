@@ -32,7 +32,7 @@ namespace AsyncToolWindowSample.ToolWindows
             container.RegisterType<IVisualStudioService, VisualStudioService>();
             container.RegisterInstance(state.AsyncPackage);
             var view = container.Resolve<MainView>();
-            await view.ToPage("ProjectView");
+            await view.ToPage("LoginView");
             Content = view;
         }
     }

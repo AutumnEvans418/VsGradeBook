@@ -26,5 +26,6 @@
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="Microsoft.CodeAnalysis.dll" AssemblyName="Microsoft.CodeAnalysis, Version=3.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="Unity.Abstractions.dll" AssemblyName="Unity.Abstractions, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0" />
         <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="Unity.Container.dll" AssemblyName="Unity.Container, Version=5.11.1.0, Culture=neutral, PublicKeyToken=489b6accfaf20ef0" />
+        <Asset Type="Microsoft.VisualStudio.Assembly" d:Source="File" Path="Microsoft.VisualStudio.Threading.dll" AssemblyName="Microsoft.VisualStudio.Threading, Version=16.3.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
     </Assets>
 </PackageManifest>
