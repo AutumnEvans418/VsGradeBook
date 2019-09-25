@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:AsyncToolWindowSample.ToolWindows"
              xmlns:asyncToolWindowSample="clr-namespace:AsyncToolWindowSample"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance local:AddDocumentationViewModel }">
+             d:DesignHeight="450" d:DesignWidth="800" >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>

@@ -17,9 +17,9 @@ namespace AsyncToolWindowSample.ToolWindows
     /// </summary>
     public partial class AddDocumentationView : BaseDialogWindow
     {
-        public AddDocumentationView(AddDocumentationViewModel addDocumentationViewModel)
+        public AddDocumentationView(/*AddDocumentationViewModel addDocumentationViewModel*/)
         {
-            DataContext = addDocumentationViewModel;
+            //DataContext = addDocumentationViewModel;
             InitializeComponent();
         }
 

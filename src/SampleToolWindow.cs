@@ -20,7 +20,7 @@ namespace AsyncToolWindowSample.ToolWindows
         // "state" parameter is the object returned from MyPackage.InitializeToolWindowAsync
         public SampleToolWindow(SampleToolWindowState state) : base()
         {
-            Setup(state).GetAwaiter().GetResult();
+            Setup(state);
         }
 
         private async Task Setup(SampleToolWindowState state)
@@ -32,7 +32,7 @@ namespace AsyncToolWindowSample.ToolWindows
             container.RegisterType<IVisualStudioService, VisualStudioService>();
             container.RegisterInstance(state.AsyncPackage);
             var view = container.Resolve<MainView>();
-            await view.ToPage("ProjectView");
+            await view.ToPage("LoginView");
             Content = view;
         }
     }

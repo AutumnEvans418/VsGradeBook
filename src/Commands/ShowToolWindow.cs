@@ -11,7 +11,6 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using AsyncToolWindowSample.Models;
 using EnvDTE80;
-using Grader;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
@@ -111,9 +110,9 @@ namespace AsyncToolWindowSample
       
         private static void ShowAddDocumentationWindow(string document, TextViewSelection selection)
         {
-            AddDocumentationView view =null;
-             view = new AddDocumentationView(new AddDocumentationViewModel(()=> view.Close(), document, selection, new CSharpGenerator()));
-            view.ShowDialog();
+           // AddDocumentationView view =null;
+            // view = new AddDocumentationView(new AddDocumentationViewModel(()=> view.Close(), document, selection, new CSharpGenerator()));
+            //view.ShowDialog();
         }
 
         private static async Task<TextViewSelection> GetSelection(AsyncPackage serviceProvider)
