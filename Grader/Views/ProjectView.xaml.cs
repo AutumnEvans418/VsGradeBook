@@ -21,9 +21,8 @@ namespace AsyncToolWindowSample.Views
     /// </summary>
     public partial class ProjectView : UserControl
     {
-        public ProjectView(ProjectViewModel vm)
+        public ProjectView()
         {
-            DataContext = vm;
             InitializeComponent();
         }
     }

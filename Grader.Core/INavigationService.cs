@@ -6,5 +6,6 @@ namespace AsyncToolWindowSample.ToolWindows
     {
         Task ToPage(string page);
         Task ToPage(string page, INavigationParameter parameter);
+        Task ToModalPage(string page, INavigationParameter parameter);
     }
 }

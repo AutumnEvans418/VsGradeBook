@@ -23,6 +23,7 @@ namespace AsyncToolWindowSample.ToolWindows
             set => SetProperty(ref _classes, value);
         }
 
+        public DelegateCommand AddCommand { get; set; }
         public DelegateCommand OpenCommand { get; set; }
         public DelegateCommand DeleteCommand { get; set; }
         public DelegateCommand CreateCommand { get; set; }
@@ -32,15 +33,29 @@ namespace AsyncToolWindowSample.ToolWindows
             _repository = repository;
             Classes = new ObservableCollection<Class>();
             OpenCommand = new DelegateCommand(Open);
+            AddCommand = new DelegateCommand(Add);
         }
 
-        public async override Task InitializeAsync(INavigationParameter parameter)
+        private async void Add()
+        {
+           await _navigationService.ToModalPage("AddClassView", new NavigationParameter());
+           await Refresh(personId);
+        }
+
+        private int personId;
+        public override async Task InitializeAsync(INavigationParameter parameter)
         {
             if (parameter["PersonId"] is int id)
             {
-                var classes = await _repository.GetClasses(id);
-                Classes = new ObservableCollection<Class>(classes);
+                personId = id;
+                await Refresh(id);
             }
+        }
+
+        private async Task Refresh(int id)
+        {
+            var classes = await _repository.GetClasses(id);
+            Classes = new ObservableCollection<Class>(classes);
         }
 
         private async void Open()

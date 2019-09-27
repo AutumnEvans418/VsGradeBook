@@ -13,19 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AsyncToolWindowSample.ToolWindows
+namespace Grader.Views
 {
     /// <summary>
-    /// Interaction logic for LoginView.xaml
+    /// Interaction logic for AddClassView.xaml
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class AddClassView : UserControl
     {
-
-        public LoginView()
+        public AddClassView()
         {
             InitializeComponent();
         }
-
-       
     }
 }

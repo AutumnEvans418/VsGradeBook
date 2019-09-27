@@ -21,9 +21,8 @@ namespace Grader.Views
     /// </summary>
     public partial class ClassesView : UserControl
     {
-        public ClassesView(ClassesViewModel vm)
+        public ClassesView()
         {
-            DataContext = vm;
             InitializeComponent();
         }
     }

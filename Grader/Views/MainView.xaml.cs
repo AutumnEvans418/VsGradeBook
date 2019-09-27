@@ -33,15 +33,22 @@ namespace AsyncToolWindowSample.ToolWindows
             InitializeComponent();
 
             _container.RegisterInstance<INavigationService>(this);
-            Add<LoginView>();
-            Add<ProjectView>();
-            Add<ClassesView>();
+            Add<LoginView, LoginViewModel>();
+            Add<ProjectView, ProjectViewModel>();
+            Add<ClassesView, ClassesViewModel>();
+            Add<AddClassView, AddClassViewModel>();
         }
         private Dictionary<string, Func<Control>> pages = new Dictionary<string, Func<Control>>();
-        void Add<T>() where T : Control
+        void Add<T, Tv>() where T : Control
         {
+            _container.RegisterType<Tv>();
             _container.RegisterSingleton<T>();
-            pages.Add(typeof(T).Name, () => _container.Resolve<T>());
+            pages.Add(typeof(T).Name, () =>
+            {
+                var view = _container.Resolve<T>();
+                view.DataContext = _container.Resolve<Tv>();
+                return view;
+            });
         }
 
         public Task ToPage(string page)
@@ -52,7 +59,12 @@ namespace AsyncToolWindowSample.ToolWindows
         public async Task ToPage(string page, INavigationParameter parameter)
         {
             Content = pages[page]();
-            if (Content is Control c)
+            await Initialize(Content,parameter);
+        }
+
+        private async Task Initialize(object ctrl, INavigationParameter parameter)
+        {
+            if (ctrl is Control c)
             {
                 if (c.DataContext is INavigationAware aware)
                 {
@@ -64,6 +76,19 @@ namespace AsyncToolWindowSample.ToolWindows
                     await awareAsync.InitializeAsync(parameter);
                 }
             }
+        }
+
+        public async Task ToModalPage(string page, INavigationParameter parameter)
+        {
+            var view = pages[page]();
+
+            var window = new Window();
+            window.Content = view;
+
+            await Initialize(view, parameter);
+
+            window.ShowDialog();
+            
         }
     }
 }
