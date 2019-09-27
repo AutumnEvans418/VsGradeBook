@@ -20,7 +20,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grader.Core", "Grader.Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grader.Wpf", "Grader.Wpf\Grader.Wpf.csproj", "{2F534F50-7896-4A9D-823D-BD44C9255EA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grader.Client", "Grader.Client\Grader.Client.csproj", "{C75E4692-4CA3-45D1-83EC-B6C78A7A1DCD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Grader.Client", "Grader.Client\Grader.Client.csproj", "{C75E4692-4CA3-45D1-83EC-B6C78A7A1DCD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VsGrader", "VsGrader\VsGrader.csproj", "{C47B7BEF-39F4-47BE-8E40-15010B260771}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -56,6 +58,10 @@ Global
 		{C75E4692-4CA3-45D1-83EC-B6C78A7A1DCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C75E4692-4CA3-45D1-83EC-B6C78A7A1DCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C75E4692-4CA3-45D1-83EC-B6C78A7A1DCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C47B7BEF-39F4-47BE-8E40-15010B260771}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C47B7BEF-39F4-47BE-8E40-15010B260771}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C47B7BEF-39F4-47BE-8E40-15010B260771}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C47B7BEF-39F4-47BE-8E40-15010B260771}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
