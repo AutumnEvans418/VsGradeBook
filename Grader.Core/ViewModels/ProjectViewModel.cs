@@ -17,6 +17,7 @@ namespace AsyncToolWindowSample.ToolWindows
         private string _actualOutput;
         private double _percentPass;
         private string _errorMessage;
+        private CodeProject _codeProject;
 
         public ProjectViewModel(IVisualStudioService visualStudioService, IConsoleAppGrader grader)
         {
@@ -27,6 +28,12 @@ namespace AsyncToolWindowSample.ToolWindows
 
             TestCommand = new DelegateCommandAsync(Test);
             SubmitCommand = new DelegateCommand(Submit);
+        }
+
+        public CodeProject CodeProject
+        {
+            get => _codeProject;
+            set => SetProperty(ref _codeProject,value);
         }
 
         private void Submit()

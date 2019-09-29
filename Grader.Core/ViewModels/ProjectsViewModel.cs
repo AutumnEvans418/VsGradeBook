@@ -33,19 +33,20 @@ namespace AsyncToolWindowSample.ToolWindows
     public class ProjectsViewModel : BindableViewModel
     {
         private readonly IGradeBookRepository _repository;
+        private readonly INavigationService _navigationService;
         private CodeProject _selectedProject;
         private ObservableCollection<CodeProject> _projects;
 
         public CodeProject SelectedProject
         {
             get => _selectedProject;
-            set => SetProperty(ref _selectedProject,value);
+            set => SetProperty(ref _selectedProject, value);
         }
 
         public ObservableCollection<CodeProject> Projects
         {
             get => _projects;
-            set => SetProperty(ref _projects,value);
+            set => SetProperty(ref _projects, value);
         }
 
         private Class _class;
@@ -54,16 +55,22 @@ namespace AsyncToolWindowSample.ToolWindows
             if (parameter["Class"] is Class cls)
             {
                 _class = cls;
-                Projects = new ObservableCollection<CodeProject>(await _repository.GetCodeProjects(cls.Id));
+                await Refresh();
             }
+        }
+
+        private async Task Refresh()
+        {
+            Projects = new ObservableCollection<CodeProject>(await _repository.GetCodeProjects(_class.Id));
         }
 
         public DelegateCommand AddCommand { get; set; }
         public DelegateCommand OpenCommand { get; set; }
         public DelegateCommand SubmissionsCommand { get; set; }
-        public ProjectsViewModel(IGradeBookRepository repository)
+        public ProjectsViewModel(IGradeBookRepository repository, INavigationService navigationService)
         {
             _repository = repository;
+            _navigationService = navigationService;
             Projects = new ObservableCollection<CodeProject>();
             AddCommand = new DelegateCommand(Add);
             OpenCommand = new DelegateCommand(Open);
@@ -72,16 +79,18 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private void Submissions()
         {
-            
+            _navigationService.ToPage("SubmissionsView", new NavigationParameter(){{"Project", SelectedProject}});
         }
 
         private void Open()
         {
+            _navigationService.ToPage("ProjectView", new NavigationParameter(){{"Project", SelectedProject}});
         }
 
-        private void Add()
+        private async void Add()
         {
-            
+            await _navigationService.ToModalPage("AddProjectView", new NavigationParameter());
+            await Refresh();
         }
     }
 }
