@@ -37,6 +37,9 @@ namespace AsyncToolWindowSample.ToolWindows
             Add<ProjectView, ProjectViewModel>();
             Add<ClassesView, ClassesViewModel>();
             Add<AddClassView, AddClassViewModel>();
+            Add<ProjectsView, ProjectsViewModel>();
+            Add<SubmissionsView, SubmissionsViewModel>();
+            Add<SubmissionView, SubmissionViewModel>();
         }
         private Dictionary<string, Func<Control>> pages = new Dictionary<string, Func<Control>>();
         void Add<T, Tv>() where T : Control
@@ -78,17 +81,23 @@ namespace AsyncToolWindowSample.ToolWindows
             }
         }
 
+        private Window modalWindow;
         public async Task ToModalPage(string page, INavigationParameter parameter)
         {
             var view = pages[page]();
 
-            var window = new Window();
-            window.Content = view;
+            modalWindow = new Window();
+            modalWindow.Content = view;
 
             await Initialize(view, parameter);
 
-            window.ShowDialog();
+            modalWindow.ShowDialog();
             
+        }
+
+        public async Task Back()
+        {
+            modalWindow.Close();
         }
     }
 }

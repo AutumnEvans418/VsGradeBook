@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Grader.Web.Controllers
 {
@@ -6,11 +8,23 @@ namespace Grader.Web.Controllers
     [ApiController]
     public class ProjectController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetStudentProjects(int studentId)
+        private readonly IGradeBookRepository _repository;
+
+        public ProjectController(IGradeBookRepository repository)
         {
-            return Ok(new StudentProjectsDto(new []{new StudentProjectSummaryDto(), new StudentProjectSummaryDto(), }));
+            _repository = repository;
         }
+        [HttpGet]
+        public async Task<IEnumerable<CodeProject>> GetProjects(string classId)
+        {
+            return await _repository.GetCodeProjects(classId);
+        }
+
+        //[HttpGet]
+        //public IActionResult GetStudentProjects(int studentId)
+        //{
+        //    return Ok(new StudentProjectsDto(new []{new StudentProjectSummaryDto(), new StudentProjectSummaryDto(), }));
+        //}
 
         [HttpGet("{projectId}")]
         public ProjectSubmissionDto GetStudentSubmission(int projectId, int studentId)

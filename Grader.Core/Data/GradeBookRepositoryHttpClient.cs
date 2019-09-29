@@ -107,5 +107,11 @@ namespace Grader
         {
             var result = await _client.DeleteAsync($"api/enrollments/{enrollmentId}");
         }
+
+        public async Task<IEnumerable<CodeProject>> GetCodeProjects(string classId)
+        {
+            var str = await _client.GetStringAsync($"api/project?classId={classId}");
+            return JsonConvert.DeserializeObject<List<CodeProject>>(str);
+        }
     }
 }

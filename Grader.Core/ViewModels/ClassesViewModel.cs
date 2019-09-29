@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Grader;
+using Console = System.Console;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
@@ -27,6 +29,9 @@ namespace AsyncToolWindowSample.ToolWindows
         public DelegateCommand OpenCommand { get; set; }
         public DelegateCommand DeleteCommand { get; set; }
         public DelegateCommand CreateCommand { get; set; }
+
+        public DelegateCommand EnrollCommand { get; }
+
         public ClassesViewModel(INavigationService navigationService, IGradeBookRepository repository)
         {
             _navigationService = navigationService;
@@ -60,7 +65,7 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private async void Open()
         {
-            await _navigationService.ToPage("ProjectsView", new NavigationParameter() { { "ClassId", SelectedClass.Id } });
+            await _navigationService.ToPage("ProjectsView", new NavigationParameter() { { "Class", SelectedClass } });
         }
     }
 }

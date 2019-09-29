@@ -243,6 +243,14 @@ namespace Grader
                 await db.SaveChangesAsync();
             }
         }
+
+        public async Task<IEnumerable<CodeProject>> GetCodeProjects(string classId)
+        {
+            using (var db = _dbFunc())
+            {
+                return await db.CodeProjects.Where(p => p.ClassId == classId).ToListAsync();
+            }
+        }
     }
 
 

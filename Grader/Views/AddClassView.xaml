@@ -4,9 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Grader.Views"
+             xmlns:grader="clr-namespace:Grader;assembly=Grader.Core"
+             xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader.Core"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance toolWindows:AddClassViewModel}">
+    <StackPanel Margin="10">
+        <Label>Name</Label>
+        <TextBox Text="{Binding Name}"/>
+        <Label>Teacher</Label>
+        <TextBox Text="{Binding TeacherId}"></TextBox>
+        <Button Command="{Binding AddCommand}">Add</Button>
+    </StackPanel>
 </UserControl>
