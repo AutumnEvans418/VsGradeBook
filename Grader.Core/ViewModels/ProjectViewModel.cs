@@ -8,12 +8,10 @@ using Console = System.Console;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
-    public class ProjectViewModel : BindableBase
+    public class ProjectViewModel : BindableViewModel
     {
         private readonly IVisualStudioService _visualStudioService;
         private readonly IConsoleAppGrader _grader;
-        private string _inputCases;
-        private string _expectedOutput;
         private string _actualOutput;
         private double _percentPass;
         private string _errorMessage;
@@ -23,17 +21,32 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             _visualStudioService = visualStudioService;
             _grader = grader;
-            InputCases = "";
-            ExpectedOutput = "Hello World!";
-
+            CodeProject = new CodeProject();
+            CodeProject.CsvCases = "";
+            CodeProject.CsvExpectedOutput = "Hello World!";
             TestCommand = new DelegateCommandAsync(Test);
             SubmitCommand = new DelegateCommand(Submit);
+        }
+
+        public override async Task InitializeAsync(INavigationParameter parameter)
+        {
+            if (parameter["Class"] is Class cls)
+            {
+                CodeProject = new CodeProject();
+                CodeProject.ClassId = cls.Id;
+                
+            }
+
+            if (parameter["Project"] is CodeProject project)
+            {
+                CodeProject = project;
+            }
         }
 
         public CodeProject CodeProject
         {
             get => _codeProject;
-            set => SetProperty(ref _codeProject,value);
+            set => SetProperty(ref _codeProject, value);
         }
 
         private void Submit()
@@ -111,17 +124,7 @@ namespace AsyncToolWindowSample.ToolWindows
             private set => SetProperty(ref _errorMessage, value);
         }
 
-        public string InputCases
-        {
-            get => _inputCases;
-            set => SetProperty(ref _inputCases, value);
-        }
-
-        public string ExpectedOutput
-        {
-            get => _expectedOutput;
-            set => SetProperty(ref _expectedOutput, value);
-        }
+       
 
         public string ActualOutput
         {

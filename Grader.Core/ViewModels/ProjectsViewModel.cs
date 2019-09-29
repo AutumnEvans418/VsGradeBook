@@ -77,19 +77,21 @@ namespace AsyncToolWindowSample.ToolWindows
             SubmissionsCommand = new DelegateCommand(Submissions);
         }
 
-        private void Submissions()
+        private async void Submissions()
         {
-            _navigationService.ToPage("SubmissionsView", new NavigationParameter(){{"Project", SelectedProject}});
+            await _navigationService.ToPage("SubmissionsView", new NavigationParameter() { { "Project", SelectedProject } });
         }
 
-        private void Open()
+        private async void Open()
         {
-            _navigationService.ToPage("ProjectView", new NavigationParameter(){{"Project", SelectedProject}});
+            await _navigationService.ToPage("ProjectView", new NavigationParameter() { { "Project", SelectedProject } });
+            await Refresh();
+
         }
 
         private async void Add()
         {
-            await _navigationService.ToModalPage("AddProjectView", new NavigationParameter());
+            await _navigationService.ToPage("ProjectView", new NavigationParameter() { { "Class", _class } });
             await Refresh();
         }
     }
