@@ -57,37 +57,37 @@
     <Compile Include="CSharpGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TypeInferenceRewriter.cs" />
-    <Compile Include="Views\AddClassView.xaml.cs">
+    <Compile Include="OldViews\AddClassView.xaml.cs">
       <DependentUpon>AddClassView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ClassesView.xaml.cs">
+    <Compile Include="OldViews\ClassesView.xaml.cs">
       <DependentUpon>ClassesView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CreateAccountView.xaml.cs">
+    <Compile Include="OldViews\CreateAccountView.xaml.cs">
       <DependentUpon>CreateAccountView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\InputBox.xaml.cs">
+    <Compile Include="OldViews\InputBox.xaml.cs">
       <DependentUpon>InputBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\LoginView.xaml.cs">
+    <Compile Include="OldViews\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MainView.xaml.cs">
+    <Compile Include="OldViews\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProjectsView.xaml.cs">
+    <Compile Include="OldViews\ProjectsView.xaml.cs">
       <DependentUpon>ProjectsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ProjectView.xaml.cs">
+    <Compile Include="OldViews\ProjectView.xaml.cs">
       <DependentUpon>ProjectView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\StudentHomeView.xaml.cs">
+    <Compile Include="OldViews\StudentHomeView.xaml.cs">
       <DependentUpon>StudentHomeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubmissionsView.xaml.cs">
+    <Compile Include="OldViews\SubmissionsView.xaml.cs">
       <DependentUpon>SubmissionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SubmissionView.xaml.cs">
+    <Compile Include="OldViews\SubmissionView.xaml.cs">
       <DependentUpon>SubmissionView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -119,47 +119,47 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Views\AddClassView.xaml">
+    <Page Include="OldViews\AddClassView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ClassesView.xaml">
+    <Page Include="OldViews\ClassesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\CreateAccountView.xaml">
+    <Page Include="OldViews\CreateAccountView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\InputBox.xaml">
+    <Page Include="OldViews\InputBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\LoginView.xaml">
+    <Page Include="OldViews\LoginView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MainView.xaml">
+    <Page Include="OldViews\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ProjectsView.xaml">
+    <Page Include="OldViews\ProjectsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ProjectView.xaml">
+    <Page Include="OldViews\ProjectView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\StudentHomeView.xaml">
+    <Page Include="OldViews\StudentHomeView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SubmissionsView.xaml">
+    <Page Include="OldViews\SubmissionsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\SubmissionView.xaml">
+    <Page Include="OldViews\SubmissionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
