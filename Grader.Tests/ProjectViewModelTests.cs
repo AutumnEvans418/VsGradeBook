@@ -37,7 +37,7 @@ namespace HelloWorld
 
             ProjectViewModel model = new ProjectViewModel(code.Object, new ConsoleAppGrader(new CSharpGenerator()));
 
-            model.ExpectedOutput = output;
+            model.CodeProject.CsvExpectedOutput = output;
 
             await model.TestCommand.ExecuteAsync();
 
@@ -104,8 +104,8 @@ namespace ConsoleApp1
 
             var model = new ProjectViewModel(code.Object, new ConsoleAppGrader(new CSharpGenerator()));
 
-            model.InputCases = "10\r\n12\r\ntest";
-            model.ExpectedOutput = "11\r\n13.2\r\n";
+            model.CodeProject.CsvCases= "10\r\n12\r\ntest";
+            model.CodeProject.CsvExpectedOutput = "11\r\n13.2\r\n";
 
             await model.Test();
 

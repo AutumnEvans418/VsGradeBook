@@ -18,9 +18,9 @@
                     </Style>
                 </StackPanel.Resources>
                 <Label Content="Input"/>
-                <TextBox  Text="{Binding InputCases}" />
+                <TextBox  Text="{Binding CodeProject.CsvCases}" />
                 <Label Content="Expected Output"/>
-                <TextBox Text="{Binding ExpectedOutput}"/>
+                <TextBox Text="{Binding CodeProject.CsvExpectedOutput}"/>
                 <Button Content="Test" Command="{Binding TestCommand}"/>
                 <Button Content="Submit" Command="{Binding SubmitCommand}"/>
                 <Label Content="Error Message"/>

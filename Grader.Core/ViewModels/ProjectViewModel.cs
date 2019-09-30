@@ -30,17 +30,17 @@ namespace AsyncToolWindowSample.ToolWindows
 
         public override async Task InitializeAsync(INavigationParameter parameter)
         {
-            if (parameter["Class"] is Class cls)
-            {
-                CodeProject = new CodeProject();
-                CodeProject.ClassId = cls.Id;
+            //if (parameter["Class"] is Class cls)
+            //{
+            //    CodeProject = new CodeProject();
+            //    CodeProject.ClassId = cls.Id;
                 
-            }
+            //}
 
-            if (parameter["Project"] is CodeProject project)
-            {
-                CodeProject = project;
-            }
+            //if (parameter["Project"] is CodeProject project)
+            //{
+            //    CodeProject = project;
+            //}
         }
 
         public CodeProject CodeProject
@@ -60,8 +60,8 @@ namespace AsyncToolWindowSample.ToolWindows
             {
                 var gradeCases = new List<IGradeCase>();
                 var codes = await _visualStudioService.GetCSharpFilesAsync();
-                var inputs = InputCases.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                var outputs = ExpectedOutput.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                var inputs = CodeProject.CsvCases.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                var outputs = CodeProject.CsvExpectedOutput.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
                 for (var index = 0; index < outputs.Length; index++)
                 {
                     var input = "";
