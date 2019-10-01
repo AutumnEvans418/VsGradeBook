@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Grader.Views.HomeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+
+             xmlns:local="clr-namespace:Grader.Views"
+             xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader.Core"
+             d:DesignHeight="1000" d:DesignWidth="728" Background="White" d:DataContext="{d:DesignInstance toolWindows:HomeViewModel}">
+    <UserControl.Resources>
+        <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer>
+        <Grid Margin="50" VerticalAlignment="Center">
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel>
+                <Label Style="{StaticResource Title}">Students</Label>
+                <Rectangle HorizontalAlignment="Stretch" Height="2"/>
+                <Button Command="{Binding CreateSubmissionCommand}">Create Submission</Button>
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <Label Style="{StaticResource Title}">Teachers</Label>
+                <Rectangle HorizontalAlignment="Stretch" Height="2"/>
+                <Button>New Project</Button>
+                <Button>Submissions</Button>
+
+            </StackPanel>
+        </Grid>
+
+    </ScrollViewer>
+</UserControl>

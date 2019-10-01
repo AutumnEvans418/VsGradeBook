@@ -12,13 +12,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using AsyncToolWindowSample.ToolWindows;
 
 namespace Grader.Views
 {
-    public interface IInputBoxService
-    {
-        Task<string> Show(string title = null, string msg = null);
-    }
+   
     public class InputBoxService : IInputBoxService
     {
         public async Task<string> Show(string title = null, string msg = null)

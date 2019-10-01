@@ -6,7 +6,10 @@
              xmlns:local="clr-namespace:AsyncToolWindowSample.Views"
              xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader.Core"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="400" d:DataContext="{d:DesignInstance toolWindows:ProjectViewModel}">
+            d:DesignWidth="400" d:DataContext="{d:DesignInstance toolWindows:ProjectViewModel}">
+    <UserControl.Resources>
+        <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+    </UserControl.Resources>
     <ScrollViewer>
         <Grid Background="White">
             <StackPanel Margin="10">
@@ -17,19 +20,43 @@
                         <Setter Property="MinHeight" Value="80"></Setter>
                     </Style>
                 </StackPanel.Resources>
-                <Label Content="Input"/>
+                <Label Content="Project Name"/>
+                <TextBox MinHeight="10"/>
+                <Label Content="Description"/>
+                <TextBox></TextBox>
+                <Label Content="Cases (CSV Style)"/>
                 <TextBox  Text="{Binding CodeProject.CsvCases}" />
-                <Label Content="Expected Output"/>
+                <Label Content="Expected Output (CSV Style)"/>
                 <TextBox Text="{Binding CodeProject.CsvExpectedOutput}"/>
-                <Button Content="Test" Command="{Binding TestCommand}"/>
-                <Button Content="Submit" Command="{Binding SubmitCommand}"/>
-                <Label Content="Error Message"/>
-                <TextBlock Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"/>
-                <Label Content="Percent Passing"></Label>
-                <Label Content="{Binding PercentPass}" ContentStringFormat="{}{0:P2}" FontWeight="Bold"/>
-                <ProgressBar Value="{Binding PercentPass}" Minimum="0" Maximum="1" Height="20"></ProgressBar>
-                <Label Content="Actual Output"/>
-                <TextBlock Text="{Binding ActualOutput}"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                        <RowDefinition></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Test" Margin="10"  Command="{Binding TestCommand}"/>
+                    <StackPanel Grid.Column="1">
+                        <Label Content="{Binding PercentPass}" ContentStringFormat="{}{0:P2}" FontWeight="Bold"/>
+                        <ProgressBar Value="{Binding PercentPass}" Minimum="0" Maximum="1" Height="20"></ProgressBar>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+                        <Label  Content="Actual Output"/>
+                        <TextBox IsReadOnly="True" Text="{Binding ActualOutput}"/>
+                    </StackPanel>
+
+
+                    <TextBlock  VerticalAlignment="Center" Grid.Row="2" 
+                               Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"/>
+
+                    <Button Grid.Column="1" Grid.Row="2" Content="Submit" Command="{Binding SubmitCommand}"/>
+                </Grid>
+
+
             </StackPanel>
         </Grid>
 

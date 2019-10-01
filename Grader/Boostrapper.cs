@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using AsyncToolWindowSample.ToolWindows;
+using Grader.Views;
 using Unity;
 
 namespace Grader
@@ -21,7 +22,7 @@ namespace Grader
             _container.RegisterInstance(new HttpClient(){BaseAddress = new Uri("https://localhost:44301/") });
             _container.RegisterType<IGradeBookRepository, GradeBookRepositoryHttpClient>();
             _container.RegisterType<MainView>();
-
+            _container.RegisterType<IInputBoxService, InputBoxService>();
             return _container;
         }
 
