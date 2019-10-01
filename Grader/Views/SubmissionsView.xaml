@@ -6,8 +6,25 @@
              xmlns:local="clr-namespace:Grader.Views"
              xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader.Core"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" d:DataContext="{d:DesignInstance toolWindows:SubmissionsViewModel}">
-    <Grid>
-        <DataGrid ItemsSource="{Binding Submissions}" SelectedItem="{Binding SelectedSubmission}"></DataGrid>
+             d:DesignHeight="450" 
+             d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance toolWindows:SubmissionsViewModel}"
+             Background="White"
+             >
+    <UserControl.Resources>
+        <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Label Content="Tax System Submissions" Grid.Row="0" Style="{StaticResource Title}"></Label>
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Submissions}" SelectedItem="{Binding SelectedSubmission}"></DataGrid>
+        <DockPanel Grid.Row="2">
+            <Label DockPanel.Dock="Top" Content="Details for Chris Evans"/>
+            <TextBlock DockPanel.Dock="Bottom" Text="Main(){}"></TextBlock>
+        </DockPanel>
     </Grid>
 </UserControl>

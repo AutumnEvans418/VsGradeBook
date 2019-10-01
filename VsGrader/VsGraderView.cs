@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using AsyncToolWindowSample.Models;
 using AsyncToolWindowSample.ToolWindows;
 using Grader;
 using Microsoft.VisualStudio.Shell;
@@ -33,9 +34,11 @@ namespace VsGrader
             // the object returned by the Content property.
             var boot = new Bootstrapper();
             var con = boot.Initialize();
+            con.RegisterInstance(VsGraderPackage.Package);
+            con.RegisterType<IVisualStudioService, VisualStudioService>();
             var mainView = con.Resolve<MainView>();
             this.Content = mainView;
-            mainView.ToPage("LoginView");
+            mainView.ToPage("HomeView");
         }
     }
 }

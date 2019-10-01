@@ -25,7 +25,7 @@
             <StackPanel Grid.Row="1">
                 <Label Style="{StaticResource Title}">Teachers</Label>
                 <Rectangle HorizontalAlignment="Stretch" Height="2"/>
-                <Button>New Project</Button>
+                <Button Command="{Binding NewProjectCommand}">New Project</Button>
                 <Button>Submissions</Button>
 
             </StackPanel>

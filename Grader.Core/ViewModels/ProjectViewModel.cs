@@ -12,15 +12,17 @@ namespace AsyncToolWindowSample.ToolWindows
     {
         private readonly IVisualStudioService _visualStudioService;
         private readonly IConsoleAppGrader _grader;
+        private readonly INavigationService _navigationService;
         private string _actualOutput;
         private double _percentPass;
         private string _errorMessage;
         private CodeProject _codeProject;
 
-        public ProjectViewModel(IVisualStudioService visualStudioService, IConsoleAppGrader grader)
+        public ProjectViewModel(IVisualStudioService visualStudioService, IConsoleAppGrader grader, INavigationService navigationService)
         {
             _visualStudioService = visualStudioService;
             _grader = grader;
+            _navigationService = navigationService;
             CodeProject = new CodeProject();
             CodeProject.CsvCases = "";
             CodeProject.CsvExpectedOutput = "Hello World!";
@@ -49,9 +51,9 @@ namespace AsyncToolWindowSample.ToolWindows
             set => SetProperty(ref _codeProject, value);
         }
 
-        private void Submit()
+        private async void Submit()
         {
-
+            await _navigationService.ToPage("ProjectPublishedView");
         }
 
         public async Task Test()

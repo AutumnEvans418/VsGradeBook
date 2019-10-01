@@ -46,14 +46,14 @@
 
                     <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
                         <Label  Content="Actual Output"/>
-                        <TextBox IsReadOnly="True" Text="{Binding ActualOutput}"/>
+                        <TextBox IsReadOnly="True" Text="{Binding ActualOutput, Mode=OneWay}"/>
                     </StackPanel>
 
 
                     <TextBlock  VerticalAlignment="Center" Grid.Row="2" 
                                Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"/>
 
-                    <Button Grid.Column="1" Grid.Row="2" Content="Submit" Command="{Binding SubmitCommand}"/>
+                    <Button Grid.Column="1" Grid.Row="2" Content="Publish" Command="{Binding SubmitCommand}"/>
                 </Grid>
 
 

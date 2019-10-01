@@ -9,11 +9,19 @@ namespace AsyncToolWindowSample.ToolWindows
     public class HomeViewModel : BindableViewModel
     {
         private readonly IInputBoxService _inputBoxService;
+        private readonly INavigationService _navigationService;
 
-        public HomeViewModel(IInputBoxService inputBoxService)
+        public HomeViewModel(IInputBoxService inputBoxService, INavigationService navigationService)
         {
             _inputBoxService = inputBoxService;
+            _navigationService = navigationService;
             CreateSubmissionCommand = new DelegateCommand(CreateSubmission);
+            NewProjectCommand = new DelegateCommand(NewProject);
+        }
+
+        private async void NewProject()
+        {
+            await _navigationService.ToPage("ProjectView");
         }
 
         private async void CreateSubmission()
@@ -25,6 +33,7 @@ namespace AsyncToolWindowSample.ToolWindows
             }
         }
 
+        public DelegateCommand NewProjectCommand { get; set; }
         public DelegateCommand CreateSubmissionCommand { get; set; }
     }
 }

@@ -46,6 +46,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VisualStudioService.cs" />
     <Compile Include="VsGraderPackage.cs" />
     <Compile Include="VsGraderView.cs" />
     <Compile Include="VsGraderViewCommand.cs" />
