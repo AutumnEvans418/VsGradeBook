@@ -17,6 +17,12 @@ namespace AsyncToolWindowSample.ToolWindows
             _navigationService = navigationService;
             CreateSubmissionCommand = new DelegateCommand(CreateSubmission);
             NewProjectCommand = new DelegateCommand(NewProject);
+            SubmissionsCommand = new DelegateCommand(Submissions);
+        }
+
+        private async void Submissions()
+        {
+            await _navigationService.ToPage("SubmissionsView");
         }
 
         private async void NewProject()
@@ -33,6 +39,7 @@ namespace AsyncToolWindowSample.ToolWindows
             }
         }
 
+        public DelegateCommand SubmissionsCommand { get; set; }
         public DelegateCommand NewProjectCommand { get; set; }
         public DelegateCommand CreateSubmissionCommand { get; set; }
     }

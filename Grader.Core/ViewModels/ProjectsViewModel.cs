@@ -6,6 +6,7 @@ namespace AsyncToolWindowSample.ToolWindows
 {
     public class SubmissionsViewModel : BindableViewModel
     {
+        private readonly INavigationService _navigationService;
         private Submission _selectedSubmission;
         private ObservableCollection<Submission> _submissions;
 
@@ -21,13 +22,22 @@ namespace AsyncToolWindowSample.ToolWindows
             set => SetProperty(ref _submissions, value);
         }
 
+        public DelegateCommand DoneCommand { get; }
+
         public async override Task InitializeAsync(INavigationParameter parameter)
         {
         }
 
-        public SubmissionsViewModel()
+        public SubmissionsViewModel(INavigationService navigationService)
         {
+            _navigationService = navigationService;
             Submissions = new ObservableCollection<Submission>();
+            DoneCommand = new DelegateCommand(Done);
+        }
+
+        private async void Done()
+        {
+            await _navigationService.ToPage("HomeView");
         }
     }
     public class ProjectsViewModel : BindableViewModel

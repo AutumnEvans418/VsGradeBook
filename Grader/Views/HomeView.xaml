@@ -26,7 +26,7 @@
                 <Label Style="{StaticResource Title}">Teachers</Label>
                 <Rectangle HorizontalAlignment="Stretch" Height="2"/>
                 <Button Command="{Binding NewProjectCommand}">New Project</Button>
-                <Button>Submissions</Button>
+                <Button Command="{Binding SubmissionsCommand}">Submissions</Button>
 
             </StackPanel>
         </Grid>
