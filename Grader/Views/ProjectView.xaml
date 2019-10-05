@@ -21,9 +21,9 @@
                     </Style>
                 </StackPanel.Resources>
                 <Label Content="Project Name"/>
-                <TextBox MinHeight="10"/>
+                <TextBox MinHeight="10" Text="{Binding CodeProject.Name}"/>
                 <Label Content="Description"/>
-                <TextBox></TextBox>
+                <TextBox Text="{Binding CodeProject.Description}"></TextBox>
                 <Label Content="Cases (CSV Style)"/>
                 <TextBox  Text="{Binding CodeProject.CsvCases}" />
                 <Label Content="Expected Output (CSV Style)"/>
@@ -40,8 +40,8 @@
                     </Grid.ColumnDefinitions>
                     <Button Content="Test" Margin="10"  Command="{Binding TestCommand}"/>
                     <StackPanel Grid.Column="1">
-                        <Label Content="{Binding PercentPass}" ContentStringFormat="{}{0:P2}" FontWeight="Bold"/>
-                        <ProgressBar Value="{Binding PercentPass}" Minimum="0" Maximum="1" Height="20"></ProgressBar>
+                        <Label Content="{Binding Submission.Grade}" ContentStringFormat="{}{0:P2}" FontWeight="Bold"/>
+                        <ProgressBar Value="{Binding Submission.Grade}" Minimum="0" Maximum="1" Height="20"></ProgressBar>
                     </StackPanel>
 
                     <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">

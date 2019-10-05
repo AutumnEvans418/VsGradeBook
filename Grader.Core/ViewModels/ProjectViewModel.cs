@@ -13,17 +13,20 @@ namespace AsyncToolWindowSample.ToolWindows
         private readonly IVisualStudioService _visualStudioService;
         private readonly IConsoleAppGrader _grader;
         private readonly INavigationService _navigationService;
+        private readonly IGradeBookRepository _gradeBookRepository;
         private string _actualOutput;
-        private double _percentPass;
         private string _errorMessage;
         private CodeProject _codeProject;
         private Submission _submission;
+        private bool _isStudentSubmission;
 
-        public ProjectViewModel(IVisualStudioService visualStudioService, IConsoleAppGrader grader, INavigationService navigationService)
+        public ProjectViewModel(IVisualStudioService visualStudioService,
+            IConsoleAppGrader grader, INavigationService navigationService, IGradeBookRepository gradeBookRepository)
         {
             _visualStudioService = visualStudioService;
             _grader = grader;
             _navigationService = navigationService;
+            _gradeBookRepository = gradeBookRepository;
             CodeProject = new CodeProject();
             CodeProject.CsvCases = "";
             CodeProject.CsvExpectedOutput = "Hello World!";
@@ -31,22 +34,23 @@ namespace AsyncToolWindowSample.ToolWindows
             SubmitCommand = new DelegateCommand(Submit);
         }
 
-        public bool IsReadOnly { get; set; }
+        public bool IsStudentSubmission
+        {
+            get => _isStudentSubmission;
+            set => SetProperty(ref _isStudentSubmission, value);
+        }
+
         public override async Task InitializeAsync(INavigationParameter parameter)
         {
+            if (parameter.ContainsKey("StudentCode"))
+            {
+                IsStudentSubmission = true;
+            }
+            else
+            {
+                CodeProject = new CodeProject();
+            }
             Submission = new Submission();
-
-            //if (parameter["Class"] is Class cls)
-            //{
-            //    CodeProject = new CodeProject();
-            //    CodeProject.ClassId = cls.Id;
-
-            //}
-
-            //if (parameter["Project"] is CodeProject project)
-            //{
-            //    CodeProject = project;
-            //}
         }
 
         public CodeProject CodeProject
@@ -57,7 +61,16 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private async void Submit()
         {
-            await _navigationService.ToPage("ProjectPublishedView");
+            if (IsStudentSubmission)
+            {
+                var result = await _gradeBookRepository.AddSubmission(Submission);
+
+            }
+            else
+            {
+                var project = await _gradeBookRepository.AddProject(CodeProject);
+                await _navigationService.ToPage("ProjectPublishedView", new NavigationParameter(){{"Project", project}});
+            }
         }
 
         public async Task Test()
@@ -98,7 +111,7 @@ namespace AsyncToolWindowSample.ToolWindows
 
                 var result = await _grader.Grade(codes, gradeCases);
 
-                PercentPass = result.PercentPassing;
+                Submission.Grade = result.PercentPassing;
                 ErrorMessage = "";
                 ActualOutput = "";
                 foreach (var resultCaseResult in result.CaseResults)
@@ -118,11 +131,7 @@ namespace AsyncToolWindowSample.ToolWindows
 
         }
 
-        public double PercentPass
-        {
-            get => _percentPass;
-            set => SetProperty(ref _percentPass, value);
-        }
+
 
         public string ErrorMessage
         {
@@ -130,7 +139,7 @@ namespace AsyncToolWindowSample.ToolWindows
             private set => SetProperty(ref _errorMessage, value);
         }
 
-       
+
 
         public string ActualOutput
         {
@@ -144,7 +153,7 @@ namespace AsyncToolWindowSample.ToolWindows
         public Submission Submission
         {
             get => _submission;
-            set => SetProperty(ref _submission,value);
+            set => SetProperty(ref _submission, value);
         }
     }
 }

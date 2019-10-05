@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using AsyncToolWindowSample.Models;
 using AsyncToolWindowSample.ToolWindows;
+using AutoFixture;
+using AutoFixture.AutoMoq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -11,6 +13,15 @@ namespace Grader.Tests
     [TestFixture]
     public class ProjectViewModelTests
     {
+        private Fixture fixture;
+        [SetUp]
+        public void Setup()
+        {
+            fixture = new Fixture();
+            fixture.Customize(new AutoMoqCustomization() { ConfigureMembers = true, GenerateDelegates = true });
+            fixture.Inject<IConsoleAppGrader>(new ConsoleAppGrader(new CSharpGenerator()));
+        }
+
         [Test]
         public async Task HelloWorld_Should_Pass()
         {
@@ -30,19 +41,19 @@ namespace HelloWorld
     }
 }";
             var output = "Hello World!";
-            var code = new Mock<IVisualStudioService>();
+            var code = fixture.Freeze<Mock<IVisualStudioService>>();
 
-            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new []{src}.AsEnumerable()));
+            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { src }.AsEnumerable()));
 
 
-            ProjectViewModel model = new ProjectViewModel(code.Object, new ConsoleAppGrader(new CSharpGenerator()),null);
+            ProjectViewModel model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
 
             model.CodeProject.CsvExpectedOutput = output;
 
             await model.TestCommand.ExecuteAsync();
 
 
-            model.PercentPass.Should().Be(1);
+            model.Submission.Grade.Should().Be(1);
         }
 
 
@@ -70,8 +81,8 @@ namespace ConsoleApp1
 
             code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { src }.AsEnumerable()));
 
+            ProjectViewModel model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
 
-            ProjectViewModel model = new ProjectViewModel(code.Object, new ConsoleAppGrader(new CSharpGenerator()),null);
 
 
             await model.TestCommand.ExecuteAsync();
@@ -101,15 +112,15 @@ namespace ConsoleApp1
             var code = new Mock<IVisualStudioService>();
 
             code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { src }.AsEnumerable()));
+            ProjectViewModel model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
 
-            var model = new ProjectViewModel(code.Object, new ConsoleAppGrader(new CSharpGenerator()),null);
 
-            model.CodeProject.CsvCases= "10\r\n12\r\ntest";
+            model.CodeProject.CsvCases = "10\r\n12\r\ntest";
             model.CodeProject.CsvExpectedOutput = "11\r\n13.2\r\n";
 
             await model.Test();
 
-            model.PercentPass.Should().BeInRange(.65, .67);
+            model.Submission.Grade.Should().BeInRange(.65, .67);
         }
     }
 }
