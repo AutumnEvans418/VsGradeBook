@@ -37,5 +37,10 @@ namespace ConsoleApp1
         {
             return new[] {Code};
         }
+
+        public void OpenOrCreateCSharpFile(string fileName, string content)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

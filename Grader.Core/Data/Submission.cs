@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Grader
 {
@@ -6,16 +7,9 @@ namespace Grader
     {
         public int Id { get; set; }
         public int ProjectId { get; set; }
-        public int StudentId { get; set; }
-        public bool IsSubmitted { get; set; }
-
-        public DateTimeOffset StartDate { get; set; }
-        public DateTimeOffset? SubmissionDate { get; set; }
-        public virtual CodeProject CodeProject { get; set; }
-
-
-        public virtual Person Student { get; set; }
-        public DateTimeOffset? DateGraded { get; set; }
-        public DateTimeOffset? GradingDate { get; set; }
+        public string StudentName { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
+        public double Grade { get; set; }
+        public virtual IList<SubmissionFile> SubmissionFiles { get; set; }
     }
 }

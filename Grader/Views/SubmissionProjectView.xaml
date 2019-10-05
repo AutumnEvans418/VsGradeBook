@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="Grader.Views.SubmissionProjectView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Grader.Views"
+             xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader.Core"
+             mc:Ignorable="d" 
+             d:DesignHeight="700"
+             d:DesignWidth="400" d:DataContext="{d:DesignInstance toolWindows:ProjectViewModel}">
+    <UserControl.Resources>
+        <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+    </UserControl.Resources>
+    <ScrollViewer>
+        <Grid Background="White">
+            <StackPanel Margin="10">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBox">
+                        <Setter Property="AcceptsTab" Value="True"/>
+                        <Setter Property="AcceptsReturn" Value="True"/>
+                        <Setter Property="MinHeight" Value="80"></Setter>
+                    </Style>
+                </StackPanel.Resources>
+                <Label Content="{Binding CodeProject.DateCreated}" ContentStringFormat="{}{0:d}"></Label>
+                <Label Content="{Binding CodeProject.Name}" Style="{StaticResource Title}"/>
+                <Label Content="{Binding CodeProject.Description}"/>
+                <Label Content="Test Inputs"/>
+                <TextBlock Text="{Binding CodeProject.CsvCases}" />
+                <Label Content="Expected Outputs"/>
+                <TextBlock Text="{Binding CodeProject.CsvExpectedOutput}"/>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="2*"></RowDefinition>
+                        <RowDefinition Height="1*"></RowDefinition>
+                        <RowDefinition Height="1*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button Content="Test" Margin="10" Height="30" VerticalAlignment="Center" Padding="0" Command="{Binding TestCommand}"/>
+                    <StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center">
+                        <Label Content="{Binding PercentPass}" ContentStringFormat="{}{0:P2}" FontWeight="Bold"/>
+                        <ProgressBar Value="{Binding PercentPass}" Minimum="0" Maximum="1" Height="20"></ProgressBar>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+                        <Label  Content="Actual Output"/>
+                        <TextBox IsReadOnly="True" Text="{Binding ActualOutput, Mode=OneWay}"/>
+                    </StackPanel>
+
+
+                    <TextBlock Grid.Column="0"  VerticalAlignment="Center" Grid.Row="2" 
+                               Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"/>
+
+                    <Button Grid.Column="1" Grid.Row="2" Content="Publish" Height="30" Padding="0" Command="{Binding SubmitCommand}"/>
+                </Grid>
+
+
+            </StackPanel>
+        </Grid>
+
+    </ScrollViewer>
+
+</UserControl>

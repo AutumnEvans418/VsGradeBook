@@ -30,6 +30,7 @@ namespace AsyncToolWindowSample.ToolWindows
             SubmitCommand = new DelegateCommand(Submit);
         }
 
+        public bool IsReadOnly { get; set; }
         public override async Task InitializeAsync(INavigationParameter parameter)
         {
             //if (parameter["Class"] is Class cls)

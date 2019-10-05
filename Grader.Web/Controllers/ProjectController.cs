@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +16,9 @@ namespace Grader.Web.Controllers
             _repository = repository;
         }
         [HttpGet]
-        public async Task<IEnumerable<CodeProject>> GetProjects(string classId)
+        public async Task<IEnumerable<CodeProject>> GetProjects(Guid studentCode)
         {
-            return await _repository.GetCodeProjects(classId);
+            return await _repository.GetCodeProjects(studentCode);
         }
 
         //[HttpGet]

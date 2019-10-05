@@ -90,6 +90,9 @@
     <Compile Include="OldViews\StudentHomeView.xaml.cs">
       <DependentUpon>StudentHomeView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\SubmissionProjectView.xaml.cs">
+      <DependentUpon>SubmissionProjectView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SubmissionsView.xaml.cs">
       <DependentUpon>SubmissionsView.xaml</DependentUpon>
     </Compile>
@@ -170,6 +173,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SubmissionProjectView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

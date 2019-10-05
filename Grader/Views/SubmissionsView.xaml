@@ -18,7 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50"></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="60"></RowDefinition>
         </Grid.RowDefinitions>
         <Label Content="Tax System Submissions" Grid.Row="0" Style="{StaticResource Title}"></Label>
         <ListBox Grid.Row="1" ItemsSource="{Binding Submissions}" SelectedItem="{Binding SelectedSubmission}">
@@ -34,11 +34,12 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <DockPanel Grid.Row="2">
+        <Button Grid.Row="2" HorizontalAlignment="Right" Content="Done" Margin="10" Width="200" Padding="10" DockPanel.Dock="Bottom" Command="{Binding DoneCommand}"/>
+
+        <!--<DockPanel Grid.Row="2">
             <Label DockPanel.Dock="Top" Content="Details for Chris Evans"/>
-            <Button HorizontalAlignment="Right" Content="Done" Margin="10" Width="200" Padding="10" DockPanel.Dock="Bottom" Command="{Binding DoneCommand}"/>
 
             <TextBlock DockPanel.Dock="Bottom" Text="Main(){}"></TextBlock>
-        </DockPanel>
+        </DockPanel>-->
     </Grid>
 </UserControl>

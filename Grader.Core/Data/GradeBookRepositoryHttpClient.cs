@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -108,9 +109,9 @@ namespace Grader
             var result = await _client.DeleteAsync($"api/enrollments/{enrollmentId}");
         }
 
-        public async Task<IEnumerable<CodeProject>> GetCodeProjects(string classId)
+        public async Task<IEnumerable<CodeProject>> GetCodeProjects(Guid studentCode)
         {
-            var str = await _client.GetStringAsync($"api/project?classId={classId}");
+            var str = await _client.GetStringAsync($"api/project?studentCode={studentCode}");
             return JsonConvert.DeserializeObject<List<CodeProject>>(str);
         }
     }

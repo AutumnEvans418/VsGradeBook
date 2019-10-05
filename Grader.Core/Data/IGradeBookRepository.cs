@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Grader
@@ -21,6 +22,6 @@ namespace Grader
         Task<Enrollment> AddEnrollment(Enrollment enrollment);
         Task<Enrollment> UpdateEnrollment(Enrollment enroll);
         Task DeleteEnrollment(int enrollmentId);
-        Task<IEnumerable<CodeProject>> GetCodeProjects(string classId);
+        Task<IEnumerable<CodeProject>> GetCodeProjects(Guid studentCode);
     }
 }

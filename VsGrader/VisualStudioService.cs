@@ -38,6 +38,12 @@ namespace VsGrader
                 .Select(p => File.ReadAllText(p.Properties.Item("FullPath").Value.ToString())).ToList();
             return code;
         }
+
+        public void OpenOrCreateCSharpFile(string fileName, string content)
+        {
+            throw new System.NotImplementedException();
+        }
+
         static ProjectItem GetFiles(ProjectItem item, List<ProjectItem> projectItems)
         {
             //base case

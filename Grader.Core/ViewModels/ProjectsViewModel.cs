@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using AsyncToolWindowSample.Models;
 using Grader;
 
 namespace AsyncToolWindowSample.ToolWindows
@@ -7,13 +8,22 @@ namespace AsyncToolWindowSample.ToolWindows
     public class SubmissionsViewModel : BindableViewModel
     {
         private readonly INavigationService _navigationService;
+        private readonly IVisualStudioService _visualStudioService;
         private Submission _selectedSubmission;
         private ObservableCollection<Submission> _submissions;
 
         public Submission SelectedSubmission
         {
             get => _selectedSubmission;
-            set => SetProperty(ref _selectedSubmission, value);
+            set => SetProperty(ref _selectedSubmission, value, SelectedSubmissionChanged);
+        }
+
+        private void SelectedSubmissionChanged()
+        {
+            if (SelectedSubmission != null)
+            {
+                _visualStudioService.OpenOrCreateCSharpFile("", "");
+            }
         }
 
         public ObservableCollection<Submission> Submissions
@@ -28,9 +38,10 @@ namespace AsyncToolWindowSample.ToolWindows
         {
         }
 
-        public SubmissionsViewModel(INavigationService navigationService)
+        public SubmissionsViewModel(INavigationService navigationService, IVisualStudioService visualStudioService)
         {
             _navigationService = navigationService;
+            _visualStudioService = visualStudioService;
             Submissions = new ObservableCollection<Submission>();
             DoneCommand = new DelegateCommand(Done);
         }
@@ -71,7 +82,7 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private async Task Refresh()
         {
-            Projects = new ObservableCollection<CodeProject>(await _repository.GetCodeProjects(_class.Id));
+           // Projects = new ObservableCollection<CodeProject>(await _repository.GetCodeProjects(_class.Id));
         }
 
         public DelegateCommand AddCommand { get; set; }

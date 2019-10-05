@@ -51,61 +51,61 @@ namespace Grader
             }
         }
 
-        public async Task<RepositoryResult<IEnumerable<StudentProjectSummaryDto>>> StudentLogin(string userName, string classCode)
-        {
-            using (var db = _dbFunc())
-            {
-                var person = await db.People.FirstOrDefaultAsync(p => p.IsStudent && p.Name == userName);
-                if (person == null)
-                {
-                    return new RepositoryResult<IEnumerable<StudentProjectSummaryDto>>()
-                    {
-                        Message = $"Student with userName '{userName}' does not exist",
-                        Status = RepositoryStatus.MissingUser,
-                        Data = null
-                    };
-                }
+        //public async Task<RepositoryResult<IEnumerable<StudentProjectSummaryDto>>> StudentLogin(string userName, string classCode)
+        //{
+        //    using (var db = _dbFunc())
+        //    {
+        //        var person = await db.People.FirstOrDefaultAsync(p => p.IsStudent && p.Name == userName);
+        //        if (person == null)
+        //        {
+        //            return new RepositoryResult<IEnumerable<StudentProjectSummaryDto>>()
+        //            {
+        //                Message = $"Student with userName '{userName}' does not exist",
+        //                Status = RepositoryStatus.MissingUser,
+        //                Data = null
+        //            };
+        //        }
 
-                var projects = db.CodeProjects.Where(p => p.ClassId == classCode);
-                var submissions = db.Submissions.Where(p => p.StudentId == person.Id);
+        //        var projects = db.CodeProjects.Where(p => p.ClassId == classCode);
+        //        var submissions = db.Submissions.Where(p => p.StudentId == person.Id);
 
-                var studentProjects = projects
-                    .GroupJoin(submissions, p => p.Id, p => p.ProjectId,
-                        (project, enumerable) => new { project, submissions = enumerable });
-                var data = studentProjects.Select(p => new StudentProjectSummaryDto()
-                {
-                    Name = p.project.Name,
-                    Id = p.project.Id,
-                    DueDate = p.project.DueDate,
-                    IsBeingGraded = p.submissions.FirstOrDefault().IsSubmitted,
-                    DateGraded = p.submissions.FirstOrDefault().DateGraded,
-                    DateSubmitted = p.submissions.FirstOrDefault().SubmissionDate,
-                    SubmissionPublished = p.submissions.FirstOrDefault().IsSubmitted,
-                    HasSubmission = p.submissions.Any()
-                }).ToList();
-                return new RepositoryResult<IEnumerable<StudentProjectSummaryDto>>()
-                {
-                    Data = data,
-                };
-            }
-        }
+        //        var studentProjects = projects
+        //            .GroupJoin(submissions, p => p.Id, p => p.ProjectId,
+        //                (project, enumerable) => new { project, submissions = enumerable });
+        //        var data = studentProjects.Select(p => new StudentProjectSummaryDto()
+        //        {
+        //            Name = p.project.Name,
+        //            Id = p.project.Id,
+        //            DueDate = p.project.DueDate,
+        //            IsBeingGraded = p.submissions.FirstOrDefault().IsSubmitted,
+        //            DateGraded = p.submissions.FirstOrDefault().DateGraded,
+        //            DateSubmitted = p.submissions.FirstOrDefault().SubmissionDate,
+        //            SubmissionPublished = p.submissions.FirstOrDefault().IsSubmitted,
+        //            HasSubmission = p.submissions.Any()
+        //        }).ToList();
+        //        return new RepositoryResult<IEnumerable<StudentProjectSummaryDto>>()
+        //        {
+        //            Data = data,
+        //        };
+        //    }
+        //}
 
-        public async Task<ProjectSubmissionDto> GetProject(int studentId, int projectId)
-        {
-            using (var db = _dbFunc())
-            {
-                return
-                    await db.CodeProjects
-                        .Select(p => new ProjectSubmissionDto()
-                        {
-                            CodeProject = p,
-                            Submission = p.Submissions.FirstOrDefault()
-                        })
-                        .FirstOrDefaultAsync(p =>
-                            p.CodeProject.Id == projectId &&
-                            (p.Submission.StudentId == studentId || p.Submission == null));
-            }
-        }
+        //public async Task<ProjectSubmissionDto> GetProject(int studentId, int projectId)
+        //{
+        //    using (var db = _dbFunc())
+        //    {
+        //        return
+        //            await db.CodeProjects
+        //                .Select(p => new ProjectSubmissionDto()
+        //                {
+        //                    CodeProject = p,
+        //                    Submission = p.Submissions.FirstOrDefault()
+        //                })
+        //                .FirstOrDefaultAsync(p =>
+        //                    p.CodeProject.Id == projectId &&
+        //                    (p.Submission.StudentId == studentId || p.Submission == null));
+        //    }
+        //}
 
         public Task<Person> CreateTeacher(Person person)
         {
@@ -147,25 +147,25 @@ namespace Grader
             return Add(enroll);
         }
 
-        public async Task<RepositoryResult<IEnumerable<CodeProject>>> TeacherLogin(string userName, string classId)
-        {
-            using (var db = _dbFunc())
-            {
-                var result = new RepositoryResult<IEnumerable<CodeProject>>();
-                var person = await db.People.FirstOrDefaultAsync(p => p.IsStudent != true && p.Name == userName);
-                if (person == null)
-                {
-                    result.Message = $"Teacher with userName '{userName}' does not exist";
-                    result.Status = RepositoryStatus.MissingUser;
-                    result.Data = null;
-                    return result;
-                }
+        //public async Task<RepositoryResult<IEnumerable<CodeProject>>> TeacherLogin(string userName, string classId)
+        //{
+        //    using (var db = _dbFunc())
+        //    {
+        //        var result = new RepositoryResult<IEnumerable<CodeProject>>();
+        //        var person = await db.People.FirstOrDefaultAsync(p => p.IsStudent != true && p.Name == userName);
+        //        if (person == null)
+        //        {
+        //            result.Message = $"Teacher with userName '{userName}' does not exist";
+        //            result.Status = RepositoryStatus.MissingUser;
+        //            result.Data = null;
+        //            return result;
+        //        }
 
-                var data = db.CodeProjects.Include(p => p.Submissions).Where(p => p.ClassId == classId).ToList();
-                result.Data = data;
-                return result;
-            }
-        }
+        //        var data = db.CodeProjects.Include(p => p.Submissions).Where(p => p.ClassId == classId).ToList();
+        //        result.Data = data;
+        //        return result;
+        //    }
+        //}
 
         public async Task<IEnumerable<Class>> GetClasses(int personId)
         {
@@ -244,11 +244,11 @@ namespace Grader
             }
         }
 
-        public async Task<IEnumerable<CodeProject>> GetCodeProjects(string classId)
+        public async Task<IEnumerable<CodeProject>> GetCodeProjects(Guid studentCode)
         {
             using (var db = _dbFunc())
             {
-                return await db.CodeProjects.Where(p => p.ClassId == classId).ToListAsync();
+                return await db.CodeProjects.Where(p => p.StudentCode == studentCode).ToListAsync();
             }
         }
     }
