@@ -48,12 +48,13 @@
                         <Label  Content="Actual Output"/>
                         <TextBox IsReadOnly="True" Text="{Binding ActualOutput, Mode=OneWay}"/>
                     </StackPanel>
-
-
-                    <TextBlock Grid.Column="0"  VerticalAlignment="Center" Grid.Row="2" 
-                               Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"/>
-
-                    <Button Grid.Column="1" Grid.Row="2" Content="Publish" Height="30" Padding="0" Command="{Binding SubmitCommand}"/>
+                    <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
+                        <Label Content="Student Name" DockPanel.Dock="Top"/>
+                        <TextBox Text="{Binding Submission.StudentName}" DockPanel.Dock="Top"></TextBox>
+                        <TextBlock  VerticalAlignment="Center" 
+                                   Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"/>
+                        <Button Content="Publish" Height="30" HorizontalAlignment="Right" Width="150" Padding="0" Command="{Binding SubmitCommand}"/>
+                    </StackPanel>
                 </Grid>
 
 

@@ -17,6 +17,7 @@ namespace AsyncToolWindowSample.ToolWindows
         private double _percentPass;
         private string _errorMessage;
         private CodeProject _codeProject;
+        private Submission _submission;
 
         public ProjectViewModel(IVisualStudioService visualStudioService, IConsoleAppGrader grader, INavigationService navigationService)
         {
@@ -33,11 +34,13 @@ namespace AsyncToolWindowSample.ToolWindows
         public bool IsReadOnly { get; set; }
         public override async Task InitializeAsync(INavigationParameter parameter)
         {
+            Submission = new Submission();
+
             //if (parameter["Class"] is Class cls)
             //{
             //    CodeProject = new CodeProject();
             //    CodeProject.ClassId = cls.Id;
-                
+
             //}
 
             //if (parameter["Project"] is CodeProject project)
@@ -137,5 +140,11 @@ namespace AsyncToolWindowSample.ToolWindows
 
         public DelegateCommandAsync TestCommand { get; set; }
         public DelegateCommand SubmitCommand { get; set; }
+
+        public Submission Submission
+        {
+            get => _submission;
+            set => SetProperty(ref _submission,value);
+        }
     }
 }
