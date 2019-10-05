@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Grader.Web.Controllers
 {
@@ -6,17 +9,23 @@ namespace Grader.Web.Controllers
     [ApiController]
     public class SubmissionController : ControllerBase
     {
+        private readonly IGradeBookRepository _gradeBookRepository;
 
-        [HttpPut]
-        public Submission UpdateSubmission([FromBody] Submission submission)
+        public SubmissionController(IGradeBookRepository gradeBookRepository)
         {
-            return new Submission();
+            _gradeBookRepository = gradeBookRepository;
+        }
+
+        [HttpGet]
+        public Task<IEnumerable<Submission>> GetSubmissions(Guid teacherCode)
+        {
+            return _gradeBookRepository.GetSubmissions(teacherCode);
         }
 
         [HttpPost]
-        public Submission AddSubmission([FromBody] Submission submission)
+        public Task<Submission> AddSubmission([FromBody] Submission submission)
         {
-            return new Submission();
+            return _gradeBookRepository.AddSubmission(submission);
         }
     }
 }

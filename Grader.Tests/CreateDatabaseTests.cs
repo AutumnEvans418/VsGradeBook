@@ -26,7 +26,7 @@ namespace Grader.Tests
             db.Initialize();
             var result = db.GetGradeBookDbContext();
 
-            result.People.Add(new Person());
+         //   result.People.Add(new Person());
             result.SaveChanges();
             result.Dispose();
         }

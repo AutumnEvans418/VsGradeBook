@@ -18,12 +18,13 @@ namespace Grader
 
         public async Task<int> GetPersonId(string userName)
         {
-            using (var db = _dbFunc())
-            {
-                var id = await db.People.FirstOrDefaultAsync(p => p.Name == userName);
-                if (id == null) throw new Exception($"Could not find user with userName '{userName}'");
-                return id.Id;
-            }
+            //using (var db = _dbFunc())
+            //{
+            //    var id = await db.People.FirstOrDefaultAsync(p => p.Name == userName);
+            //    if (id == null) throw new Exception($"Could not find user with userName '{userName}'");
+            //    return id.Id;
+            //}
+            return 0;
         }
 
         public Task<Person> AddPerson(Person person)
@@ -35,7 +36,7 @@ namespace Grader
         {
             using (var db = _dbFunc())
             {
-                db.People.Update(person);
+               // db.People.Update(person);
                 await db.SaveChangesAsync();
                 return person;
             }
@@ -45,8 +46,8 @@ namespace Grader
         {
             using (var db = _dbFunc())
             {
-                var person = await db.People.FirstOrDefaultAsync(p => p.Id == personId);
-                db.People.Remove(person);
+               // var person = await db.People.FirstOrDefaultAsync(p => p.Id == personId);
+               // db.People.Remove(person);
                 await db.SaveChangesAsync();
             }
         }
@@ -171,10 +172,11 @@ namespace Grader
         {
             using (var db = _dbFunc())
             {
-                var classes = await db.Classes
-                    .Where(p => p.TeacherId == personId || p.Enrollments.Any(r => r.StudentId == personId))
-                    .ToListAsync();
-                return classes;
+                //var classes = await db.Classes
+                //    .Where(p => p.TeacherId == personId || p.Enrollments.Any(r => r.StudentId == personId))
+                //    .ToListAsync();
+               // return classes;
+               return null;
             }
         }
 
@@ -182,7 +184,7 @@ namespace Grader
         {
             using (var db = _dbFunc())
             {
-                db.Classes.Update(cClass);
+               // db.Classes.Update(cClass);
                 await db.SaveChangesAsync();
                 return cClass;
             }
@@ -197,8 +199,8 @@ namespace Grader
         {
             using (var db = _dbFunc())
             {
-                var classs = await db.Classes.FirstOrDefaultAsync(p => p.Id == id);
-                db.Classes.Remove(classs);
+              //  var classs = await db.Classes.FirstOrDefaultAsync(p => p.Id == id);
+               // db.Classes.Remove(classs);
                 await db.SaveChangesAsync();
             }
         }
@@ -207,7 +209,8 @@ namespace Grader
         {
             using (var db = _dbFunc())
             {
-                return await db.Enrollments.ToListAsync();
+               // return await db.Enrollments.ToListAsync();
+               return null;
             }
         }
 
@@ -215,7 +218,9 @@ namespace Grader
         {
             using (var db = _dbFunc())
             {
-                return await db.Enrollments.FirstOrDefaultAsync(p => p.Id == enrollmentId);
+                return null;
+
+                // return await db.Enrollments.FirstOrDefaultAsync(p => p.Id == enrollmentId);
             }
         }
 
@@ -228,7 +233,7 @@ namespace Grader
         {
             using (var db = _dbFunc())
             {
-                db.Enrollments.Update(enroll);
+              //  db.Enrollments.Update(enroll);
                 await db.SaveChangesAsync();
                 return enroll;
             }
@@ -238,17 +243,36 @@ namespace Grader
         {
             using (var db = _dbFunc())
             {
-                var enroll = await db.Enrollments.FirstOrDefaultAsync(p => p.Id == enrollmentId);
-                db.Enrollments.Remove(enroll);
+               // var enroll = await db.Enrollments.FirstOrDefaultAsync(p => p.Id == enrollmentId);
+               // db.Enrollments.Remove(enroll);
                 await db.SaveChangesAsync();
             }
         }
 
-        public async Task<IEnumerable<CodeProject>> GetCodeProjects(Guid studentCode)
+        public async Task<CodeProject> GetCodeProject(Guid studentCode)
         {
             using (var db = _dbFunc())
             {
-                return await db.CodeProjects.Where(p => p.StudentCode == studentCode).ToListAsync();
+                return await db.CodeProjects.FirstOrDefaultAsync(p => p.StudentCode == studentCode);
+            }
+        }
+
+        public async Task<CodeProject> AddProject(CodeProject project)
+        {
+           return await Add(project);
+        }
+
+        public async Task<Submission> AddSubmission(Submission submission)
+        {
+            return await Add(submission);
+        }
+
+        public async Task<IEnumerable<Submission>> GetSubmissions(Guid teacherCode)
+        {
+            using (var db = _dbFunc())
+            {
+                var projects = db.CodeProjects.Where(p => p.TeacherCode == teacherCode).Select(p=>p.Id);
+                return await db.Submissions.Where(p => projects.Contains(p.ProjectId)).Include(p=>p.SubmissionFiles).ToListAsync();
             }
         }
     }

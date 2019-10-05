@@ -109,10 +109,34 @@ namespace Grader
             var result = await _client.DeleteAsync($"api/enrollments/{enrollmentId}");
         }
 
-        public async Task<IEnumerable<CodeProject>> GetCodeProjects(Guid studentCode)
+        public async Task<CodeProject> GetCodeProject(Guid studentCode)
         {
             var str = await _client.GetStringAsync($"api/project?studentCode={studentCode}");
-            return JsonConvert.DeserializeObject<List<CodeProject>>(str);
+            return JsonConvert.DeserializeObject<CodeProject>(str);
+        }
+
+        public async Task<CodeProject> AddProject(CodeProject project)
+        {
+            var result = await _client.PostAsync($"api/project", new StringContent(JsonConvert.SerializeObject(project)));
+
+            var content = await result.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<CodeProject>(content);
+        }
+
+        public async Task<Submission> AddSubmission(Submission submission)
+        {
+            var result = await _client.PostAsync($"api/submission", new StringContent(JsonConvert.SerializeObject(submission)));
+
+            var content = await result.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<Submission>(content);
+        }
+
+        public async Task<IEnumerable<Submission>> GetSubmissions(Guid teacherCode)
+        {
+            var str = await _client.GetStringAsync($"api/submission?teacherCode={teacherCode}");
+            return JsonConvert.DeserializeObject<IEnumerable<Submission>>(str);
         }
     }
 }

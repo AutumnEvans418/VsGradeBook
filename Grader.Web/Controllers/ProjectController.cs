@@ -16,24 +16,17 @@ namespace Grader.Web.Controllers
             _repository = repository;
         }
         [HttpGet]
-        public async Task<IEnumerable<CodeProject>> GetProjects(Guid studentCode)
+        public async Task<CodeProject> GetProject(Guid studentCode)
         {
-            return await _repository.GetCodeProjects(studentCode);
-        }
-
-        //[HttpGet]
-        //public IActionResult GetStudentProjects(int studentId)
-        //{
-        //    return Ok(new StudentProjectsDto(new []{new StudentProjectSummaryDto(), new StudentProjectSummaryDto(), }));
-        //}
-
-        [HttpGet("{projectId}")]
-        public ProjectSubmissionDto GetStudentSubmission(int projectId, int studentId)
-        {
-            return new ProjectSubmissionDto();
+            return await _repository.GetCodeProject(studentCode);
         }
 
 
+        [HttpPost]
+        public async Task<CodeProject> AddProject([FromBody] CodeProject project)
+        {
+            return await _repository.AddProject(project);
+        }
         
     }
 }

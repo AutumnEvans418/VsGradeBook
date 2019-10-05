@@ -13,7 +13,7 @@ namespace Grader
         public string CsvCases { get; set; }
         public string CsvExpectedOutput { get; set; }
         public DateTimeOffset DueDate { get; set; }
-        public virtual IList<Submission> Submissions { get; set; }
+       // public virtual IList<Submission> Submissions { get; set; }
         public DateTimeOffset DateCreated { get; set; }
         public Guid StudentCode { get; set; }
         public Guid TeacherCode { get; set; }
