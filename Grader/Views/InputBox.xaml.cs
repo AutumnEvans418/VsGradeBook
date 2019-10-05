@@ -17,14 +17,19 @@ using AsyncToolWindowSample.ToolWindows;
 namespace Grader.Views
 {
    
-    public class InputBoxService : IInputBoxService
+    public class InputBoxService : IMessageService
     {
-        public async Task<string> Show(string title = null, string msg = null)
+        public async Task<string> ShowInputBox(string title = null, string msg = null)
         {
             var win = new InputBox(msg);
             win.Title = title;
             win.ShowDialog();
             return win.TextBox.Text;
+        }
+
+        public async Task ShowAlert(string msg)
+        {
+            MessageBox.Show(msg);
         }
     }
 

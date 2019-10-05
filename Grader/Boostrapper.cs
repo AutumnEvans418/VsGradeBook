@@ -22,7 +22,7 @@ namespace Grader
             _container.RegisterInstance(new HttpClient(){BaseAddress = new Uri("https://localhost:44301/") });
             _container.RegisterType<IGradeBookRepository, GradeBookRepositoryHttpClient>();
             _container.RegisterType<MainView>();
-            _container.RegisterType<IInputBoxService, InputBoxService>();
+            _container.RegisterType<IMessageService, InputBoxService>();
             return _container;
         }
 

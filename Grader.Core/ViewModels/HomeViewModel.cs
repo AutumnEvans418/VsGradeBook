@@ -1,20 +1,27 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using Grader;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
-    public interface IInputBoxService
+    public interface IMessageService
     {
-        Task<string> Show(string title = null, string msg = null);
+        Task<string> ShowInputBox(string title = null, string msg = null);
+        Task ShowAlert(string msg);
     }
+
+
     public class HomeViewModel : BindableViewModel
     {
-        private readonly IInputBoxService _inputBoxService;
+        private readonly IMessageService _inputBoxService;
         private readonly INavigationService _navigationService;
+        private readonly IGradeBookRepository _gradeBookRepository;
 
-        public HomeViewModel(IInputBoxService inputBoxService, INavigationService navigationService)
+        public HomeViewModel(IMessageService inputBoxService, INavigationService navigationService, IGradeBookRepository gradeBookRepository)
         {
             _inputBoxService = inputBoxService;
             _navigationService = navigationService;
+            _gradeBookRepository = gradeBookRepository;
             CreateSubmissionCommand = new DelegateCommand(CreateSubmission);
             NewProjectCommand = new DelegateCommand(NewProject);
             SubmissionsCommand = new DelegateCommand(Submissions);
@@ -22,7 +29,23 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private async void Submissions()
         {
-            await _navigationService.ToPage("SubmissionsView");
+            var code = await _inputBoxService.ShowInputBox("Submission Code", "Please enter the teacher code:");
+            if (string.IsNullOrWhiteSpace(code) != true)
+            {
+                var result = await _gradeBookRepository.GetSubmissions(Guid.Parse(code));
+                if (result != null)
+                {
+                    await _navigationService.ToPage("SubmissionsView", new NavigationParameter(){{"Submissions", result}});
+                }
+                else
+                {
+                    await _inputBoxService.ShowAlert("Could not find");
+                }
+            }
+            else
+            {
+                await _inputBoxService.ShowAlert("Could not find");
+            }
         }
 
         private async void NewProject()
@@ -32,10 +55,22 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private async void CreateSubmission()
         {
-            var code = await _inputBoxService.Show("Submission Code", "Please enter the code given by the teacher:");
+            var code = await _inputBoxService.ShowInputBox("Submission Code", "Please enter the code given by the teacher:");
             if (string.IsNullOrWhiteSpace(code) != true)
             {
-
+                var result = await _gradeBookRepository.GetCodeProject(Guid.Parse(code));
+                if (result != null)
+                {
+                    await _navigationService.ToPage("ProjectView", new NavigationParameter() { { "Project", result } });
+                }
+                else
+                {
+                    await _inputBoxService.ShowAlert("Could not find");
+                }
+            }
+            else
+            {
+                await _inputBoxService.ShowAlert("Could not find");
             }
         }
 

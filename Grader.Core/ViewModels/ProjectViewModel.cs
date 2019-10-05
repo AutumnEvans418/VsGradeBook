@@ -42,8 +42,9 @@ namespace AsyncToolWindowSample.ToolWindows
 
         public override async Task InitializeAsync(INavigationParameter parameter)
         {
-            if (parameter.ContainsKey("StudentCode"))
+            if (parameter.ContainsKey("Project") && parameter["Project"] is CodeProject project)
             {
+                CodeProject = project;
                 IsStudentSubmission = true;
             }
             else
@@ -64,7 +65,6 @@ namespace AsyncToolWindowSample.ToolWindows
             if (IsStudentSubmission)
             {
                 var result = await _gradeBookRepository.AddSubmission(Submission);
-
             }
             else
             {
