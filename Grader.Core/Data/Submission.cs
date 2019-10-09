@@ -12,6 +12,11 @@ namespace Grader
         public string StudentName { get; set; }
         public DateTimeOffset DateCreated { get; set; }
 
+        public Submission()
+        {
+            DateCreated = DateTimeOffset.Now;
+            SubmissionFiles = new List<SubmissionFile>();
+        }
         public double Grade
         {
             get => _grade;

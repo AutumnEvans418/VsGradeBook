@@ -50,7 +50,7 @@
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
                         <Label Content="Student Name" DockPanel.Dock="Top"/>
-                        <TextBox Text="{Binding Submission.StudentName}" DockPanel.Dock="Top"></TextBox>
+                        <TextBox Text="{Binding Submission.StudentName}" DockPanel.Dock="Top" Height="20"></TextBox>
                         <TextBlock  VerticalAlignment="Center" 
                                    Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"/>
                         <Button Content="Publish" Height="30" HorizontalAlignment="Right" Width="150" Padding="0" Command="{Binding SubmitCommand}"/>

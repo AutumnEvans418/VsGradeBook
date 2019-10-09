@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
@@ -117,8 +118,8 @@ namespace Grader
 
         public async Task<CodeProject> AddProject(CodeProject project)
         {
-            var result = await _client.PostAsync($"api/project", new StringContent(JsonConvert.SerializeObject(project)));
-
+            var result = await _client.PostAsync($"api/project", new StringContent(JsonConvert.SerializeObject(project), Encoding.UTF8, "application/json"));
+            result.EnsureSuccessStatusCode();
             var content = await result.Content.ReadAsStringAsync();
 
             return JsonConvert.DeserializeObject<CodeProject>(content);
@@ -126,7 +127,8 @@ namespace Grader
 
         public async Task<Submission> AddSubmission(Submission submission)
         {
-            var result = await _client.PostAsync($"api/submission", new StringContent(JsonConvert.SerializeObject(submission)));
+            var result = await _client.PostAsync($"api/submission", new StringContent(JsonConvert.SerializeObject(submission), Encoding.UTF8, "application/json"));
+            result.EnsureSuccessStatusCode();
 
             var content = await result.Content.ReadAsStringAsync();
 

@@ -4,14 +4,16 @@ using Grader;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Grader.Web.Migrations
 {
     [DbContext(typeof(GradeBookDbContext))]
-    partial class GradeBookDbContextModelSnapshot : ModelSnapshot
+    [Migration("20191009003506_RemoveDuplicateRelation")]
+    partial class RemoveDuplicateRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,13 +33,11 @@ namespace Grader.Web.Migrations
 
                     b.Property<DateTimeOffset>("DateCreated");
 
-                    b.Property<string>("Description")
-                        .IsRequired();
+                    b.Property<string>("Description");
 
                     b.Property<DateTimeOffset>("DueDate");
 
-                    b.Property<string>("Name")
-                        .IsRequired();
+                    b.Property<string>("Name");
 
                     b.Property<Guid>("StudentCode");
 
@@ -60,8 +60,7 @@ namespace Grader.Web.Migrations
 
                     b.Property<int>("ProjectId");
 
-                    b.Property<string>("StudentName")
-                        .IsRequired();
+                    b.Property<string>("StudentName");
 
                     b.HasKey("Id");
 
@@ -76,11 +75,9 @@ namespace Grader.Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Content")
-                        .IsRequired();
+                    b.Property<string>("Content");
 
-                    b.Property<string>("FileName")
-                        .IsRequired();
+                    b.Property<string>("FileName");
 
                     b.Property<int>("SubmissionId");
 

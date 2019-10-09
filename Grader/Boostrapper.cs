@@ -19,7 +19,7 @@ namespace Grader
             _container.RegisterType<IConsoleAppGrader, ConsoleAppGrader>();
             _container.RegisterType<ICSharpGenerator, CSharpGenerator>();
 
-            _container.RegisterInstance(new HttpClient(){BaseAddress = new Uri("https://localhost:44301/") });
+            _container.RegisterInstance(new HttpClient(){BaseAddress = new Uri("https://localhost:5001/") });
             _container.RegisterType<IGradeBookRepository, GradeBookRepositoryHttpClient>();
             _container.RegisterType<MainView>();
             _container.RegisterType<IMessageService, InputBoxService>();

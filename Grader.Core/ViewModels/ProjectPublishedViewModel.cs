@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Grader;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
@@ -24,9 +26,16 @@ namespace AsyncToolWindowSample.ToolWindows
         public ProjectPublishedViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
-            StudentCode = Guid.NewGuid().ToString();
-            TeacherCode = Guid.NewGuid().ToString();
             DoneCommand = new DelegateCommand(Done);
+        }
+
+        public async override Task InitializeAsync(INavigationParameter parameter)
+        {
+            if (parameter["Project"] is CodeProject codeProject)
+            {
+                StudentCode = codeProject.StudentCode.ToString();
+                TeacherCode = codeProject.TeacherCode.ToString();
+            } 
         }
 
         private async void Done()

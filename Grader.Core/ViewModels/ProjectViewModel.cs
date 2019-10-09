@@ -14,6 +14,7 @@ namespace AsyncToolWindowSample.ToolWindows
         private readonly IConsoleAppGrader _grader;
         private readonly INavigationService _navigationService;
         private readonly IGradeBookRepository _gradeBookRepository;
+        private readonly IMessageService _messageService;
         private string _actualOutput;
         private string _errorMessage;
         private CodeProject _codeProject;
@@ -21,12 +22,13 @@ namespace AsyncToolWindowSample.ToolWindows
         private bool _isStudentSubmission;
 
         public ProjectViewModel(IVisualStudioService visualStudioService,
-            IConsoleAppGrader grader, INavigationService navigationService, IGradeBookRepository gradeBookRepository)
+            IConsoleAppGrader grader, INavigationService navigationService, IGradeBookRepository gradeBookRepository, IMessageService messageService)
         {
             _visualStudioService = visualStudioService;
             _grader = grader;
             _navigationService = navigationService;
             _gradeBookRepository = gradeBookRepository;
+            _messageService = messageService;
             CodeProject = new CodeProject();
             CodeProject.CsvCases = "";
             CodeProject.CsvExpectedOutput = "Hello World!";
@@ -42,16 +44,18 @@ namespace AsyncToolWindowSample.ToolWindows
 
         public override async Task InitializeAsync(INavigationParameter parameter)
         {
+            Submission = new Submission();
+
             if (parameter.ContainsKey("Project") && parameter["Project"] is CodeProject project)
             {
                 CodeProject = project;
                 IsStudentSubmission = true;
+                Submission.ProjectId = CodeProject.Id;
             }
             else
             {
                 CodeProject = new CodeProject();
             }
-            Submission = new Submission();
         }
 
         public CodeProject CodeProject
@@ -65,6 +69,8 @@ namespace AsyncToolWindowSample.ToolWindows
             if (IsStudentSubmission)
             {
                 var result = await _gradeBookRepository.AddSubmission(Submission);
+                await _messageService.ShowAlert("Submitted!");
+                await _navigationService.ToPage("HomeView");
             }
             else
             {

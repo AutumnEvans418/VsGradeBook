@@ -61,7 +61,7 @@ namespace AsyncToolWindowSample.ToolWindows
                 var result = await _gradeBookRepository.GetCodeProject(Guid.Parse(code));
                 if (result != null)
                 {
-                    await _navigationService.ToPage("ProjectView", new NavigationParameter() { { "Project", result } });
+                    await _navigationService.ToPage("SubmissionProjectView", new NavigationParameter() { { "Project", result } });
                 }
                 else
                 {

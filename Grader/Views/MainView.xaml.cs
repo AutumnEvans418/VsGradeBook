@@ -42,6 +42,7 @@ namespace AsyncToolWindowSample.ToolWindows
             Add<SubmissionView, SubmissionViewModel>();
             Add<HomeView, HomeViewModel>();
             Add<ProjectPublishedView, ProjectPublishedViewModel>();
+            Add<SubmissionProjectView, ProjectViewModel>();
         }
         private Dictionary<string, Func<Control>> pages = new Dictionary<string, Func<Control>>();
         void Add<T, Tv>() where T : Control
