@@ -20,15 +20,15 @@
             <RowDefinition></RowDefinition>
             <RowDefinition Height="60"></RowDefinition>
         </Grid.RowDefinitions>
-        <Label Content="Tax System Submissions" Grid.Row="0" Style="{StaticResource Title}"></Label>
+        <Label Content="{Binding CodeProject.Name}" Grid.Row="0" Style="{StaticResource Title}"></Label>
         <ListBox Grid.Row="1" ItemsSource="{Binding Submissions}" SelectedItem="{Binding SelectedSubmission}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Border>
                         <StackPanel Orientation="Horizontal">
-                            <Label Content="Chris Evans"></Label>
-                            <Label Content="Wednesday"></Label>
-                            <Label Content="100%"></Label>
+                            <Label Content="{Binding StudentName}"></Label>
+                            <Label Content="{Binding DateCreated}" ContentStringFormat="{}{0:d}"></Label>
+                            <Label Content="{Binding Grade}" ContentStringFormat="{}{0:n0}%"></Label>
                         </StackPanel>
                     </Border>
                 </DataTemplate>

@@ -43,7 +43,7 @@ namespace HelloWorld
             var output = "Hello World!";
             var code = fixture.Freeze<Mock<IVisualStudioService>>();
 
-            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { src }.AsEnumerable()));
+            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = src} }.AsEnumerable()));
 
 
             ProjectViewModel model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
@@ -79,7 +79,7 @@ namespace ConsoleApp1
 ";
             var code = new Mock<IVisualStudioService>();
 
-            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { src }.AsEnumerable()));
+            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = src}}.AsEnumerable()));
 
             ProjectViewModel model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
 
@@ -111,7 +111,7 @@ namespace ConsoleApp1
 ";
             var code = new Mock<IVisualStudioService>();
 
-            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { src }.AsEnumerable()));
+            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = src}}.AsEnumerable()));
             ProjectViewModel model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
 
 

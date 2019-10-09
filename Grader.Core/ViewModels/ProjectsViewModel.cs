@@ -1,56 +1,9 @@
 ﻿using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using AsyncToolWindowSample.Models;
 using Grader;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
-    public class SubmissionsViewModel : BindableViewModel
-    {
-        private readonly INavigationService _navigationService;
-        private readonly IVisualStudioService _visualStudioService;
-        private Submission _selectedSubmission;
-        private ObservableCollection<Submission> _submissions;
-
-        public Submission SelectedSubmission
-        {
-            get => _selectedSubmission;
-            set => SetProperty(ref _selectedSubmission, value, SelectedSubmissionChanged);
-        }
-
-        private void SelectedSubmissionChanged()
-        {
-            if (SelectedSubmission != null)
-            {
-                _visualStudioService.OpenOrCreateCSharpFile("", "");
-            }
-        }
-
-        public ObservableCollection<Submission> Submissions
-        {
-            get => _submissions;
-            set => SetProperty(ref _submissions, value);
-        }
-
-        public DelegateCommand DoneCommand { get; }
-
-        public async override Task InitializeAsync(INavigationParameter parameter)
-        {
-        }
-
-        public SubmissionsViewModel(INavigationService navigationService, IVisualStudioService visualStudioService)
-        {
-            _navigationService = navigationService;
-            _visualStudioService = visualStudioService;
-            Submissions = new ObservableCollection<Submission>();
-            DoneCommand = new DelegateCommand(Done);
-        }
-
-        private async void Done()
-        {
-            await _navigationService.ToPage("HomeView");
-        }
-    }
     public class ProjectsViewModel : BindableViewModel
     {
         private readonly IGradeBookRepository _repository;

@@ -249,11 +249,11 @@ namespace Grader
             }
         }
 
-        public async Task<CodeProject> GetCodeProject(Guid studentCode)
+        public async Task<CodeProject> GetCodeProject(Guid? studentCode, Guid? teacherCode)
         {
             using (var db = _dbFunc())
             {
-                return await db.CodeProjects.FirstOrDefaultAsync(p => p.StudentCode == studentCode);
+                return await db.CodeProjects.FirstOrDefaultAsync(p => p.StudentCode == studentCode || p.TeacherCode == teacherCode);
             }
         }
 

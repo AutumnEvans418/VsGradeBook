@@ -16,9 +16,9 @@ namespace Grader.Web.Controllers
             _repository = repository;
         }
         [HttpGet]
-        public async Task<CodeProject> GetProject(Guid studentCode)
+        public async Task<CodeProject> GetProject(Guid studentCode, Guid teacherCode)
         {
-            return await _repository.GetCodeProject(studentCode);
+            return await _repository.GetCodeProject(studentCode, teacherCode);
         }
 
 

@@ -33,14 +33,14 @@ namespace ConsoleApp1
 ";
         }
 
-        public async Task<IEnumerable<string>> GetCSharpFilesAsync()
+        public async Task<IEnumerable<FileContent>> GetCSharpFilesAsync()
         {
-            return new[] {Code};
+            return new[] {new FileContent(){Content = Code }, };
         }
 
         public void OpenOrCreateCSharpFile(string fileName, string content)
         {
-            throw new System.NotImplementedException();
+            Code = content;
         }
     }
 }

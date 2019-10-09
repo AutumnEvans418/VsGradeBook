@@ -22,7 +22,7 @@ namespace Grader
         Task<Enrollment> AddEnrollment(Enrollment enrollment);
         Task<Enrollment> UpdateEnrollment(Enrollment enroll);
         Task DeleteEnrollment(int enrollmentId);
-        Task<CodeProject> GetCodeProject(Guid studentCode);
+        Task<CodeProject> GetCodeProject(Guid? studentCode = null, Guid? teacherCode = null);
         Task<CodeProject> AddProject(CodeProject project);
         Task<Submission> AddSubmission(Submission submission);
         Task<IEnumerable<Submission>> GetSubmissions(Guid teacherCode);

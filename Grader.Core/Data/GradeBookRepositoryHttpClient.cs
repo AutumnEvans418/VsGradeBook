@@ -110,9 +110,18 @@ namespace Grader
             var result = await _client.DeleteAsync($"api/enrollments/{enrollmentId}");
         }
 
-        public async Task<CodeProject> GetCodeProject(Guid studentCode)
+        public async Task<CodeProject> GetCodeProject(Guid? studentCode, Guid? teacherCode)
         {
-            var str = await _client.GetStringAsync($"api/project?studentCode={studentCode}");
+            var url = "api/project?";
+            if (studentCode != null)
+            {
+                url += "studentCode=" + studentCode;
+            }
+            else
+            {
+                url += "teacherCode=" + teacherCode;
+            }
+            var str = await _client.GetStringAsync(url);
             return JsonConvert.DeserializeObject<CodeProject>(str);
         }
 

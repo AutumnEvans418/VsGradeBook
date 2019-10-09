@@ -32,10 +32,10 @@ namespace AsyncToolWindowSample.ToolWindows
             var code = await _inputBoxService.ShowInputBox("Submission Code", "Please enter the teacher code:");
             if (string.IsNullOrWhiteSpace(code) != true)
             {
-                var result = await _gradeBookRepository.GetSubmissions(Guid.Parse(code));
+                var result = await _gradeBookRepository.GetCodeProject(teacherCode:Guid.Parse(code));
                 if (result != null)
                 {
-                    await _navigationService.ToPage("SubmissionsView", new NavigationParameter(){{"Submissions", result}});
+                    await _navigationService.ToPage("SubmissionsView", new NavigationParameter(){{"Project", result}});
                 }
                 else
                 {

@@ -68,6 +68,10 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             if (IsStudentSubmission)
             {
+                var codes = await _visualStudioService.GetCSharpFilesAsync();
+
+                Submission.SubmissionFiles = codes.Select(p => new SubmissionFile(){Content = p.Content, FileName = p.FileName}).ToList();
+
                 var result = await _gradeBookRepository.AddSubmission(Submission);
                 await _messageService.ShowAlert("Submitted!");
                 await _navigationService.ToPage("HomeView");
@@ -115,7 +119,7 @@ namespace AsyncToolWindowSample.ToolWindows
                 }
 
 
-                var result = await _grader.Grade(codes, gradeCases);
+                var result = await _grader.Grade(codes.Select(p=>p.Content), gradeCases);
 
                 Submission.Grade = result.PercentPassing;
                 ErrorMessage = "";

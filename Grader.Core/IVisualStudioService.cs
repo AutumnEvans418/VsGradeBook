@@ -3,9 +3,14 @@ using System.Threading.Tasks;
 
 namespace AsyncToolWindowSample.Models
 {
+    public class FileContent
+    {
+        public string FileName { get; set; }
+        public string Content { get; set; }
+    }
     public interface IVisualStudioService
     {
-        Task<IEnumerable<string>> GetCSharpFilesAsync();
+        Task<IEnumerable<FileContent>> GetCSharpFilesAsync();
         void OpenOrCreateCSharpFile(string fileName, string content);
     }
 }

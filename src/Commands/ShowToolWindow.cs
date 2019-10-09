@@ -30,7 +30,7 @@ namespace AsyncToolWindowSample
         {
             _package = package;
         }
-        public async Task<IEnumerable<string>> GetCSharpFilesAsync()
+        public async Task<IEnumerable<FileContent>> GetCSharpFilesAsync()
         {
             var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
             //var project = await SelectedProject(package);
@@ -48,7 +48,11 @@ namespace AsyncToolWindowSample
 
             var code = projectItems
                 .Where(p => Path.GetExtension(p.Name)?.ToLower() == ".cs")
-                .Select(p => File.ReadAllText(p.Properties.Item("FullPath").Value.ToString())).ToList();
+                .Select(p => new FileContent()
+                {
+                    Content = File.ReadAllText(p.Properties.Item("FullPath").Value.ToString()),
+                    FileName = p.Properties.Item("FullPath").Value.ToString()
+                }).ToList();
             return code;
         }
 
