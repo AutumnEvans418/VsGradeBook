@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows;
 using AsyncToolWindowSample.Models;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
+using Microsoft.VisualStudio.Threading;
 using Process = System.Diagnostics.Process;
 
 namespace VsGrader
@@ -22,50 +24,68 @@ namespace VsGrader
         }
         public async Task<IEnumerable<FileContent>> GetCSharpFilesAsync()
         {
-            var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
-            //var project = await SelectedProject(package);
-            var enumer = dte.Solution.Projects.GetEnumerator();
-            enumer.MoveNext();
-            var project = enumer.Current;
-            var projectItems = new List<ProjectItem>();
-            var items = ((Project)project).ProjectItems.GetEnumerator();
-            while (items.MoveNext())
+            try
             {
-                var item = (ProjectItem)items.Current;
-                //Recursion to get all ProjectItems
-                projectItems.Add(GetFiles(item, projectItems));
-            }
-
-            var code = projectItems
-                .Where(p => Path.GetExtension(p.Name)?.ToLower() == ".cs")
-                .Select(p => new FileContent()
+                var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
+                //var project = await SelectedProject(package);
+                var enumer = dte.Solution.Projects.GetEnumerator();
+                enumer.MoveNext();
+                var project = enumer.Current;
+                var projectItems = new List<ProjectItem>();
+                await _package.JoinableTaskFactory.SwitchToMainThreadAsync();
+                var items = ((Project)project).ProjectItems.GetEnumerator();
+                while (items.MoveNext())
                 {
-                    Content = File.ReadAllText(p.Properties.Item("FullPath").Value.ToString()),
-                    FileName = p.Properties.Item("FullPath").Value.ToString()
-                }).ToList();
-            return code;
+                    var item = (ProjectItem)items.Current;
+                    //Recursion to get all ProjectItems
+                    projectItems.Add(GetFiles(item, projectItems));
+                }
+
+                var code = projectItems
+                    .Where(p => Path.GetExtension(p.Name)?.ToLower() == ".cs")
+                    .Select(p => new FileContent()
+                    {
+                        Content = File.ReadAllText(p.Properties.Item("FullPath").Value.ToString()),
+                        FileName = p.Properties.Item("FullPath").Value.ToString()
+                    }).ToList();
+                return code;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                MessageBox.Show(e.ToString());
+                throw;
+            }
+        
         }
 
         public async void OpenOrCreateCSharpFile(string fileName, string content)
         {
-            var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
-
-            var tempPath = Path.GetTempPath();
-
-            var file = Path.Combine(tempPath, fileName);
-
-            File.WriteAllText(file, content);
-            var kind = dte.ActiveWindow.Kind;
-            var kind2 = dte.ActiveDocument.Kind;
-            var kinds = new List<string>();
-            var en = dte.Windows.GetEnumerator();
-            while (en.MoveNext())
+            try
             {
-                var win = en.Current as Window;
-                kinds.Add(win.Kind);
-            }
+                var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
 
-            Process.Start(file);
+                await _package.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                var tempPath = Path.GetTempPath();
+
+                var file = Path.Combine(tempPath, fileName);
+
+                File.WriteAllText(file, content);
+
+
+                dte.Documents.Open(file, ReadOnly: true);
+              //  dte.OpenFile("Document", file);
+
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                MessageBox.Show(e.ToString());
+            }
+           
+            //Process.Start(file);
 
         }
 

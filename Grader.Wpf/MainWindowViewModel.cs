@@ -35,7 +35,7 @@ namespace ConsoleApp1
 
         public async Task<IEnumerable<FileContent>> GetCSharpFilesAsync()
         {
-            return new[] {new FileContent(){Content = Code }, };
+            return new[] {new FileContent(){Content = Code, FileName = "Program.cs"}, };
         }
 
         public void OpenOrCreateCSharpFile(string fileName, string content)
