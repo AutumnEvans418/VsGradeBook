@@ -8,6 +8,7 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
+using Process = System.Diagnostics.Process;
 
 namespace VsGrader
 {
@@ -63,8 +64,9 @@ namespace VsGrader
                 var win = en.Current as Window;
                 kinds.Add(win.Kind);
             }
-            
-            dte.OpenFile("Document", file);
+
+            Process.Start(file);
+
         }
 
         static ProjectItem GetFiles(ProjectItem item, List<ProjectItem> projectItems)
