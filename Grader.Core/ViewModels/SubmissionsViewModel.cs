@@ -1,8 +1,10 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.Models;
 using Grader;
+using Console = System.Console;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
@@ -11,6 +13,7 @@ namespace AsyncToolWindowSample.ToolWindows
         private readonly INavigationService _navigationService;
         private readonly IVisualStudioService _visualStudioService;
         private readonly IGradeBookRepository _gradeBookRepository;
+        private readonly IMessageService _messageService;
         private Submission _selectedSubmission;
         private ObservableCollection<Submission> _submissions;
         private CodeProject _codeProject;
@@ -28,7 +31,7 @@ namespace AsyncToolWindowSample.ToolWindows
                 var name = SelectedSubmission.StudentName;
                 foreach (var selectedSubmissionSubmissionFile in SelectedSubmission.SubmissionFiles)
                 {
-                    var fileName = name + Path.GetFileName(selectedSubmissionSubmissionFile.FileName);
+                    var fileName = name + "-" + Path.GetFileName(selectedSubmissionSubmissionFile.FileName);
                     _visualStudioService.OpenOrCreateCSharpFile(fileName, selectedSubmissionSubmissionFile.Content);
                 }
 
@@ -51,18 +54,29 @@ namespace AsyncToolWindowSample.ToolWindows
 
         public override async Task InitializeAsync(INavigationParameter parameter)
         {
-            if (parameter["Project"] is CodeProject project)
+            try
             {
-                CodeProject = project;
-                Submissions = new ObservableCollection<Submission>(await _gradeBookRepository.GetSubmissions(project.TeacherCode));
+                if (parameter["Project"] is CodeProject project)
+                {
+                    CodeProject = project;
+                    Submissions = new ObservableCollection<Submission>(await _gradeBookRepository.GetSubmissions(project.TeacherCode));
+                }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                await _messageService.ShowAlert(e.ToString());
+            }
+           
         }
 
-        public SubmissionsViewModel(INavigationService navigationService, IVisualStudioService visualStudioService, IGradeBookRepository gradeBookRepository)
+        public SubmissionsViewModel(INavigationService navigationService,
+            IVisualStudioService visualStudioService, IGradeBookRepository gradeBookRepository, IMessageService messageService)
         {
             _navigationService = navigationService;
             _visualStudioService = visualStudioService;
             _gradeBookRepository = gradeBookRepository;
+            _messageService = messageService;
             Submissions = new ObservableCollection<Submission>();
             DoneCommand = new DelegateCommand(Done);
         }

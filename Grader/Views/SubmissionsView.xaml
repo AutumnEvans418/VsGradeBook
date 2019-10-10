@@ -16,21 +16,29 @@
     </UserControl.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="60"></RowDefinition>
         </Grid.RowDefinitions>
-        <Label Content="{Binding CodeProject.Name}" Grid.Row="0" Style="{StaticResource Title}"></Label>
+        <StackPanel Grid.Row="0">
+            <Label Content="{Binding CodeProject.Name}" Grid.Row="0" Style="{StaticResource Title}"></Label>
+            <TextBlock TextWrapping="Wrap" Text="{Binding CodeProject.Description}" Margin="10"></TextBlock>
+        </StackPanel>
         <ListBox Grid.Row="1" ItemsSource="{Binding Submissions}" SelectedItem="{Binding SelectedSubmission}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Border>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="{Binding StudentName}"></Label>
-                            <Label Content="{Binding DateCreated}" ContentStringFormat="{}{0:d}"></Label>
-                            <Label Content="{Binding Grade}" ContentStringFormat="{}{0:n0}%"></Label>
-                        </StackPanel>
-                    </Border>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="{Binding StudentName}"></Label>
+                        <Label Grid.Column="1" Content="{Binding DateCreated}" ContentStringFormat="{}{0:d}"></Label>
+                        <Label Grid.Column="2" Content="{Binding Grade}" ContentStringFormat="{}{0:P2}"></Label>
+                        <ProgressBar Grid.Column="3" Value="{Binding Grade}" Minimum="0" Maximum="1" Width="30" Background="Red"></ProgressBar>
+                        </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

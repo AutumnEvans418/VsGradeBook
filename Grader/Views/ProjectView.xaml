@@ -15,13 +15,12 @@
             <StackPanel Margin="10">
                 <StackPanel.Resources>
                     <Style TargetType="TextBox">
-                        <Setter Property="AcceptsTab" Value="True"/>
                         <Setter Property="AcceptsReturn" Value="True"/>
                         <Setter Property="MinHeight" Value="80"></Setter>
                     </Style>
                 </StackPanel.Resources>
                 <Label Content="Project Name"/>
-                <TextBox MinHeight="10" Text="{Binding CodeProject.Name}"/>
+                <TextBox MinHeight="10" Text="{Binding CodeProject.Name}" AcceptsTab="False" AcceptsReturn="False"/>
                 <Label Content="Description"/>
                 <TextBox Text="{Binding CodeProject.Description}"></TextBox>
                 <Label Content="Cases (CSV Style)"/>

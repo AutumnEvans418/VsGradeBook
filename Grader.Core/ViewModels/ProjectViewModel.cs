@@ -34,6 +34,7 @@ namespace AsyncToolWindowSample.ToolWindows
             CodeProject.CsvExpectedOutput = "Hello World!";
             TestCommand = new DelegateCommandAsync(Test);
             SubmitCommand = new DelegateCommand(Submit);
+            Submission = new Submission();
         }
 
         public bool IsStudentSubmission
@@ -66,21 +67,30 @@ namespace AsyncToolWindowSample.ToolWindows
 
         private async void Submit()
         {
-            if (IsStudentSubmission)
+            try
             {
-                var codes = await _visualStudioService.GetCSharpFilesAsync();
+                if (IsStudentSubmission)
+                {
+                    var codes = await _visualStudioService.GetCSharpFilesAsync();
 
-                Submission.SubmissionFiles = codes.Select(p => new SubmissionFile(){Content = p.Content, FileName = p.FileName}).ToList();
+                    Submission.SubmissionFiles = codes.Select(p => new SubmissionFile() { Content = p.Content, FileName = p.FileName }).ToList();
 
-                var result = await _gradeBookRepository.AddSubmission(Submission);
-                await _messageService.ShowAlert("Submitted!");
-                await _navigationService.ToPage("HomeView");
+                    var result = await _gradeBookRepository.AddSubmission(Submission);
+                    await _messageService.ShowAlert("Submitted!");
+                    await _navigationService.ToPage("HomeView");
+                }
+                else
+                {
+                    var project = await _gradeBookRepository.AddProject(CodeProject);
+                    await _navigationService.ToPage("ProjectPublishedView", new NavigationParameter() { { "Project", project } });
+                }
             }
-            else
+            catch (Exception e)
             {
-                var project = await _gradeBookRepository.AddProject(CodeProject);
-                await _navigationService.ToPage("ProjectPublishedView", new NavigationParameter(){{"Project", project}});
+                Console.WriteLine(e);
+                await _messageService.ShowAlert(e.ToString());
             }
+         
         }
 
         public async Task Test()
@@ -135,7 +145,6 @@ namespace AsyncToolWindowSample.ToolWindows
             catch (Exception e)
             {
                 Console.WriteLine(e);
-
                 ErrorMessage = e.Message;
             }
 

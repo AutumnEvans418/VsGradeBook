@@ -77,7 +77,7 @@ namespace ConsoleApp1
     }
 }
 ";
-            var code = new Mock<IVisualStudioService>();
+            var code = fixture.Freeze<Mock<IVisualStudioService>>();
 
             code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = src}}.AsEnumerable()));
 
@@ -109,7 +109,7 @@ namespace ConsoleApp1
     }
 }
 ";
-            var code = new Mock<IVisualStudioService>();
+            var code = fixture.Freeze<Mock<IVisualStudioService>>();
 
             code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = src}}.AsEnumerable()));
             ProjectViewModel model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
