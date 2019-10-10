@@ -99,10 +99,16 @@ namespace AsyncToolWindowSample.ToolWindows
             {
                 var gradeCases = new List<IGradeCase>();
                 var codes = await _visualStudioService.GetCSharpFilesAsync();
-                var inputs = CodeProject.CsvCases.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                var outputs = CodeProject.CsvExpectedOutput.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                for (var index = 0; index < outputs.Length; index++)
+                var inputs = CodeProject.CsvCases?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                var outputs = CodeProject.CsvExpectedOutput?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+                for (var index = 0; index < outputs?.Length; index++)
                 {
+                    if (inputs == null)
+                    {
+                        break;
+                    }
+
+                   
                     var input = "";
                     if (index < inputs.Length)
                     {
@@ -128,6 +134,10 @@ namespace AsyncToolWindowSample.ToolWindows
                     gradeCases.Add(new GradeCase(inputArray, outputArray));
                 }
 
+                if (gradeCases.Any() != true)
+                {
+                    gradeCases.Add(new GradeCase());
+                }
 
                 var result = await _grader.Grade(codes.Select(p=>p.Content), gradeCases);
 
@@ -136,7 +146,10 @@ namespace AsyncToolWindowSample.ToolWindows
                 ActualOutput = "";
                 foreach (var resultCaseResult in result.CaseResults)
                 {
-                    ErrorMessage += resultCaseResult.ErrorMessage + "\r\n";
+                    if (!string.IsNullOrWhiteSpace(resultCaseResult.ErrorMessage))
+                    {
+                        ErrorMessage += resultCaseResult.ErrorMessage + "\r\n";
+                    }
                     if (resultCaseResult.ActualOutput.Any())
                         this.ActualOutput += resultCaseResult.ActualOutput.Aggregate((f, s) => f + "," + s) + "\r\n";
 

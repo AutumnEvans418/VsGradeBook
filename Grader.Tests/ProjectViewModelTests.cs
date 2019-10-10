@@ -14,18 +14,20 @@ namespace Grader.Tests
     public class ProjectViewModelTests
     {
         private Fixture fixture;
-        [SetUp]
+        private Mock<IVisualStudioService> vsMock;
+        private ProjectViewModel model;
+       [SetUp]
         public void Setup()
         {
             fixture = new Fixture();
             fixture.Customize(new AutoMoqCustomization() { ConfigureMembers = true, GenerateDelegates = true });
             fixture.Inject<IConsoleAppGrader>(new ConsoleAppGrader(new CSharpGenerator()));
-        }
 
-        [Test]
-        public async Task HelloWorld_Should_Pass()
-        {
-            var src = @"
+            vsMock = fixture.Freeze<Mock<IVisualStudioService>>();
+             model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
+
+        }
+        const string  helloWorldSrc = @"
 using System.Collections;
 using System.Linq;
 using System.Text;
@@ -40,13 +42,31 @@ namespace HelloWorld
         }
     }
 }";
+
+        const string taxSystemSrc = @"
+using System;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine(""Enter Price"");
+            var price = double.Parse(Console.ReadLine());
+
+            Console.WriteLine((price * 1.10));
+        }
+    }
+}
+";
+        [Test]
+        public async Task HelloWorld_Should_Pass()
+        {
+            
             var output = "Hello World!";
-            var code = fixture.Freeze<Mock<IVisualStudioService>>();
 
-            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = src} }.AsEnumerable()));
-
-
-            ProjectViewModel model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
+            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = helloWorldSrc} }.AsEnumerable()));
 
             model.CodeProject.CsvExpectedOutput = output;
 
@@ -60,60 +80,46 @@ namespace HelloWorld
         [Test]
         public async Task InvalidNumberOfInputs_ShouldGiveErrorMessage()
         {
-            var src = @"
-using System;
 
-namespace ConsoleApp1
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine(""Enter Price"");
-            var price = double.Parse(Console.ReadLine());
-
-            Console.WriteLine((price * 1.10));
-        }
-    }
-}
-";
-            var code = fixture.Freeze<Mock<IVisualStudioService>>();
-
-            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = src}}.AsEnumerable()));
-
-            ProjectViewModel model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
-
-
+            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = taxSystemSrc}}.AsEnumerable()));
 
             await model.TestCommand.ExecuteAsync();
             model.ErrorMessage.Should().Be("Case 1: Missing input\r\n");
         }
 
+
+        [Test]
+        public async Task NoInputOutput_Should_Pass()
+        {
+            vsMock.Setup(p => p.GetCSharpFilesAsync())
+                .Returns(Task.FromResult(new[] {new FileContent() {Content = helloWorldSrc}}.AsEnumerable()));
+            model.CodeProject.CsvExpectedOutput = null;
+            model.CodeProject.CsvCases = null;
+            await model.TestCommand.ExecuteAsync();
+
+            model.ErrorMessage.Should().BeNullOrEmpty();
+        }
+
+        [Test]
+        public async Task InputWithNoOutput_Should_Pass()
+        {
+            vsMock.Setup(p => p.GetCSharpFilesAsync())
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystemSrc } }.AsEnumerable()));
+            model.CodeProject.CsvExpectedOutput = null;
+            model.CodeProject.CsvCases = "1,2\r\n1,2";
+            await model.TestCommand.ExecuteAsync();
+
+            model.Submission.Grade.Should().Be(1);
+            model.ErrorMessage.Should().BeNullOrEmpty();
+        }
+
+
         [Test]
         public async Task InvalidNumberOfInputs_Should_NotFailAllCases()
         {
-            var src = @"
-using System;
+            
 
-namespace ConsoleApp1
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine(""Enter Price"");
-            var price = double.Parse(Console.ReadLine());
-
-            Console.WriteLine((price * 1.10));
-        }
-    }
-}
-";
-            var code = fixture.Freeze<Mock<IVisualStudioService>>();
-
-            code.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = src}}.AsEnumerable()));
-            ProjectViewModel model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
-
+            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = taxSystemSrc}}.AsEnumerable()));
 
             model.CodeProject.CsvCases = "10\r\n12\r\ntest";
             model.CodeProject.CsvExpectedOutput = "11\r\n13.2\r\n";
