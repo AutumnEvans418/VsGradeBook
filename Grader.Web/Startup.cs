@@ -28,11 +28,12 @@ namespace Grader.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<GradeBookDbContext>(p =>
-                p.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Grader.Web")));
-
             //services.AddDbContext<GradeBookDbContext>(p =>
-            //    p.UseSqlite("Data Source=Grader.db", b => b.MigrationsAssembly("Grader.Web")));
+            //    p.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Grader.Web")));
+
+            services.AddDbContext<GradeBookDbContext>(p =>
+                p.UseSqlite("Data Source=Grader.db", b => b.MigrationsAssembly("Grader.Web")));
+
 
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2).AddControllersAsServices();

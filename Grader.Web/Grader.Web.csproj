@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="SqliteMigrations\" />
     <Folder Include="wwwroot\" />
   </ItemGroup>
 
@@ -22,12 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Grader.Core\Grader.Core.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Grader.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
