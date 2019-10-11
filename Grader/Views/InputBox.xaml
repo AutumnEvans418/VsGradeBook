@@ -9,6 +9,9 @@
     <StackPanel Margin="10" VerticalAlignment="Bottom">
         <Label Name="Label"></Label>
         <TextBox Name="TextBox"></TextBox>
-        <Button Click="ButtonBase_OnClick" Margin="0,10" HorizontalAlignment="Right" MinWidth="100">OK</Button>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Click="ImportClick" Margin="10,10"  MinWidth="100">Import</Button>
+            <Button Click="ButtonBase_OnClick" Margin="10,10"  MinWidth="100">OK</Button>
+        </StackPanel>
     </StackPanel>
 </Window>

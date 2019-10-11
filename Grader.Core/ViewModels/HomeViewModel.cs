@@ -1,5 +1,6 @@
 ﻿using System;
 using Grader;
+using Newtonsoft.Json;
 using Console = System.Console;
 
 namespace AsyncToolWindowSample.ToolWindows
@@ -24,7 +25,8 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             try
             {
-                var code = await _inputBoxService.ShowInputBox("Submission Code", "Please enter the teacher code:");
+                var code = await _inputBoxService.ShowInputBox("Submission Code", "Please enter the teacher code:",
+                    ()=> GetProjectFile(true));
                 if (string.IsNullOrWhiteSpace(code) != true)
                 {
                     var result = await _gradeBookRepository.GetCodeProject(teacherCode: Guid.Parse(code));
@@ -50,6 +52,33 @@ namespace AsyncToolWindowSample.ToolWindows
           
         }
 
+        private string GetProjectFile(bool teacherCode)
+        {
+            try
+            {
+                var file = _inputBoxService.ShowOpenDialog();
+                if (file != null)
+                {
+                    var project = JsonConvert.DeserializeObject<CodeProject>(file);
+
+                    if (teacherCode)
+                    {
+                        return project.TeacherCode.ToString();
+                    }
+                    else
+                    {
+                        return project.StudentCode.ToString();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                _inputBoxService.ShowAlert("Invalid Project File!");
+            }
+            return null;
+        }
+
         private async void NewProject()
         {
             await _navigationService.ToPage("ProjectView");
@@ -59,7 +88,8 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             try
             {
-                var code = await _inputBoxService.ShowInputBox("Submission Code", "Please enter the code given by the teacher:");
+                var code = await _inputBoxService.ShowInputBox("Submission Code", "Please enter the code given by the teacher:", 
+                    () => GetProjectFile(false));
                 if (string.IsNullOrWhiteSpace(code) != true)
                 {
                     var result = await _gradeBookRepository.GetCodeProject(Guid.Parse(code));

@@ -18,12 +18,12 @@ using Microsoft.Win32;
 
 namespace Grader.Views
 {
-   
+
     public class InputBoxService : IMessageService
     {
-        public async Task<string> ShowInputBox(string title = null, string msg = null)
+        public async Task<string> ShowInputBox(string title, string msg, Func<string> importFunc)
         {
-            var win = new InputBox(msg);
+            var win = new InputBox(msg, importFunc);
             win.Title = title;
             win.ShowDialog();
             return win.TextBox.Text;
@@ -32,6 +32,19 @@ namespace Grader.Views
         public async Task ShowAlert(string msg)
         {
             MessageBox.Show(msg);
+        }
+
+
+        public string ShowOpenDialog()
+        {
+            var dialog = new OpenFileDialog();
+            dialog.Filter = "Json Files|*.json";
+            dialog.FileName = "project";
+            if (dialog.ShowDialog() == true)
+            {
+                return File.ReadAllText(dialog.FileName);
+            }
+            return null;
         }
 
         public async Task ShowSaveDialog(string content)
@@ -51,8 +64,11 @@ namespace Grader.Views
     /// </summary>
     public partial class InputBox : Window
     {
-        public InputBox(string msg)
+        private readonly Func<string> _importFunc;
+
+        public InputBox(string msg, Func<string> importFunc)
         {
+            _importFunc = importFunc;
             InitializeComponent();
             this.Label.Content = msg;
         }
@@ -60,6 +76,12 @@ namespace Grader.Views
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void ImportClick(object sender, RoutedEventArgs e)
+        {
+            if (_importFunc != null)
+                this.TextBox.Text = _importFunc();
         }
     }
 }
