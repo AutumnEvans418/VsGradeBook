@@ -71,3 +71,45 @@ Simplyifing grading code in visual studio.  No more sending compressed files, do
 - [Analyzing and changing the c# programs](https://github.com/dotnet/roslyn/wiki/Getting-Started-C%23-Syntax-Transformation)
 - [In memory compilation](https://josephwoodward.co.uk/2016/12/in-memory-c-sharp-compilation-using-roslyn)
 
+## Example
+
+### Longest Word
+
+Have the function LongestWord(sen) take the sen parameter being passed and return the largest word in the string. If there are two or more words that are the same length, return the first word from the string with that length. Ignore punctuation and assume sen will not be empty.
+
+Inputs:
+test method
+super long something
+I love dogs
+fun& time
+
+Expected Outputs:
+method
+something
+love
+time
+
+```
+using System;
+using System.Linq;
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var item = Console.ReadLine();
+
+            var words = item.Split(" ");
+
+            var longestWord = words
+                .FirstOrDefault(p => p.ToList().Count == words.Max(r => r.Length));
+
+            Console.WriteLine(longestWord);
+        }
+    }
+}
+
+```
+
+[Source](https://www.coderbyte.com/editor/Longest%20Word:Csharp)

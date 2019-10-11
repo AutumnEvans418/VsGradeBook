@@ -23,7 +23,7 @@
                 <Label Content="Project Name"/>
                 <TextBox MinHeight="10" Text="{Binding CodeProject.Name}" AcceptsTab="False" AcceptsReturn="False"/>
                 <Label Content="Description"/>
-                <TextBox Text="{Binding CodeProject.Description}"></TextBox>
+                <TextBox Text="{Binding CodeProject.Description}"  TextWrapping="Wrap"></TextBox>
                 <Label Content="Cases (CSV Style)"/>
                 <TextBox  Text="{Binding CodeProject.CsvCases}" />
                 <Label Content="Expected Output (CSV Style)"/>
