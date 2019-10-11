@@ -7,7 +7,7 @@
 
              xmlns:local="clr-namespace:Grader.Views"
              xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader.Core"
-             d:DesignHeight="1000" d:DesignWidth="728" Background="White" d:DataContext="{d:DesignInstance toolWindows:HomeViewModel}">
+             d:DesignHeight="1000" d:DesignWidth="728" d:DataContext="{d:DesignInstance toolWindows:HomeViewModel}">
     <UserControl.Resources>
         <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
     </UserControl.Resources>

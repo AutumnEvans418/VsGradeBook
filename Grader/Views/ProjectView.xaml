@@ -6,12 +6,13 @@
              xmlns:local="clr-namespace:AsyncToolWindowSample.Views"
              xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader.Core"
              mc:Ignorable="d" 
-            d:DesignWidth="400" d:DataContext="{d:DesignInstance toolWindows:ProjectViewModel}">
+            d:DesignWidth="400" 
+             d:DataContext="{d:DesignInstance toolWindows:ProjectViewModel}">
     <UserControl.Resources>
         <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
     </UserControl.Resources>
     <ScrollViewer>
-        <Grid Background="White">
+        <Grid >
             <StackPanel Margin="10">
                 <StackPanel.Resources>
                     <Style TargetType="TextBox">

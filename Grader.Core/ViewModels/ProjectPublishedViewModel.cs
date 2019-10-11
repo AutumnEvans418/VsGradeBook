@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Grader;
+using Newtonsoft.Json;
 
 namespace AsyncToolWindowSample.ToolWindows
 {
     public class ProjectPublishedViewModel : BindableViewModel
     {
         private readonly INavigationService _navigationService;
+        private readonly IMessageService _messageService;
         private string _studentCode;
         private string _teacherCode;
 
@@ -23,16 +25,27 @@ namespace AsyncToolWindowSample.ToolWindows
         }
 
         public DelegateCommand DoneCommand { get; set; }
-        public ProjectPublishedViewModel(INavigationService navigationService)
+        public DelegateCommand SaveCommand { get; set; }
+        public ProjectPublishedViewModel(INavigationService navigationService, IMessageService messageService)
         {
             _navigationService = navigationService;
+            _messageService = messageService;
             DoneCommand = new DelegateCommand(Done);
+            SaveCommand = new DelegateCommand(Save);
         }
 
+        private void Save()
+        {
+            var json = JsonConvert.SerializeObject(_codeProject);
+            _messageService.ShowSaveDialog(json);
+        }
+
+        private CodeProject _codeProject;
         public async override Task InitializeAsync(INavigationParameter parameter)
         {
             if (parameter["Project"] is CodeProject codeProject)
             {
+                _codeProject = codeProject;
                 StudentCode = codeProject.StudentCode.ToString();
                 TeacherCode = codeProject.TeacherCode.ToString();
             } 

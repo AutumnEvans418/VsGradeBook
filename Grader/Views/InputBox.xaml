@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Grader.Views"
              mc:Ignorable="d" 
-             Height="150" Background="White" Width="500">
+             Height="150" Width="500">
     <StackPanel Margin="10" VerticalAlignment="Bottom">
         <Label Name="Label"></Label>
         <TextBox Name="TextBox"></TextBox>

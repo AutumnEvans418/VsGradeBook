@@ -6,5 +6,6 @@ namespace AsyncToolWindowSample.ToolWindows
     {
         Task<string> ShowInputBox(string title = null, string msg = null);
         Task ShowAlert(string msg);
+        Task ShowSaveDialog(string content);
     }
 }

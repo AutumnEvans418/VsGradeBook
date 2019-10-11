@@ -36,8 +36,11 @@ namespace VsGrader
             var con = boot.Initialize();
             con.RegisterInstance(VsGraderPackage.Package);
             con.RegisterType<IVisualStudioService, VisualStudioService>();
+
             var mainView = con.Resolve<MainView>();
+           
             this.Content = mainView;
+
             mainView.ToPage("HomeView");
         }
     }

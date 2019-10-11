@@ -8,7 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450"
              d:DesignWidth="400" 
-             Background="White" 
              d:DataContext="{d:DesignInstance toolWindows:ProjectPublishedViewModel}">
     <UserControl.Resources>
         <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
@@ -28,8 +27,9 @@
                 <Label HorizontalAlignment="Center" Content="Teacher Code" Style="{StaticResource Title}"/>
                 <TextBox IsReadOnly="True" Text="{Binding TeacherCode, Mode=OneWay}"></TextBox>
             </StackPanel>
-            <StackPanel HorizontalAlignment="Center" Grid.Row="2">
-                <Label  Foreground="Red" Content="Please Save!" Style="{StaticResource Title}"></Label>
+            <StackPanel  Grid.Row="2">
+                <Label HorizontalAlignment="Center"  Foreground="Red" Content="Please Save!" Style="{StaticResource Title}"></Label>
+                <Button Content="Save" Command="{Binding SaveCommand}"></Button>
                 <Button Content="Done" Command="{Binding DoneCommand}"></Button>
             </StackPanel>
         </Grid>
