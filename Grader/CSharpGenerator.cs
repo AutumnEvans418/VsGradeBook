@@ -29,12 +29,12 @@ namespace Grader
                 TypeInferenceRewriter reWriter = new TypeInferenceRewriter(model);
                 SyntaxNode newSource = reWriter.Visit(p.GetRoot());
                 return newSource.SyntaxTree;
-            });
+            }).ToArray();
 
 
 
 
-            var finalCompile = CreateTestCompilation(newTrees.ToArray());
+            var finalCompile = CreateTestCompilation(newTrees);
 
             var stream = new MemoryStream();
             var emitResult = finalCompile.Emit(stream);
@@ -47,7 +47,14 @@ namespace Grader
                 var assembly = Assembly.Load(stream.ToArray());
                 return () =>
                 {
-                    assembly.EntryPoint.Invoke(null, new object[] { new string[] { } });
+                    if (assembly.EntryPoint.GetParameters().Any())
+                    {
+                        assembly.EntryPoint.Invoke(null, new object[] { new string[] { } });
+                    }
+                    else
+                    {
+                        assembly.EntryPoint.Invoke(null, null);
+                    }
                 };
                 // assembly.EntryPoint.Invoke(null, new object[] { new string[] { } });
 
@@ -78,7 +85,11 @@ namespace Grader
             MetadataReference csharpCodeAnalysis =
                 MetadataReference.CreateFromFile(typeof(CSharpSyntaxTree).Assembly.Location);
 
-            MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, grader, NetStandard };
+
+            var core = MetadataReference.CreateFromFile(typeof(System.Linq.IQueryable<>).Assembly.Location);
+            var data = MetadataReference.CreateFromFile(typeof(System.Data.DataColumn).Assembly.Location);
+
+            MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, grader, NetStandard , core,data};
 
             return CSharpCompilation.Create("Test", trees, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
         }

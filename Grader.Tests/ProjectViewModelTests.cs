@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.Models;
 using AsyncToolWindowSample.ToolWindows;
@@ -7,6 +8,10 @@ using AutoFixture.AutoMoq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
+
+
+
+
 
 namespace Grader.Tests
 {
@@ -121,7 +126,8 @@ namespace ConsoleApp1
         }
 
 
-        private const string longestWordProgram = @"using System;
+        private const string longestWordProgram = @"
+using System;
 using System.Linq;
 namespace ConsoleApp1
 {
@@ -131,35 +137,68 @@ namespace ConsoleApp1
         {
             var item = Console.ReadLine();
 
-            var words = item.Split("" "");
+            var words = item.Split(' ');
 
-        var longestWord = words
-            .FirstOrDefault(p => p.ToList().Count == words.Max(r => r.Length));
+            var longestWord = words
+                .FirstOrDefault(p => p.ToList().Count == words.Max(r => r.Length));
 
-        Console.WriteLine(longestWord);
+            Console.WriteLine(longestWord);
+        }
     }
-}
 }";
 
+        private const string longestWordProgramBestSolution = @"using System;
+using System.Linq;
+
+class MainClass {
+  public static string LongestWord(string sen) { 
+  
+    string[] words = sen.Split(' ');
+
+
+    return words.OrderByDescending( s => s.Length ).First();;
+            
+  }
+
+  static void Main() {  
+    // keep this function call here
+    Console.WriteLine(LongestWord(Console.ReadLine()));
+  } 
+   
+}";
+
+        private const string emptyMain = @"class MainClass {static void Main(){}}";
 
         [Test]
-        public async Task LongestWordProgram_Should_Pass()
+        public async Task MainWithNoParameters_Should_NotThrowException()
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
-                .Returns(Task.FromResult(new[] { new FileContent() { Content = longestWordProgram } }.AsEnumerable()));
-            model.CodeProject.CsvExpectedOutput = @"method  
-something  
-love  
-time  ";
-            model.CodeProject.CsvCases = @"test method  
-super long something  
-I love dogs  
-fun& time  ";
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = emptyMain } }.AsEnumerable()));
+            await model.TestCommand.ExecuteAsync();
+            model.ErrorMessage.Should().BeNullOrEmpty();
+        }
+
+
+
+        [TestCase(longestWordProgram, .75)]
+        [TestCase(longestWordProgramBestSolution, .75)]
+        public async Task LongestWordProgram_Should_Pass(string src, double result)
+        {
+            vsMock.Setup(p => p.GetCSharpFilesAsync())
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = src } }.AsEnumerable()));
+            model.CodeProject.CsvExpectedOutput = @"method
+something
+love
+time";
+            model.CodeProject.CsvCases = @"test method
+super long something
+I love dogs
+fun& time";
 
             await model.TestCommand.ExecuteAsync();
             model.ErrorMessage.Should().BeNullOrEmpty();
 
-            model.Submission.Grade.Should().Be(1);
+            model.Submission.Grade.Should().Be(result);
         }
 
 

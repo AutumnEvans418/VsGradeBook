@@ -42,8 +42,8 @@ namespace Grader
             syntaxNode = null;
             var symbol = _model.GetSymbolInfo(invoke);
 
-            var result = symbol.Symbol.ToString();
-            if (result.StartsWith("System.Console"))
+            var result = symbol.Symbol?.ToString();
+            if (result?.StartsWith("System.Console") == true)
             {
                 if (invoke.Expression is IdentifierNameSyntax methodId)
                 {
