@@ -33,13 +33,8 @@ namespace AsyncToolWindowSample.ToolWindows
             InitializeComponent();
 
             _container.RegisterInstance<INavigationService>(this);
-            Add<LoginView, LoginViewModel>();
             Add<ProjectView, ProjectViewModel>();
-            Add<ClassesView, ClassesViewModel>();
-            Add<AddClassView, AddClassViewModel>();
-            Add<ProjectsView, ProjectsViewModel>();
             Add<SubmissionsView, SubmissionsViewModel>();
-            Add<SubmissionView, SubmissionViewModel>();
             Add<HomeView, HomeViewModel>();
             Add<ProjectPublishedView, ProjectPublishedViewModel>();
             Add<SubmissionProjectView, ProjectViewModel>();
