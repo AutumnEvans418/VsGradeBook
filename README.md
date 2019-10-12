@@ -104,6 +104,6 @@ class MainClass {
 
 #### Implementation
 Home View/Start Screen
-![Home View](Images/LongestWordHomeView.png)
+![Home View](Images/LongestWordHomeView.PNG)
 Create a new project view
-![Project View](Images/LongestWordProjectView.png)
+![Project View](Images/LongestWordProjectView.PNG)
