@@ -48,6 +48,8 @@ Simplyifing grading code in visual studio.  No more sending compressed files, do
 - Roslyn Compiler
   - [Analyzing and changing the c# programs](https://github.com/dotnet/roslyn/wiki/Getting-Started-C%23-Syntax-Transformation)
   - [In memory compilation](https://josephwoodward.co.uk/2016/12/in-memory-c-sharp-compilation-using-roslyn)
+  - [How to use the CSharp Syntax Rewriter](https://johnkoerner.com/csharp/using-a-csharp-syntax-rewriter/)
+  - [Removing Empty Statements with the CSharp Syntax Rewriter](https://joshvarty.com/2014/08/15/learn-roslyn-now-part-5-csharpsyntaxrewriter/)
 - VSIX
   - [Visual Studio Extension Samples](https://github.com/Microsoft/VSSDK-Extensibility-Samples)
   - [VSIX Extension Docs](https://docs.microsoft.com/en-us/visualstudio/extensibility/starting-to-develop-visual-studio-extensions?view=vs-2019)
