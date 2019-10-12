@@ -17,11 +17,11 @@
                 <Label Content="Project Name"/>
                 <TextBox MinHeight="10" Text="{Binding CodeProject.Name}" AcceptsTab="False" AcceptsReturn="False"/>
                 <Label Content="Description"/>
-                <TextBox Text="{Binding CodeProject.Description}"  TextWrapping="Wrap"></TextBox>
+                <TextBox Style="{StaticResource BigBox}" Text="{Binding CodeProject.Description}"  TextWrapping="Wrap"></TextBox>
                 <Label Content="Cases (CSV Style)"/>
-                <TextBox  Text="{Binding CodeProject.CsvCases}" />
+                <TextBox Style="{StaticResource BigBox}"  Text="{Binding CodeProject.CsvCases}" />
                 <Label Content="Expected Output (CSV Style)"/>
-                <TextBox Text="{Binding CodeProject.CsvExpectedOutput}"/>
+                <TextBox Style="{StaticResource BigBox}" Text="{Binding CodeProject.CsvExpectedOutput}"/>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
@@ -40,7 +40,7 @@
 
                     <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
                         <Label  Content="Actual Output"/>
-                        <TextBox IsReadOnly="True" Text="{Binding ActualOutput, Mode=OneWay}"/>
+                        <TextBox Style="{StaticResource BigBox}" IsReadOnly="True" Text="{Binding ActualOutput, Mode=OneWay}"/>
                     </StackPanel>
 
 

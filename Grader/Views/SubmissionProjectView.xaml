@@ -40,7 +40,7 @@
 
                     <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
                         <Label  Content="Actual Output"/>
-                        <TextBox IsReadOnly="True" Text="{Binding ActualOutput, Mode=OneWay}"/>
+                        <TextBox Style="{StaticResource BigBox}" IsReadOnly="True" Text="{Binding ActualOutput, Mode=OneWay}"/>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0">
                         <Label Content="Student Name" DockPanel.Dock="Top"/>
