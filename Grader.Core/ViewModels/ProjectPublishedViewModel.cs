@@ -30,7 +30,7 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             _navigationService = navigationService;
             _messageService = messageService;
-            DoneCommand = new DelegateCommand(Done);
+            DoneCommand = new DelegateCommandAsync(Done);
             SaveCommand = new DelegateCommand(Save);
         }
 
@@ -51,7 +51,7 @@ namespace AsyncToolWindowSample.ToolWindows
             } 
         }
 
-        private async void Done()
+        private async Task Done()
         {
             await _navigationService.ToPage("HomeView");
         }

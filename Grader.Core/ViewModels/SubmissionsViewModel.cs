@@ -78,10 +78,10 @@ namespace AsyncToolWindowSample.ToolWindows
             _gradeBookRepository = gradeBookRepository;
             _messageService = messageService;
             Submissions = new ObservableCollection<Submission>();
-            DoneCommand = new DelegateCommand(Done);
+            DoneCommand = new DelegateCommandAsync(Done);
         }
 
-        private async void Done()
+        private async Task Done()
         {
             await _navigationService.ToPage("HomeView");
         }

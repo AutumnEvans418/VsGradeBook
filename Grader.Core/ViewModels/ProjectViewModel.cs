@@ -33,7 +33,7 @@ namespace AsyncToolWindowSample.ToolWindows
             CodeProject.CsvCases = "";
             CodeProject.CsvExpectedOutput = "Hello World!";
             TestCommand = new DelegateCommandAsync(Test);
-            SubmitCommand = new DelegateCommand(Submit);
+            SubmitCommand = new DelegateCommandAsync(Submit);
             Submission = new Submission();
         }
 
@@ -65,7 +65,7 @@ namespace AsyncToolWindowSample.ToolWindows
             set => SetProperty(ref _codeProject, value);
         }
 
-        private async void Submit()
+        private async Task Submit()
         {
             try
             {

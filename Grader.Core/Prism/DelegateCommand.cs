@@ -6,8 +6,8 @@ namespace AsyncToolWindowSample.ToolWindows
 {
     public class DelegateCommand : DelegateCommandBase
     {
-        Action _executeMethod;
-        Func<bool> _canExecuteMethod;
+        protected Action ExecuteMethod;
+        protected  Func<bool> CanExecuteMethod;
 
         /// <summary>
         /// Creates a new instance of <see cref="DelegateCommand"/> with the <see cref="Action"/> to invoke on execution.
@@ -19,6 +19,11 @@ namespace AsyncToolWindowSample.ToolWindows
 
         }
 
+        public DelegateCommand()
+        {
+            
+        }
+
         /// <summary>
         /// Creates a new instance of <see cref="DelegateCommand"/> with the <see cref="Action"/> to invoke on execution
         /// and a <see langword="Func" /> to query for determining if the command can execute.
@@ -26,13 +31,9 @@ namespace AsyncToolWindowSample.ToolWindows
         /// <param name="executeMethod">The <see cref="Action"/> to invoke when <see cref="ICommand.Execute"/> is called.</param>
         /// <param name="canExecuteMethod">The <see cref="Func{TResult}"/> to invoke when <see cref="ICommand.CanExecute"/> is called</param>
         public DelegateCommand(Action executeMethod, Func<bool> canExecuteMethod)
-            : base()
         {
-            if (executeMethod == null || canExecuteMethod == null)
-                throw new ArgumentNullException(nameof(executeMethod), "not null");
-
-            _executeMethod = executeMethod;
-            _canExecuteMethod = canExecuteMethod;
+            ExecuteMethod = executeMethod;
+            CanExecuteMethod = canExecuteMethod;
         }
 
         ///<summary>
@@ -40,7 +41,7 @@ namespace AsyncToolWindowSample.ToolWindows
         ///</summary>
         public void Execute()
         {
-            _executeMethod();
+            ExecuteMethod();
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace AsyncToolWindowSample.ToolWindows
         /// <returns>Returns <see langword="true"/> if the command can execute,otherwise returns <see langword="false"/>.</returns>
         public bool CanExecute()
         {
-            return _canExecuteMethod();
+            return CanExecuteMethod();
         }
 
         /// <summary>
@@ -90,7 +91,7 @@ namespace AsyncToolWindowSample.ToolWindows
         /// <returns>The current instance of DelegateCommand</returns>
         public DelegateCommand ObservesCanExecute(Expression<Func<bool>> canExecuteExpression)
         {
-            _canExecuteMethod = canExecuteExpression.Compile();
+            CanExecuteMethod = canExecuteExpression.Compile();
             ObservesPropertyInternal(canExecuteExpression);
             return this;
         }

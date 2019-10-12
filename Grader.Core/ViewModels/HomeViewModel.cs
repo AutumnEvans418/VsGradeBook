@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Grader;
 using Newtonsoft.Json;
 using Console = System.Console;
@@ -16,12 +17,12 @@ namespace AsyncToolWindowSample.ToolWindows
             _inputBoxService = inputBoxService;
             _navigationService = navigationService;
             _gradeBookRepository = gradeBookRepository;
-            CreateSubmissionCommand = new DelegateCommand(CreateSubmission);
-            NewProjectCommand = new DelegateCommand(NewProject);
-            SubmissionsCommand = new DelegateCommand(Submissions);
+            CreateSubmissionCommand = new DelegateCommandAsync(CreateSubmission);
+            NewProjectCommand = new DelegateCommandAsync(NewProject);
+            SubmissionsCommand = new DelegateCommandAsync(Submissions);
         }
 
-        private async void Submissions()
+        private async Task Submissions()
         {
             try
             {
@@ -79,12 +80,12 @@ namespace AsyncToolWindowSample.ToolWindows
             return null;
         }
 
-        private async void NewProject()
+        private async Task NewProject()
         {
             await _navigationService.ToPage("ProjectView");
         }
 
-        private async void CreateSubmission()
+        private async Task CreateSubmission()
         {
             try
             {
