@@ -121,6 +121,59 @@ namespace ConsoleApp1
         }
 
 
+        private const string longestWordProgram = @"using System;
+using System.Linq;
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var item = Console.ReadLine();
+
+            var words = item.Split("" "");
+
+        var longestWord = words
+            .FirstOrDefault(p => p.ToList().Count == words.Max(r => r.Length));
+
+        Console.WriteLine(longestWord);
+    }
+}
+}";
+
+
+        [Test]
+        public async Task LongestWordProgram_Should_Pass()
+        {
+            vsMock.Setup(p => p.GetCSharpFilesAsync())
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = longestWordProgram } }.AsEnumerable()));
+            model.CodeProject.CsvExpectedOutput = @"method  
+something  
+love  
+time  ";
+            model.CodeProject.CsvCases = @"test method  
+super long something  
+I love dogs  
+fun& time  ";
+
+            await model.TestCommand.ExecuteAsync();
+            model.ErrorMessage.Should().BeNullOrEmpty();
+
+            model.Submission.Grade.Should().Be(1);
+        }
+
+
+        [Test]
+        public void LongestWord_Should_Pass()
+        {
+            var results = ProjectViewModel.ConvertToGradeCases(new[] {"method", "something", "love", "time"},
+                new[] {"test method", "super long something", "I love dogs", "fun& time"});
+
+
+            results.Should().HaveCount(4);
+        }
+
+
 
         [Test]
         public async Task InvalidNumberOfInputs_Should_NotFailAllCases()
