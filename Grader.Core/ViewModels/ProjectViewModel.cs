@@ -97,47 +97,10 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             try
             {
-                var gradeCases = new List<IGradeCase>();
                 var codes = await _visualStudioService.GetCSharpFilesAsync();
-                var inputs = CodeProject.CsvCases?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                var outputs = CodeProject.CsvExpectedOutput?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
-                for (var index = 0; index < outputs?.Length; index++)
-                {
-                    if (inputs == null)
-                    {
-                        break;
-                    }
-
-                   
-                    var input = "";
-                    if (index < inputs.Length)
-                    {
-                        input = inputs[index];
-                    }
-
-                    var output = outputs[index];
-
-
-                    string[] inputArray = new string[0];
-                    if (!string.IsNullOrEmpty(input))
-                    {
-                        inputArray = input.Split(new[] { "," }, StringSplitOptions.None);
-                    }
-
-                    string[] outputArray = new string[0];
-
-                    if (!string.IsNullOrEmpty(output))
-                    {
-                        outputArray = output.Split(new[] { "," }, StringSplitOptions.None);
-                    }
-
-                    gradeCases.Add(new GradeCase(inputArray, outputArray));
-                }
-
-                if (gradeCases.Any() != true)
-                {
-                    gradeCases.Add(new GradeCase());
-                }
+                var inputs = CodeProject.CsvCases?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None) ?? new string[0];
+                var outputs = CodeProject.CsvExpectedOutput?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None) ?? new string[0];
+                var gradeCases = ConvertToGradeCases(outputs, inputs);
 
                 var result = await _grader.Grade(codes.Select(p=>p.Content), gradeCases);
 
@@ -163,6 +126,51 @@ namespace AsyncToolWindowSample.ToolWindows
 
         }
 
+        public static List<IGradeCase> ConvertToGradeCases(string[] outputs, string[] inputs)
+        {
+            var gradeCases = new List<IGradeCase>();
+
+            var highest = new[] {outputs.Length, inputs.Length}.Max();
+
+            for (var index = 0; index < highest; index++)
+            {
+                var output = "";
+                var input = "";
+                if (index < inputs.Length)
+                {
+                    input = inputs[index];
+                }
+
+                if (index < outputs.Length)
+                {
+                    output = outputs[index];
+                }
+
+
+
+                string[] inputArray = new string[0];
+                if (!string.IsNullOrEmpty(input))
+                {
+                    inputArray = input.Split(new[] {","}, StringSplitOptions.None);
+                }
+
+                string[] outputArray = new string[0];
+
+                if (!string.IsNullOrEmpty(output))
+                {
+                    outputArray = output.Split(new[] {","}, StringSplitOptions.None);
+                }
+
+                gradeCases.Add(new GradeCase(inputArray, outputArray));
+            }
+
+            if (gradeCases.Any() != true)
+            {
+                gradeCases.Add(new GradeCase());
+            }
+
+            return gradeCases;
+        }
 
 
         public string ErrorMessage

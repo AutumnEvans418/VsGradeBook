@@ -113,6 +113,14 @@ namespace ConsoleApp1
             model.ErrorMessage.Should().BeNullOrEmpty();
         }
 
+        [Test]
+        public void InputWithoutOutput_Count_Should_BeTwo()
+        {
+            var result = ProjectViewModel.ConvertToGradeCases(new string[0], new[] {"1,2", "1,2"});
+            result.Should().HaveCount(2);
+        }
+
+
 
         [Test]
         public async Task InvalidNumberOfInputs_Should_NotFailAllCases()
