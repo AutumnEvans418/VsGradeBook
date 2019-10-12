@@ -68,9 +68,13 @@ namespace Grader
                 TypeInferenceRewriter reWriter = new TypeInferenceRewriter(model);
                 SyntaxNode newSource = reWriter.Visit(p.GetRoot());
                 System.Console.WriteLine(newSource.GetText());
-                return newSource.SyntaxTree;
+                return (newSource.SyntaxTree, reWriter.HasChanges);
             }).ToArray();
-            return newTrees;
+            if (newTrees.Any(p => p.HasChanges))
+            {
+                return CreateSyntaxTrees(newTrees.Select(r=>r.SyntaxTree.GetText().ToString()));
+            }
+            return newTrees.Select(p=>p.SyntaxTree).ToArray();
         }
 
         private Compilation CreateTestCompilation(SyntaxTree[] trees)
