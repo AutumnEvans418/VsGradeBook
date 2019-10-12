@@ -78,24 +78,26 @@ time
 ```
 using System;
 using System.Linq;
-namespace ConsoleApp1
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var item = Console.ReadLine();
 
-            var words = item.Split(" ");
+class MainClass {
+  public static string LongestWord(string sen) { 
+  
+    string[] words = sen.Split(' ');
 
-            var longestWord = words
-                .FirstOrDefault(p => p.ToList().Count == words.Max(r => r.Length));
 
-            Console.WriteLine(longestWord);
-        }
-    }
+    return words.OrderByDescending( s => s.Length ).First();;
+            
+  }
+
+  static void Main() {  
+    // keep this function call here
+    Console.WriteLine(LongestWord(Console.ReadLine()));
+  } 
+   
 }
 
 ```
+
+
 
 [Source](https://www.coderbyte.com/editor/Longest%20Word:Csharp)
