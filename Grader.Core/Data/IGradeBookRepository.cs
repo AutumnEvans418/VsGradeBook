@@ -10,5 +10,6 @@ namespace Grader
         Task<CodeProject> AddProject(CodeProject project);
         Task<Submission> AddSubmission(Submission submission);
         Task<IEnumerable<Submission>> GetSubmissions(Guid teacherCode);
+        Task<IEnumerable<CodeProject>> GetCodeProjects();
     }
 }

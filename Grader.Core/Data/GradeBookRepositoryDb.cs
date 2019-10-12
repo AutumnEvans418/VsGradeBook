@@ -68,6 +68,14 @@ namespace Grader
                 return await db.Submissions.Where(p => projects.Contains(p.ProjectId)).Include(p=>p.SubmissionFiles).ToListAsync();
             }
         }
+
+        public async Task<IEnumerable<CodeProject>> GetCodeProjects()
+        {
+            using (var db = _dbFunc())
+            {
+                return await db.CodeProjects.ToListAsync();
+            }
+        }
     }
 
 

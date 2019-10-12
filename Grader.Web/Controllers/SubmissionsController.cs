@@ -7,11 +7,11 @@ namespace Grader.Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SubmissionController : ControllerBase
+    public class SubmissionsController : ControllerBase
     {
         private readonly IGradeBookRepository _gradeBookRepository;
 
-        public SubmissionController(IGradeBookRepository gradeBookRepository)
+        public SubmissionsController(IGradeBookRepository gradeBookRepository)
         {
             _gradeBookRepository = gradeBookRepository;
         }
