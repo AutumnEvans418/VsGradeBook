@@ -23,7 +23,12 @@
             <Label Content="{Binding CodeProject.Name}" Grid.Row="0" Style="{StaticResource Title}"></Label>
             <TextBlock TextWrapping="Wrap" Text="{Binding CodeProject.Description}" Margin="10"></TextBlock>
         </StackPanel>
-        <ListBox Grid.Row="1" ItemsSource="{Binding Submissions}" SelectedItem="{Binding SelectedSubmission}">
+        <ListBox 
+            Grid.Row="1" 
+            ItemsSource="{Binding Submissions}" 
+            SelectedItem="{Binding SelectedSubmission}"
+            Background="Transparent"
+            >
             <ListBox.ItemTemplate>
                 <DataTemplate>
                         <Grid>

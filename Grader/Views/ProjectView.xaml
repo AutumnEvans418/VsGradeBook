@@ -14,12 +14,6 @@
     <ScrollViewer>
         <Grid >
             <StackPanel Margin="10">
-                <StackPanel.Resources>
-                    <Style TargetType="TextBox">
-                        <Setter Property="AcceptsReturn" Value="True"/>
-                        <Setter Property="MinHeight" Value="80"></Setter>
-                    </Style>
-                </StackPanel.Resources>
                 <Label Content="Project Name"/>
                 <TextBox MinHeight="10" Text="{Binding CodeProject.Name}" AcceptsTab="False" AcceptsReturn="False"/>
                 <Label Content="Description"/>
@@ -39,7 +33,7 @@
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Button Content="Test" Margin="10"  Command="{Binding TestCommand}"/>
-                    <StackPanel Grid.Column="1">
+                    <StackPanel Grid.Row="0" Grid.Column="1">
                         <Label Content="{Binding Submission.Grade}" ContentStringFormat="{}{0:P2}" FontWeight="Bold"/>
                         <ProgressBar Value="{Binding Submission.Grade}" Minimum="0" Maximum="1" Height="20"></ProgressBar>
                     </StackPanel>
@@ -50,11 +44,13 @@
                     </StackPanel>
 
 
-                    <TextBlock  VerticalAlignment="Center" Grid.Row="2" 
-                               Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"/>
+                    <TextBlock  VerticalAlignment="Center" Grid.Row="2" Grid.Column="0"
+                                Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"/>
 
                     <Button Grid.Column="1" Grid.Row="2" Content="Publish" Command="{Binding SubmitCommand}"/>
+
                 </Grid>
+                <Button Command="{Binding BackCommand}" Content="Back"></Button>
 
 
             </StackPanel>

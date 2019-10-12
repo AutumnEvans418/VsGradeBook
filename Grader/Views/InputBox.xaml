@@ -5,7 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Grader.Views"
              mc:Ignorable="d" 
-             Height="150" Width="500">
+             Height="150" 
+             Width="500"
+             Background="#FF303030"
+
+             >
+    <Window.Resources>
+        <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+    </Window.Resources>
     <StackPanel Margin="10" VerticalAlignment="Bottom">
         <Label Name="Label"></Label>
         <TextBox Name="TextBox"></TextBox>

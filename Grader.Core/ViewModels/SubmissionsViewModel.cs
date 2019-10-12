@@ -71,7 +71,7 @@ namespace AsyncToolWindowSample.ToolWindows
         }
 
         public SubmissionsViewModel(INavigationService navigationService,
-            IVisualStudioService visualStudioService, IGradeBookRepository gradeBookRepository, IMessageService messageService)
+            IVisualStudioService visualStudioService, IGradeBookRepository gradeBookRepository, IMessageService messageService) : base(navigationService)
         {
             _navigationService = navigationService;
             _visualStudioService = visualStudioService;

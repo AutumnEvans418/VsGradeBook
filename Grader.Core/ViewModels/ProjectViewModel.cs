@@ -22,7 +22,7 @@ namespace AsyncToolWindowSample.ToolWindows
         private bool _isStudentSubmission;
 
         public ProjectViewModel(IVisualStudioService visualStudioService,
-            IConsoleAppGrader grader, INavigationService navigationService, IGradeBookRepository gradeBookRepository, IMessageService messageService)
+            IConsoleAppGrader grader, INavigationService navigationService, IGradeBookRepository gradeBookRepository, IMessageService messageService) : base(navigationService)
         {
             _visualStudioService = visualStudioService;
             _grader = grader;
@@ -195,5 +195,6 @@ namespace AsyncToolWindowSample.ToolWindows
             get => _submission;
             set => SetProperty(ref _submission, value);
         }
+
     }
 }

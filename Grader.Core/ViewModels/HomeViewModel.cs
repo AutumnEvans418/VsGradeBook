@@ -11,7 +11,7 @@ namespace AsyncToolWindowSample.ToolWindows
         private readonly INavigationService _navigationService;
         private readonly IGradeBookRepository _gradeBookRepository;
 
-        public HomeViewModel(IMessageService inputBoxService, INavigationService navigationService, IGradeBookRepository gradeBookRepository)
+        public HomeViewModel(IMessageService inputBoxService, INavigationService navigationService, IGradeBookRepository gradeBookRepository) : base(navigationService)
         {
             _inputBoxService = inputBoxService;
             _navigationService = navigationService;

@@ -12,14 +12,9 @@
         <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
     </UserControl.Resources>
     <ScrollViewer>
-        <Grid Background="White">
+        <Grid>
             <StackPanel Margin="10">
-                <StackPanel.Resources>
-                    <Style TargetType="TextBox">
-                        <Setter Property="AcceptsReturn" Value="True"/>
-                        <Setter Property="MinHeight" Value="80"></Setter>
-                    </Style>
-                </StackPanel.Resources>
+               
                 <Label Content="{Binding CodeProject.DateCreated}" ContentStringFormat="{}{0:d}"></Label>
                 <Label Content="{Binding CodeProject.Name}" Style="{StaticResource Title}"/>
                 <Label Content="{Binding CodeProject.Description}"/>
@@ -53,6 +48,7 @@
                         <TextBlock  VerticalAlignment="Center" 
                                    Text="{Binding ErrorMessage}" Foreground="Red" TextWrapping="Wrap"/>
                         <Button Content="Publish" Height="30" HorizontalAlignment="Right" Width="150" Padding="0" Command="{Binding SubmitCommand}"/>
+                        <Button Command="{Binding BackCommand}" Content="Back"></Button>
                     </StackPanel>
                 </Grid>
 

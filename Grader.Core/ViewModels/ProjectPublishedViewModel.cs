@@ -26,7 +26,7 @@ namespace AsyncToolWindowSample.ToolWindows
 
         public DelegateCommand DoneCommand { get; set; }
         public DelegateCommand SaveCommand { get; set; }
-        public ProjectPublishedViewModel(INavigationService navigationService, IMessageService messageService)
+        public ProjectPublishedViewModel(INavigationService navigationService, IMessageService messageService) : base(navigationService)
         {
             _navigationService = navigationService;
             _messageService = messageService;

@@ -75,18 +75,12 @@ namespace VsGrader
 
 
                 dte.Documents.Open(file, ReadOnly: true);
-              //  dte.OpenFile("Document", file);
-
-                
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 MessageBox.Show(e.ToString());
             }
-           
-            //Process.Start(file);
-
         }
 
         static ProjectItem GetFiles(ProjectItem item, List<ProjectItem> projectItems)
