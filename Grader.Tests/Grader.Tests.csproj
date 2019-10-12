@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="ConsoleAppGraderTests.cs" />
     <Compile Include="CreateDatabaseTests.cs" />
+    <Compile Include="CSharpGeneratorTests.cs" />
     <Compile Include="CsvParserTests.cs" />
     <Compile Include="GradeBookRepositoryTests.cs" />
     <Compile Include="LoginViewModelTests.cs" />

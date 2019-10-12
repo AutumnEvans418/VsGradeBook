@@ -57,6 +57,53 @@ namespace HelloWorld
             Assert.Pass();
         }
 
+
+        [Test]
+        public async Task ProgramWithComment_Should_Pass()
+        {
+            var src = @"
+using System;
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //test
+            Console.WriteLine(""Hello World!"");
+        }
+
+    }
+";
+            
+            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(), new List<string>(){"Hello World!"}), });
+
+            result.PercentPassing.Should().Be(1);
+        }
+
+
+        public const string writeLineReadLineSrc = @"
+using System;
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            //test
+            Console.WriteLine(Console.ReadLine());
+        }
+
+    }
+";
+
+        [Test]
+        public async Task ProgramWithComment2_Should_Pass()
+        {
+            var src = writeLineReadLineSrc;
+            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(){"Hello World!"}, new List<string>() { "Hello World!" }), });
+
+            result.PercentPassing.Should().Be(1);
+        }
+
+
+
         [Test]
         public async Task WithinFuntion_Should_ChangeToGrader()
         {

@@ -18,20 +18,7 @@ namespace Grader
         {
 
 
-            Compilation test = CreateTestCompilation(program.Select(p => CSharpSyntaxTree.ParseText(p)).ToArray());
-
-
-
-            var newTrees = test.SyntaxTrees.Select(p =>
-            {
-                SemanticModel model = test.GetSemanticModel(p);
-
-                TypeInferenceRewriter reWriter = new TypeInferenceRewriter(model);
-                SyntaxNode newSource = reWriter.Visit(p.GetRoot());
-                return newSource.SyntaxTree;
-            }).ToArray();
-
-
+            var newTrees = CreateSyntaxTrees(program);
 
 
             var finalCompile = CreateTestCompilation(newTrees);
@@ -68,6 +55,22 @@ namespace Grader
                 }
                 throw new CompilationException(msg);
             }
+        }
+
+        public SyntaxTree[] CreateSyntaxTrees(IEnumerable<string> program)
+        {
+            Compilation test = CreateTestCompilation(program.Select(p => CSharpSyntaxTree.ParseText(p)).ToArray());
+
+
+            var newTrees = test.SyntaxTrees.Select(p =>
+            {
+                SemanticModel model = test.GetSemanticModel(p);
+                TypeInferenceRewriter reWriter = new TypeInferenceRewriter(model);
+                SyntaxNode newSource = reWriter.Visit(p.GetRoot());
+                System.Console.WriteLine(newSource.GetText());
+                return newSource.SyntaxTree;
+            }).ToArray();
+            return newTrees;
         }
 
         private Compilation CreateTestCompilation(SyntaxTree[] trees)

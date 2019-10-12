@@ -23,7 +23,7 @@ namespace Grader
             }
             foreach (var caseExpectedOutput in Case.ExpectedOutputs)
             {
-                if (ActualOutput.All(p => p.Contains(caseExpectedOutput) != true))
+                if (ActualOutput.All(p => p?.Contains(caseExpectedOutput) != true))
                 {
                     Pass = false;
                 }

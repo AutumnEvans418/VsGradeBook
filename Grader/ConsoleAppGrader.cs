@@ -54,25 +54,5 @@ namespace Grader
         {
             return Grade(new[] {program}, cases);
         }
-
-        //private Compilation CreateTestCompilation(SyntaxTree tree)
-        //{
-
-        //    MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
-        //    MetadataReference grader = MetadataReference.CreateFromFile(typeof(ConsoleAppGrader).Assembly.Location);
-        //    MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-        //    MetadataReference system = MetadataReference.CreateFromFile(typeof(Console).Assembly.Location);
-        //    MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-        //    MetadataReference mscorlib =
-        //        MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-        //    MetadataReference codeAnalysis =
-        //        MetadataReference.CreateFromFile(typeof(SyntaxTree).Assembly.Location);
-        //    MetadataReference csharpCodeAnalysis =
-        //        MetadataReference.CreateFromFile(typeof(CSharpSyntaxTree).Assembly.Location);
-
-        //    MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, grader };
-
-        //    return CSharpCompilation.Create("Test", new[] { tree }, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
-        //}
     }
 }
