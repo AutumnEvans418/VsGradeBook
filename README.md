@@ -101,3 +101,9 @@ class MainClass {
 
 
 [Source](https://www.coderbyte.com/editor/Longest%20Word:Csharp)
+
+#### Implementation
+Home View/Start Screen
+![Home View](Images/LongestWordHomeView.png)
+Create a new project view
+![Project View](Images/LongestWordProjectView.png)
