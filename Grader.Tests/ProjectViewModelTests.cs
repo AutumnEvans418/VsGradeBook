@@ -189,11 +189,13 @@ class MainClass {
             model.CodeProject.CsvExpectedOutput = @"method
 something
 love
-time";
+time
+";
             model.CodeProject.CsvCases = @"test method
 super long something
 I love dogs
-fun& time";
+fun& time
+";
 
             await model.TestCommand.ExecuteAsync();
             model.ErrorMessage.Should().BeNullOrEmpty();

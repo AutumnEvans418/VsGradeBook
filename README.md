@@ -15,7 +15,56 @@ Simplyifing grading code in visual studio.  No more sending compressed files, do
 
 ## Problem Example
 
-### Longest Word
+### Letter Capitalize
+
+Have the function LetterCapitalize(str) take the str parameter being passed and capitalize the first letter of each word. Words will be separated by only one space.
+
+These inputs can be directly inputed into the program  
+**Inputs:**  
+hello world  
+Hello world  
+i ran there  
+**Outputs:**  
+Hello World  
+Hello World  
+I Ran There
+
+**Solution:**  
+```
+using System;
+
+class MainClass {
+  public static string LetterCapitalize(string str) { 
+    string str2 = "";
+    var words = str.Split(' ');
+    // code goes here  
+    /* Note: In C# the return type of a function and the 
+       parameter types being passed are defined, so this return 
+       call must match the return type of the function.
+       You are free to modify the return type. */
+    foreach (string word in words)
+    {
+        
+        str2 += (char.ToUpper(word[0]) + word.Substring(1) + " ");
+    }
+    str = str2.Trim();
+    return str;
+            
+  }
+
+  static void Main() {  
+    // keep this function call here
+    Console.WriteLine(LetterCapitalize(Console.ReadLine()));
+  } 
+   
+}
+```
+
+[Source](https://coderbyte.com/editor/Letter%20Capitalize:Csharp)
+
+
+
+### Longest Word (Full Example)
 
 Have the function LongestWord(sen) take the sen parameter being passed and return the largest word in the string. If there are two or more words that are the same length, return the first word from the string with that length. Ignore punctuation and assume sen will not be empty.
 
@@ -121,6 +170,7 @@ Teacher can now view the submissions in Visual Studio.  It will open the code in
   - [Example of code to add themes to VSIX](https://github.com/madskristensen/KnownMonikersExplorer/blob/master/src/ToolWindows/VsTheme.cs)
   - [Ask Questions about VSIX here](https://gitter.im/Microsoft/extendvs)
   - [Developing Visual Studio Extensions](https://michaelscodingspot.com/visual-studio-2017-extension-development-tutorial-part-1/)
-
+- Coding Challenges
+  - [Coder Byte](https://coderbyte.com/) 
 
 

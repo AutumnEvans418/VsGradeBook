@@ -102,8 +102,8 @@ namespace AsyncToolWindowSample.ToolWindows
             try
             {
                 var codes = await _visualStudioService.GetCSharpFilesAsync();
-                var inputs = CodeProject.CsvCases?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None) ?? new string[0];
-                var outputs = CodeProject.CsvExpectedOutput?.Split(new string[] { Environment.NewLine }, StringSplitOptions.None) ?? new string[0];
+                var inputs = CodeProject.CsvCases?.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
+                var outputs = CodeProject.CsvExpectedOutput?.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
                 var gradeCases = ConvertToGradeCases(outputs, inputs);
 
                 var result = await _grader.Grade(codes.Select(p=>p.Content), gradeCases);
