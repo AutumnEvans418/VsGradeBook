@@ -14,6 +14,8 @@ namespace Grader
         {
             
         }
+
+        public int CaseNumber { get; set; }
         public IList<string> Inputs { get; } = new List<string>();
         public IList<string> ExpectedOutputs { get; } = new List<string>();
     }

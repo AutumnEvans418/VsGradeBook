@@ -29,6 +29,7 @@ namespace Grader
             for (var i=0; i < caseList.ToList().Count; i++)
             {
                 var gradeCase = caseList[i];
+                gradeCase.CaseNumber = i + 1;
                 Console.Outputs.Clear();
                 Console.Inputs = gradeCase.Inputs.ToList();
                 var message = "";
@@ -38,7 +39,7 @@ namespace Grader
                 }
                 catch (Exception e)
                 {
-                    message = $"Case {i+1}: " + e.InnerException?.Message;
+                    message =  e.InnerException?.Message;
                 }
 
 

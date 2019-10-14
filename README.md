@@ -11,11 +11,13 @@ Simplyifing grading code in visual studio.  No more sending compressed files, do
   they can submit the program within visual studio
 - Teachers can then see the submissions from students within visual studio and be able to open the student's submissions from within visual studio.  Teachers then can review the code and see their output and percent passed.
 
-
+## To Do List
+- **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
+- **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message
 
 ## Problem Example
 
-### Letter Capitalize
+### Letter Capitalize Function
 
 Have the function LetterCapitalize(str) take the str parameter being passed and capitalize the first letter of each word. Words will be separated by only one space.
 
@@ -61,6 +63,48 @@ class MainClass {
 ```
 
 [Source](https://coderbyte.com/editor/Letter%20Capitalize:Csharp)
+
+![Submission View](Images/LetterCapSubmissionView.PNG)
+
+### Tax System (Multiple Inputs Example)
+
+Create a program that takes the price of an item and then the percent of sales tax as inputs in that order.  The program should then output the original price, the tax percent, the tax cost, and the price + tax cost.
+
+**Inputs:**  
+10,10  
+20,10  
+100,15  
+**Outputs:**  
+$10,10%,$1,$11  
+$20,10%,$2,$22  
+$100,15%,$15,$115  
+
+```
+using System;
+
+class MainClass
+{
+    
+
+    static void Main()
+    {
+        Console.WriteLine("Enter price");
+        var price = double.Parse(Console.ReadLine());
+        Console.WriteLine("Enter tax percent");
+        var tax = double.Parse(Console.ReadLine());
+
+        Console.WriteLine($"Price: ${price}");
+        Console.WriteLine($"Tax Percent: {tax}%");
+        Console.WriteLine($"Tax Cost: ${tax/100 * price}");
+        Console.WriteLine($"Total Cost: ${price + (tax/100 * price)}");
+
+    }
+
+}
+
+```
+
+
 
 
 

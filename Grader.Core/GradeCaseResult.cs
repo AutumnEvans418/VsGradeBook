@@ -7,16 +7,21 @@ namespace Grader
     {
         public GradeCaseResult(IGradeCase @case, IEnumerable<string> actualOutput, string errorMessage)
         {
-            ErrorMessage = errorMessage;
+            if (string.IsNullOrWhiteSpace(errorMessage) != true)
+            {
+                _hasErrors = true;
+                ErrorMessage = $"Case {@case.CaseNumber}: " + errorMessage;
+            }
             Case = @case;
             ActualOutput = actualOutput;
             Evaluate();
         }
 
+        private bool _hasErrors;
         private void Evaluate()
         {
             Pass = true;
-            if(string.IsNullOrWhiteSpace(ErrorMessage) != true)
+            if(_hasErrors)
             {
                 Pass = false;
                 return;
@@ -27,6 +32,11 @@ namespace Grader
                 {
                     Pass = false;
                 }
+            }
+
+            if (!Pass)
+            {
+                ErrorMessage = $"Case {Case.CaseNumber}: Failed";
             }
         }
 

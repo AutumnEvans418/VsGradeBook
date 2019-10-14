@@ -174,7 +174,11 @@ class MainClass {
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
                 .Returns(Task.FromResult(new[] { new FileContent() { Content = emptyMain } }.AsEnumerable()));
+            model.CodeProject.CsvCases = "";
+            model.CodeProject.CsvExpectedOutput = "";
+
             await model.TestCommand.ExecuteAsync();
+            model.Submission.Grade.Should().Be(1);
             model.ErrorMessage.Should().BeNullOrEmpty();
         }
 
@@ -198,10 +202,55 @@ fun& time
 ";
 
             await model.TestCommand.ExecuteAsync();
-            model.ErrorMessage.Should().BeNullOrEmpty();
+            model.ErrorMessage.Should().Be("Case 4: Failed\r\n");
 
             model.Submission.Grade.Should().Be(result);
         }
+
+        [Test]
+        public async Task TaxSystem_FailingCase_ShouldNotifyWhichCaseFailed()
+        {
+            var taxSystem = @"
+using System;
+
+class MainClass
+{
+    
+
+    static void Main()
+    {
+            Console.WriteLine(""Enter price"");
+            var price = double.Parse(Console.ReadLine());
+            Console.WriteLine(""Enter tax percent"");
+            var tax = double.Parse(Console.ReadLine());
+
+            Console.WriteLine($""Price: ${price}"");
+            Console.WriteLine($""Tax Percent: {tax}%"");
+            Console.WriteLine($""Tax Cost: ${tax / 100 * price}"");
+            Console.WriteLine($""Total Cost: ${price + (tax / 100 * price)}"");
+
+        }
+
+    }
+";
+            vsMock.Setup(p => p.GetCSharpFilesAsync())
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystem } }.AsEnumerable()));
+            model.CodeProject.CsvCases = @"10,10
+20,10
+100,15";
+            model.CodeProject.CsvExpectedOutput = @"$10,10%,$1,$11
+$20,10%,$2,$22
+$100,15%,$15,$test";
+
+            await model.TestCommand.ExecuteAsync();
+            System.Console.WriteLine(model.ErrorMessage);
+            model.ErrorMessage.Should().NotBeNullOrWhiteSpace();
+
+            model.Submission.Grade.Should().BeInRange(.6,.7);
+        }
+
+
+
 
 
         [Test]

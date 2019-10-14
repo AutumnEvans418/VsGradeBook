@@ -117,9 +117,11 @@ namespace AsyncToolWindowSample.ToolWindows
                     {
                         ErrorMessage += resultCaseResult.ErrorMessage + "\r\n";
                     }
-                    if (resultCaseResult.ActualOutput.Any())
-                        this.ActualOutput += resultCaseResult.ActualOutput.Aggregate((f, s) => f + "," + s) + "\r\n";
 
+                    if (resultCaseResult.ActualOutput.Any())
+                    {
+                        this.ActualOutput += resultCaseResult.ActualOutput.Aggregate((f, s) => f + "," + s) + "\r\n";
+                    }
                 }
             }
             catch (Exception e)
