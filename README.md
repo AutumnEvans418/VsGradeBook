@@ -10,8 +10,73 @@ Simplyifing grading code in visual studio.  No more sending compressed files, do
 - Once the students are finished with their program, 
   they can submit the program within visual studio
 - Teachers can then see the submissions from students within visual studio and be able to open the student's submissions from within visual studio.  Teachers then can review the code and see their output and percent passed.
-- You can use [VsGradeBook.com](https://www.VsGradeBook.com) to see the APIs
-  and options to submit the code
+
+
+
+## Problem Example
+
+### Longest Word
+
+Have the function LongestWord(sen) take the sen parameter being passed and return the largest word in the string. If there are two or more words that are the same length, return the first word from the string with that length. Ignore punctuation and assume sen will not be empty.
+
+**Inputs:**  
+test method  
+super long something  
+I love dogs  
+fun& time  
+
+**Expected Outputs:**  
+method  
+something  
+love  
+time  
+
+**Solution**
+```
+using System;
+using System.Linq;
+
+class MainClass {
+  public static string LongestWord(string sen) { 
+  
+    string[] words = sen.Split(' ');
+
+
+    return words.OrderByDescending( s => s.Length ).First();;
+            
+  }
+
+  static void Main() {  
+    // keep this function call here
+    Console.WriteLine(LongestWord(Console.ReadLine()));
+  } 
+   
+}
+
+```
+
+[Source](https://www.coderbyte.com/editor/Longest%20Word:Csharp)
+
+### Implementation
+
+#### Tasks for the Teacher
+Home View/Start Screen
+![Home View](Images/LongestWordHomeView.PNG)
+Create a new project view
+![Project View](Images/LongestWordProjectView.PNG)
+Store the codes so that you can use them to later grade the submissions.  You can use the save button to create a file that will allow you to import instead of copy and pasting.  The student code can be placed on the assignment created on some class site, such as Canvas or Blackboard.
+![Project Save View](Images/LongestWordSaveProjectView.PNG)
+
+#### Tasks for the Student
+
+Create a new Submission by entering the code given by the teacher
+![Submission Code](Images/LongestWordEnterSubmissionCode.PNG)
+Create a new submission based on the instructions
+![Submission View](Images/LongestWordSubmissionView.PNG)
+
+#### Submissions for the Teacher
+Teacher can now view the submissions in Visual Studio.  It will open the code in the code editor.  From here, the teacher can grade the code in one spot.
+![Submissions View](Images/LongestWordSubmissionsView.PNG)
 
 ## Packages/Tools Used
 
@@ -57,53 +122,5 @@ Simplyifing grading code in visual studio.  No more sending compressed files, do
   - [Ask Questions about VSIX here](https://gitter.im/Microsoft/extendvs)
   - [Developing Visual Studio Extensions](https://michaelscodingspot.com/visual-studio-2017-extension-development-tutorial-part-1/)
 
-## Example
-
-### Longest Word
-
-Have the function LongestWord(sen) take the sen parameter being passed and return the largest word in the string. If there are two or more words that are the same length, return the first word from the string with that length. Ignore punctuation and assume sen will not be empty.
-
-**Inputs:**  
-test method  
-super long something  
-I love dogs  
-fun& time  
-
-**Expected Outputs:**  
-method  
-something  
-love  
-time  
-
-```
-using System;
-using System.Linq;
-
-class MainClass {
-  public static string LongestWord(string sen) { 
-  
-    string[] words = sen.Split(' ');
 
 
-    return words.OrderByDescending( s => s.Length ).First();;
-            
-  }
-
-  static void Main() {  
-    // keep this function call here
-    Console.WriteLine(LongestWord(Console.ReadLine()));
-  } 
-   
-}
-
-```
-
-
-
-[Source](https://www.coderbyte.com/editor/Longest%20Word:Csharp)
-
-#### Implementation
-Home View/Start Screen
-![Home View](Images/LongestWordHomeView.PNG)
-Create a new project view
-![Project View](Images/LongestWordProjectView.PNG)
