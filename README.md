@@ -104,6 +104,8 @@ class MainClass
 
 ```
 
+Notice that the expression of the outputs and inputs directly correlate to how they are displayed in the project system.
+![Submission View](Images/TaxSystemSubmissionView.PNG)
 
 
 
