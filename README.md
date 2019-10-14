@@ -15,7 +15,7 @@ Simplyifing grading code in visual studio.  No more sending compressed files, do
 - **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
 - **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message
 
-## Problem Example
+## Problem Examples
 
 ### Letter Capitalize Function
 
