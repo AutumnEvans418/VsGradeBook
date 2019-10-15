@@ -3,8 +3,10 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.Threading;
 using Task = System.Threading.Tasks.Task;
 
 namespace VsGrader
@@ -93,7 +95,9 @@ namespace VsGrader
                 {
                     throw new NotSupportedException("Cannot create tool window");
                 }
-            });
+                IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
+                ErrorHandler.ThrowOnFailure(windowFrame.Show());
+            }, JoinableTaskCreationOptions.LongRunning);
         }
     }
 }
