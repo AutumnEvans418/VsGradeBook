@@ -32,7 +32,7 @@ Hello World
 I Ran There
 
 **Solution:**  
-```
+```csharp
 using System;
 
 class MainClass {
@@ -79,7 +79,7 @@ $10,10%,$1,$11
 $20,10%,$2,$22  
 $100,15%,$15,$115  
 
-```
+```csharp
 using System;
 
 class MainClass
@@ -127,7 +127,7 @@ love
 time  
 
 **Solution**
-```
+```csharp
 using System;
 using System.Linq;
 
