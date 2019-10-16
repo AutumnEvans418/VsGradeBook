@@ -27,6 +27,7 @@ namespace VsGrader
     [Guid(VsGraderPackage.PackageGuidString)]
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [ProvideToolWindow(typeof(VsGraderView))]
+    [ProvideBindingPath]
     public sealed class VsGraderPackage : AsyncPackage
     {
         public static AsyncPackage Package;

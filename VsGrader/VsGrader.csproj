@@ -87,6 +87,10 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\VsGradebook Icon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <Content Include="Resources\VsGraderViewCommand.png" />
     <VSCTCompile Include="VsGraderPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>

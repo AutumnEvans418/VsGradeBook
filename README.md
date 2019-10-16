@@ -12,8 +12,8 @@ Simplyifing grading code in visual studio.  No more sending compressed files, do
 - Teachers can then see the submissions from students within visual studio and be able to open the student's submissions from within visual studio.  Teachers then can review the code and see their output and percent passed.
 
 ## To Do List
-- **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
-- **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message
+- [ ] **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
+- [ ] **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message
 
 ## Problem Examples
 
