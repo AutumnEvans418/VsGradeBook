@@ -1,6 +1,7 @@
 # Visual Studio GradeBook
 Simplyifing grading code in visual studio.  No more sending compressed files, downlowding, and opening student's code.
 
+Visual Studio Gradebook is a Visual Studio extension that makes it easy for teachers to create projects for students to submit.  Teachers can create cases that students must account for in their console app and teachers can view the student's code right in visual studio.
 ## Features
 
 - Teachers can create a project for students to complete
@@ -14,6 +15,12 @@ Simplyifing grading code in visual studio.  No more sending compressed files, do
 ## To Do List
 - [ ] **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
 - [ ] **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message
+
+## How to Install
+
+- [Install the Visual Studio Extension Here](https://marketplace.visualstudio.com/items?itemName=EvansSoftware.VsGradeBook)
+- To open the view, go to View -> Other Windows -> Vs Grade Book
+- To see more details on how to create projects for students, view the problem examples below
 
 ## Problem Examples
 
