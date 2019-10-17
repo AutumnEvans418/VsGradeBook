@@ -21,33 +21,40 @@ namespace Grader
         private void Evaluate()
         {
             Pass = true;
-            if(_hasErrors)
+            if (_hasErrors)
             {
                 Pass = false;
                 return;
             }
             foreach (var caseExpectedOutput in Case.ExpectedOutputs)
             {
-                if (ActualOutput.All(p => p?.Contains(caseExpectedOutput.ValueToMatch) != true))
+                var testResult = ActualOutput.All(p => p?.Contains(caseExpectedOutput.ValueToMatch) != true);
+                if (caseExpectedOutput.Negate)
+                {
+                    testResult = !testResult;
+                }
+                if (testResult)
                 {
                     Pass = false;
                     if (string.IsNullOrWhiteSpace(caseExpectedOutput.Hint) != true)
                     {
                         ErrorMessage += $"Case {Case.CaseNumber}: '{caseExpectedOutput.Hint}'\r\n";
                     }
-                    else
+                    var expected = "Expected";
+                    if (caseExpectedOutput.Negate)
                     {
-                        ErrorMessage += $"Case {Case.CaseNumber}: Expected '{caseExpectedOutput.ValueToMatch}'\r\n";
+                        expected = "Not Expected";
                     }
+                    ErrorMessage += $"Case {Case.CaseNumber}: {expected} '{caseExpectedOutput.ValueToMatch}'\r\n";
                 }
-                
+
             }
 
             if (!Pass)
             {
                 ErrorMessage += $"Case {Case.CaseNumber}: Failed";
             }
-            
+
         }
 
         public IGradeCase Case { get; }

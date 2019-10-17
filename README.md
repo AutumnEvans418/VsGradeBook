@@ -13,18 +13,27 @@ Visual Studio Gradebook is a Visual Studio extension that makes it easy for teac
 - Teachers can then see the submissions from students within visual studio and be able to open the student's submissions from within visual studio.  Teachers then can review the code and see their output and percent passed.
 
 ## To Do List
-- [ ] **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
+- [x] **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
 - [x] **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message
 - [ ] **Exact Match** Add ability Match the output exactly
 - [ ] **Ordered Match** Add ability to create test case that must happen in a certain order.  This could be used to specify that output should occur in a certain order.
 - [ ] **Quotations and Commas** Handle commas and quotations in the CSV format.  At the moment, commas cannot be used in test cases 
 - [ ] **3rd party assemblies** When testing the console apps, ensure that the dlls referenced in the code are loaded.
 - [x] **Improved error messages** Output the expected value when a case fails
+- [ ] **Exception Test Cases** create cases that test if a particular input causes or not causes an exception
 ## How to Install
 
 - [Install the Visual Studio Extension Here](https://marketplace.visualstudio.com/items?itemName=EvansSoftware.VsGradeBook)
 - To open the view, go to View -> Other Windows -> Vs Grade Book
 - To see more details on how to create projects for students, view the problem examples below
+
+## Negation and Hints
+
+In the example below we put ```!Hello World![Did you remove hello world?]``` inside the expected output box.  
+**Negation** - The "!" at the beginning of the input negates the expected output.  This means we are looking for an output that is **not** "Hello World!"  
+**Hints** - The text in the brackets signifies a hint.  If the test fails to find/negate an expected output, it will output the message in red (see below).  
+This allows you to create better and more expressive test cases, such as handling errors.
+![Negation and Hints Example](Images/NegationAndHint.PNG)
 
 ## Problem Examples
 

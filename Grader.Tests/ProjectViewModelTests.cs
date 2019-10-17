@@ -171,6 +171,38 @@ $100,15%,$15,$test[Did you see this?]";
             model.ErrorMessage.Should().NotContain("]");
         }
 
+        [Test]
+        public async Task Negate_Should_Fail()
+        {
+            
+            vsMock.Setup(p => p.GetCSharpFilesAsync())
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
+           // model.CodeProject.CsvCases = @"";
+            model.CodeProject.CsvExpectedOutput = @"!Hello World";
+
+            await model.TestCommand.ExecuteAsync();
+            System.Console.WriteLine(model.ErrorMessage);
+            model.Submission.Grade.Should().Be(0);
+            model.ErrorMessage.Should().Contain("Not Expected 'Hello World'");
+        }
+
+        [Test]
+        public async Task Negate_Should_Pass()
+        {
+            vsMock.Setup(p => p.GetCSharpFilesAsync())
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystem } }.AsEnumerable()));
+            model.CodeProject.CsvCases = @"10,10
+20,10
+100,15";
+            model.CodeProject.CsvExpectedOutput = @"$10,10%,$1,$11
+$20,10%,$2,$22
+$100,15%,$15,!$test[Did you see this?]";
+
+            await model.TestCommand.ExecuteAsync();
+
+            model.Submission.Grade.Should().Be(1);
+        }
+
 
 
         private const string longestWordProgram = @"
