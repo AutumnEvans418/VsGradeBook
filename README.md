@@ -235,6 +235,7 @@ Here is the main packages used in this project that makes this whole thing work.
   - [Example of code to add themes to VSIX](https://github.com/madskristensen/KnownMonikersExplorer/blob/master/src/ToolWindows/VsTheme.cs)
   - [Ask Questions about VSIX here](https://gitter.im/Microsoft/extendvs)
   - [Color And Styling](https://docs.microsoft.com/en-us/visualstudio/extensibility/ux-guidelines/colors-and-styling-for-visual-studio?view=vs-2019)
+  - [Visual Studio Environment Colors](https://keyoti.com/blog/visual-of-the-actual-colours-in-visual-studios-environmentcolors/)
   - [Developing Visual Studio Extensions](https://michaelscodingspot.com/visual-studio-2017-extension-development-tutorial-part-1/)
 - Coding Challenges
   - [Coder Byte](https://coderbyte.com/) 
