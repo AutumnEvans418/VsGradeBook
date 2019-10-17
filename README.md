@@ -37,7 +37,7 @@ This allows you to create better and more expressive test cases, such as handlin
 ![Negation and Hints Example](Images/NegationAndHint.PNG)
 
 ## Problem Examples
-
+The examples below will show you how this extension works in detail and gives some examples of projects that have been implemented with this extension.  Problems like these can be given to students and used to automate parts of the grading process.
 ### Letter Capitalize Function
 
 Have the function LetterCapitalize(str) take the str parameter being passed and capitalize the first letter of each word. Words will be separated by only one space.
