@@ -1,5 +1,5 @@
 # Visual Studio GradeBook
-Simplyifing grading code in visual studio.  No more sending compressed files, downlowding, and opening student's code.
+Simplyifing grading code in visual studio.  No more sending compressed files, downloading, and opening student's code.
 
 Visual Studio Gradebook is a Visual Studio extension that makes it easy for teachers to create projects for students to submit.  Teachers can create cases that students must account for in their console app and teachers can view the student's code right in visual studio.
 ## Features
