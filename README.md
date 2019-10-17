@@ -195,14 +195,12 @@ Teacher can now view the submissions in Visual Studio.  It will open the code in
 ![Submissions View](Images/LongestWordSubmissionsView.PNG)
 
 ## Packages/Tools Used
-
+Here is the main packages used in this project that makes this whole thing work.
 ### HttpClient/Api packages
-- NSwag.MSBuild
-- NSwagStudio
 - Swashbuckle
 
 ### Database
-- Sql server
+- Sqlite
 - EntityFrameworkCore
 
 ### Dependency Service
