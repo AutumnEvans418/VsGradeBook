@@ -28,16 +28,26 @@ namespace Grader
             }
             foreach (var caseExpectedOutput in Case.ExpectedOutputs)
             {
-                if (ActualOutput.All(p => p?.Contains(caseExpectedOutput) != true))
+                if (ActualOutput.All(p => p?.Contains(caseExpectedOutput.ValueToMatch) != true))
                 {
                     Pass = false;
+                    if (string.IsNullOrWhiteSpace(caseExpectedOutput.Hint) != true)
+                    {
+                        ErrorMessage += $"Case {Case.CaseNumber}: '{caseExpectedOutput.Hint}'\r\n";
+                    }
+                    else
+                    {
+                        ErrorMessage += $"Case {Case.CaseNumber}: Expected '{caseExpectedOutput.ValueToMatch}'\r\n";
+                    }
                 }
+                
             }
 
             if (!Pass)
             {
-                ErrorMessage = $"Case {Case.CaseNumber}: Failed";
+                ErrorMessage += $"Case {Case.CaseNumber}: Failed";
             }
+            
         }
 
         public IGradeCase Case { get; }

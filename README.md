@@ -14,11 +14,12 @@ Visual Studio Gradebook is a Visual Studio extension that makes it easy for teac
 
 ## To Do List
 - [ ] **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
-- [ ] **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message
+- [x] **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message
 - [ ] **Exact Match** Add ability Match the output exactly
 - [ ] **Ordered Match** Add ability to create test case that must happen in a certain order.  This could be used to specify that output should occur in a certain order.
 - [ ] **Quotations and Commas** Handle commas and quotations in the CSV format.  At the moment, commas cannot be used in test cases 
-
+- [ ] **3rd party assemblies** When testing the console apps, ensure that the dlls referenced in the code are loaded.
+- [x] **Improved error messages** Output the expected value when a case fails
 ## How to Install
 
 - [Install the Visual Studio Extension Here](https://marketplace.visualstudio.com/items?itemName=EvansSoftware.VsGradeBook)

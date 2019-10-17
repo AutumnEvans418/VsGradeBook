@@ -125,6 +125,53 @@ namespace ConsoleApp1
             result.Should().HaveCount(2);
         }
 
+        [Test]
+        public void NegationSyntax_Should_NotChangeContent()
+        {
+            var result = ProjectViewModel.ConvertToGradeCases( new[] { "!1,!2" }, new[] { "1,2" });
+
+            result.Should().HaveCount(1);
+
+            result[0].ExpectedOutputs.Should().HaveCount(2);
+            result[0].ExpectedOutputs.All(p=>p.Negate).Should().BeTrue();
+            result[0].ExpectedOutputs.All(p => int.TryParse(p, out var t)).Should().BeTrue();
+        }
+
+        [Test]
+        public void HintSyntax_Should_NotChangeContent()
+        {
+            var result = ProjectViewModel.ConvertToGradeCases( new[] { "1[did you handle one?],2[did you handle two?]" }, new[] { "1,2" });
+
+            result.Should().HaveCount(1);
+
+            result[0].ExpectedOutputs.Should().HaveCount(2);
+            result[0].ExpectedOutputs.Select(p => p.Hint.Should().NotBeNullOrEmpty()).ToList();
+            result[0].ExpectedOutputs.Select(p => int.TryParse(p, out var t).Should().BeTrue()).ToList();
+        }
+
+        [Test]
+        public async Task Fail_Should_ShowHint()
+        {
+            vsMock.Setup(p => p.GetCSharpFilesAsync())
+               .Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystem } }.AsEnumerable()));
+            model.CodeProject.CsvCases = @"10,10
+20,10
+100,15";
+            model.CodeProject.CsvExpectedOutput = @"$10,10%,$1,$11
+$20,10%,$2,$22
+$100,15%,$15,$test[Did you see this?]";
+
+            await model.TestCommand.ExecuteAsync();
+            System.Console.WriteLine(model.ErrorMessage);
+            model.ErrorMessage.Should().NotBeNullOrWhiteSpace();
+
+            model.Submission.Grade.Should().BeInRange(.6, .7);
+            model.ErrorMessage.Should().Contain("Did you see this?");
+            model.ErrorMessage.Should().NotContain("[");
+            model.ErrorMessage.Should().NotContain("]");
+        }
+
+
 
         private const string longestWordProgram = @"
 using System;
@@ -202,15 +249,11 @@ fun& time
 ";
 
             await model.TestCommand.ExecuteAsync();
-            model.ErrorMessage.Should().Be("Case 4: Failed\r\n");
+            model.ErrorMessage.Should().Contain("Case 4: Failed\r\n");
 
             model.Submission.Grade.Should().Be(result);
         }
-
-        [Test]
-        public async Task TaxSystem_FailingCase_ShouldNotifyWhichCaseFailed()
-        {
-            var taxSystem = @"
+        string taxSystem = @"
 using System;
 
 class MainClass
@@ -233,6 +276,10 @@ class MainClass
 
     }
 ";
+        [Test]
+        public async Task TaxSystem_FailingCase_ShouldNotifyWhichCaseFailed()
+        {
+            
             vsMock.Setup(p => p.GetCSharpFilesAsync())
                 .Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystem } }.AsEnumerable()));
             model.CodeProject.CsvCases = @"10,10

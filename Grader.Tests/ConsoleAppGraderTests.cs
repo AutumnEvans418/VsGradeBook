@@ -235,7 +235,7 @@ namespace HelloWorld
             var gCase = result.CaseResults.First();
             gCase.Pass.Should().BeTrue();
             gCase.ActualOutput.First().Should().Be("Hello, World!");
-            gCase.Case.ExpectedOutputs.First().Should().Be("Hello, World!");
+            gCase.Case.ExpectedOutputs.First().ValueToMatch.Should().Be("Hello, World!");
 
             result.PercentPassing.Should().Be(1);
         }

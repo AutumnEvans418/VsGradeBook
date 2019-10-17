@@ -6,6 +6,6 @@ namespace Grader
     {
         int CaseNumber { get; set; }
         IList<string> Inputs { get; }
-        IList<string> ExpectedOutputs { get; }
+        IList<CaseValue> ExpectedOutputs { get; }
     }
 }
