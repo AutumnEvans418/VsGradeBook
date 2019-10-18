@@ -17,7 +17,7 @@ namespace Grader.Tests
         [SetUp]
         public void Setup()
         {
-            gradeCase = new GradeCase(new string[0], new[] {"Hello, World!"});
+            gradeCase = new GradeCase(new string[0], new[] {"Hello, World!"},0);
             grader = new ConsoleAppGrader(new CSharpGenerator());
             Grader.Console.Outputs.Clear();
         }
@@ -74,7 +74,7 @@ using System;
     }
 ";
             
-            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(), new List<string>(){"Hello World!"}), });
+            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(), new List<string>(){"Hello World!"},0), });
 
             result.PercentPassing.Should().Be(1);
         }
@@ -97,7 +97,7 @@ using System;
         public async Task ProgramWithComment2_Should_Pass()
         {
             var src = writeLineReadLineSrc;
-            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(){"Hello World!"}, new List<string>() { "Hello World!" }), });
+            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(){"Hello World!"}, new List<string>() { "Hello World!" },0), });
 
             result.PercentPassing.Should().Be(1);
         }
@@ -121,7 +121,7 @@ namespace ConsoleApp1
     }
 }
 ";
-            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(){"0"},new List<string>() ), });
+            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(){"0"},new List<string>() ,0), });
 
         }
 
@@ -146,7 +146,7 @@ namespace ConsoleApp1
 }
 ";
 
-            var result = await grader.Grade(src, new[] { new GradeCase(), });
+            var result = await grader.Grade(src, new[] { new GradeCase(1), });
 
             result.CaseResults.First().ErrorMessage.Should().Be("Case 1: Missing input");
         }
@@ -296,7 +296,7 @@ namespace Grader.Tests
 ";
             var list = new List<GradeCase>();
             {
-                var taxCase = new GradeCase();
+                var taxCase = new GradeCase(1);
                 taxCase.Inputs.Add("10");
                 taxCase.Inputs.Add("10");
                 taxCase.ExpectedOutputs.Add("10");
@@ -305,7 +305,7 @@ namespace Grader.Tests
                 list.Add(taxCase);
             }
             {
-                var taxCase = new GradeCase();
+                var taxCase = new GradeCase(2);
                 taxCase.Inputs.Add("10");
                 taxCase.Inputs.Add("12");
                 taxCase.ExpectedOutputs.Add("10");

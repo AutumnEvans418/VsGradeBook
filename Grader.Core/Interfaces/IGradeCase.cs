@@ -4,7 +4,7 @@ namespace Grader
 {
     public interface IGradeCase
     {
-        int CaseNumber { get; set; }
+        int CaseNumber { get;  }
         IList<string> Inputs { get; }
         IList<CaseValue> ExpectedOutputs { get; }
     }

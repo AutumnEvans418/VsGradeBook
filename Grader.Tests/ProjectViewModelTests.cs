@@ -329,6 +329,20 @@ $100,15%,$15,$test";
         }
 
 
+        [Test]
+        public void VisualCases_Should_MatchTextCases()
+        {
+            model.CsvCases = @"10,10
+20,10
+100,15";
+            model.CsvExpectedOutput = @"$10,10%,$1,$11
+$20,10%,$2,$22
+$100,15%,$15,$test";
+
+            model.Cases.Should().HaveCount(3);
+
+        }
+
 
 
 

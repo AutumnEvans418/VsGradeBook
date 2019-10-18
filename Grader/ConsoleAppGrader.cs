@@ -29,7 +29,6 @@ namespace Grader
             for (var i=0; i < caseList.ToList().Count; i++)
             {
                 var gradeCase = caseList[i];
-                gradeCase.CaseNumber = i + 1;
                 Console.Outputs.Clear();
                 Console.Inputs = gradeCase.Inputs.ToList();
                 var message = "";

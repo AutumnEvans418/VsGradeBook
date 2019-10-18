@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.Models;
@@ -20,23 +21,43 @@ namespace AsyncToolWindowSample.ToolWindows
         private CodeProject _codeProject;
         private Submission _submission;
         private bool _isStudentSubmission;
+        private string _csvCases;
+        private string _csvExpectedOutput;
+        private ObservableCollection<IGradeCase> _cases;
 
         public ProjectViewModel(IVisualStudioService visualStudioService,
             IConsoleAppGrader grader, INavigationService navigationService, IGradeBookRepository gradeBookRepository, IMessageService messageService) : base(navigationService)
         {
+            Cases = new ObservableCollection<IGradeCase>();
             _visualStudioService = visualStudioService;
             _grader = grader;
             _navigationService = navigationService;
             _gradeBookRepository = gradeBookRepository;
             _messageService = messageService;
-            CodeProject = new CodeProject();
-            CodeProject.CsvCases = "";
-            CodeProject.CsvExpectedOutput = "Hello World!";
+            CodeProject = new CodeProject {CsvCases = "", CsvExpectedOutput = "Hello World!"};
             TestCommand = new DelegateCommandAsync(Test);
             SubmitCommand = new DelegateCommandAsync(Submit);
             Submission = new Submission();
         }
 
+        public string CsvCases  
+        {
+            get => _csvCases;
+            set => SetProperty(ref _csvCases,value, CodeChanged);
+        }
+
+        public string CsvExpectedOutput
+        {
+            get => _csvExpectedOutput;
+            set => SetProperty(ref _csvExpectedOutput,value, CodeChanged);
+        }
+
+        void CodeChanged()
+        {
+            CodeProject.CsvCases = CsvCases;
+            CodeProject.CsvExpectedOutput = CsvExpectedOutput;
+            Cases = new ObservableCollection<IGradeCase>(ConvertTextToGradeCases());
+        }
         public bool IsStudentSubmission
         {
             get => _isStudentSubmission;
@@ -50,6 +71,8 @@ namespace AsyncToolWindowSample.ToolWindows
             if (parameter.ContainsKey("Project") && parameter["Project"] is CodeProject project)
             {
                 CodeProject = project;
+                CsvCases = project.CsvCases;
+                CsvExpectedOutput = project.CsvExpectedOutput;
                 IsStudentSubmission = true;
                 Submission.ProjectId = CodeProject.Id;
             }
@@ -101,11 +124,9 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             try
             {
-                var codes = await _visualStudioService.GetCSharpFilesAsync();
-                var inputs = CodeProject.CsvCases?.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
-                var outputs = CodeProject.CsvExpectedOutput?.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
-                var gradeCases = ConvertToGradeCases(outputs, inputs);
+                var gradeCases = ConvertTextToGradeCases();
 
+                var codes = await _visualStudioService.GetCSharpFilesAsync();
                 var result = await _grader.Grade(codes.Select(p=>p.Content), gradeCases);
 
                 Submission.Grade = result.PercentPassing;
@@ -130,6 +151,18 @@ namespace AsyncToolWindowSample.ToolWindows
                 ErrorMessage = e.Message;
             }
 
+        }
+
+        private List<IGradeCase> ConvertTextToGradeCases()
+        {
+            var inputs =
+                CodeProject.CsvCases?.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries) ??
+                new string[0];
+            var outputs =
+                CodeProject.CsvExpectedOutput?.Split(new string[] {Environment.NewLine},
+                    StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
+            var gradeCases = ConvertToGradeCases(outputs, inputs);
+            return gradeCases;
         }
 
         public static List<IGradeCase> ConvertToGradeCases(string[] outputs, string[] inputs)
@@ -167,12 +200,12 @@ namespace AsyncToolWindowSample.ToolWindows
                     outputArray = output.Split(new[] {","}, StringSplitOptions.None);
                 }
 
-                gradeCases.Add(new GradeCase(inputArray, outputArray));
+                gradeCases.Add(new GradeCase(inputArray, outputArray, index +1));
             }
 
             if (gradeCases.Any() != true)
             {
-                gradeCases.Add(new GradeCase());
+                gradeCases.Add(new GradeCase(1));
             }
 
             return gradeCases;
@@ -202,5 +235,10 @@ namespace AsyncToolWindowSample.ToolWindows
             set => SetProperty(ref _submission, value);
         }
 
+        public ObservableCollection<IGradeCase> Cases
+        {
+            get => _cases;
+            set => SetProperty(ref _cases,value);
+        }
     }
 }

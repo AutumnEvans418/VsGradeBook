@@ -19,9 +19,9 @@
                 <Label Content="{Binding CodeProject.Name}" Style="{DynamicResource Title}"/>
                 <Label Content="{Binding CodeProject.Description}"/>
                 <Label Content="Test Inputs"/>
-                <TextBlock Text="{Binding CodeProject.CsvCases}" Foreground="{DynamicResource TextColor}" />
+                <TextBlock Text="{Binding CsvCases}" Foreground="{DynamicResource TextColor}" />
                 <Label Content="Expected Outputs"/>
-                <TextBlock Text="{Binding CodeProject.CsvExpectedOutput}" Foreground="{DynamicResource TextColor}"/>
+                <TextBlock Text="{Binding CsvExpectedOutput}" Foreground="{DynamicResource TextColor}"/>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
