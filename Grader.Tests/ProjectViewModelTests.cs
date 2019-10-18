@@ -344,6 +344,18 @@ $100,15%,$15,$test";
         }
 
 
+        [Test]
+        public async Task CreateSubmission_OutputInput_Should_Match()
+        {
+            var cases = "cases";
+            var outputs = "outputs";
+            await model.InitializeAsync(new NavigationParameter(){{"Project", new CodeProject(){CsvCases = cases, CsvExpectedOutput = outputs}}});
+
+            model.CsvCases.Should().Be(cases);
+            model.CsvExpectedOutput.Should().Be(outputs);
+
+        }
+
 
 
         [Test]

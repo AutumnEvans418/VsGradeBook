@@ -79,6 +79,9 @@
     <Compile Include="Views\SubmissionsView.xaml.cs">
       <DependentUpon>SubmissionsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\VisualCases.xaml.cs">
+      <DependentUpon>VisualCases.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers">
@@ -137,6 +140,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\SubmissionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\VisualCases.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -5,11 +5,11 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:AsyncToolWindowSample.Views"
              xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader.Core"
+             xmlns:views="clr-namespace:Grader.Views"
              mc:Ignorable="d" 
             d:DesignWidth="400" 
              d:DataContext="{d:DesignInstance toolWindows:ProjectViewModel}">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"></BooleanToVisibilityConverter>
         <!--<ResourceDictionary Source="Styles.xaml"></ResourceDictionary>-->
     </UserControl.Resources>
     <ScrollViewer>
@@ -23,54 +23,7 @@
                 <TextBox Style="{DynamicResource BigBox}"  Text="{Binding CsvCases, UpdateSourceTrigger=PropertyChanged}" />
                 <Label Content="Expected Output (CSV Style)"/>
                 <TextBox Style="{DynamicResource BigBox}" Text="{Binding CsvExpectedOutput, UpdateSourceTrigger=PropertyChanged}"/>
-                <ListBox ItemsSource="{Binding Cases}" Background="{DynamicResource Background}">
-                  
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <WrapPanel >
-                                <Label Content="{Binding CaseNumber}" FontSize="18" ContentStringFormat="{}Case {0}"/>
-                                <ItemsControl ItemsSource="{Binding Inputs}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <WrapPanel></WrapPanel>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                            <Border BorderThickness="1" BorderBrush="{DynamicResource TextColor}" Margin="5,0">
-                                                <Label Content="{Binding}" FontSize="18"></Label>
-                                            </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                                    <Label Content="->" FontSize="18"></Label>
-                                <ItemsControl ItemsSource="{Binding ExpectedOutputs}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <WrapPanel></WrapPanel>
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate>
-                                                <Border
-                                                    BorderThickness="1" 
-                                                    BorderBrush="{DynamicResource TextColor}" 
-                                                    Margin="0,0,10,0"
-                                                    >
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Label Margin="2,0,0,0" Content="Not" VerticalAlignment="Center" Foreground="Red" 
-                                                               Visibility="{Binding Negate, Converter={StaticResource BooleanToVisibilityConverter}}"></Label>
-                                                        <Label Content="{Binding ValueToMatch}" FontSize="18"></Label>
-                                                    </StackPanel>
-                                                </Border>
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
-                                
-                            </WrapPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
+                <views:VisualCases></views:VisualCases>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition></RowDefinition>
