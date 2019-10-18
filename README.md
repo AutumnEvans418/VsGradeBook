@@ -229,6 +229,7 @@ Here is the main packages used in this project that makes this whole thing work.
   - [In memory compilation](https://josephwoodward.co.uk/2016/12/in-memory-c-sharp-compilation-using-roslyn)
   - [How to use the CSharp Syntax Rewriter](https://johnkoerner.com/csharp/using-a-csharp-syntax-rewriter/)
   - [Removing Empty Statements with the CSharp Syntax Rewriter](https://joshvarty.com/2014/08/15/learn-roslyn-now-part-5-csharpsyntaxrewriter/)
+  - [Roslyn Versions for versions of visual studio](https://stackoverflow.com/questions/45678861/whats-the-latest-version-of-roslyn-my-analyzer-can-target-if-i-support-vs2015?noredirect=1&lq=1)
 - VSIX
   - [Visual Studio Extension Samples](https://github.com/Microsoft/VSSDK-Extensibility-Samples)
   - [VSIX Extension Docs](https://docs.microsoft.com/en-us/visualstudio/extensibility/starting-to-develop-visual-studio-extensions?view=vs-2019)
