@@ -7,7 +7,7 @@
              mc:Ignorable="d" 
              Height="150" 
              Width="500"
-             Background="#FF303030"
+             Background="{DynamicResource Background}"
 
              >
     <Window.Resources>

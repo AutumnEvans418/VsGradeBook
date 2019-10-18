@@ -51,9 +51,6 @@
     <Compile Include="VsGraderPackage.cs" />
     <Compile Include="VsGraderView.cs" />
     <Compile Include="VsGraderViewCommand.cs" />
-    <Compile Include="VsGraderViewControl.xaml.cs">
-      <DependentUpon>VsGraderViewControl.xaml</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="source.extension.vsixmanifest">
@@ -79,12 +76,6 @@
     <PackageReference Include="Unity">
       <Version>5.11.1</Version>
     </PackageReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="VsGraderViewControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\VsGradebook Icon.png">

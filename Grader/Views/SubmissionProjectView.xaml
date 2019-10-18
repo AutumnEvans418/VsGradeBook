@@ -9,19 +9,19 @@
              d:DesignHeight="700"
              d:DesignWidth="400" d:DataContext="{d:DesignInstance toolWindows:ProjectViewModel}">
     <UserControl.Resources>
-        <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+        <!--<ResourceDictionary Source="Styles.xaml"></ResourceDictionary>-->
     </UserControl.Resources>
     <ScrollViewer>
         <Grid>
             <StackPanel Margin="10">
                
                 <Label Content="{Binding CodeProject.DateCreated}" ContentStringFormat="{}{0:d}"></Label>
-                <Label Content="{Binding CodeProject.Name}" Style="{StaticResource Title}"/>
+                <Label Content="{Binding CodeProject.Name}" Style="{DynamicResource Title}"/>
                 <Label Content="{Binding CodeProject.Description}"/>
                 <Label Content="Test Inputs"/>
-                <TextBlock Text="{Binding CodeProject.CsvCases}" />
+                <TextBlock Text="{Binding CodeProject.CsvCases}" Foreground="{DynamicResource TextColor}" />
                 <Label Content="Expected Outputs"/>
-                <TextBlock Text="{Binding CodeProject.CsvExpectedOutput}"/>
+                <TextBlock Text="{Binding CodeProject.CsvExpectedOutput}" Foreground="{DynamicResource TextColor}"/>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>
@@ -40,7 +40,7 @@
 
                     <StackPanel Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
                         <Label  Content="Actual Output"/>
-                        <TextBox Style="{StaticResource BigBox}" IsReadOnly="True" Text="{Binding ActualOutput, Mode=OneWay}"/>
+                        <TextBox Style="{DynamicResource BigBox}" IsReadOnly="True" Text="{Binding ActualOutput, Mode=OneWay}"/>
                     </StackPanel>
                     <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Grid.Column="0">
                         <Label Content="Student Name" DockPanel.Dock="Top"/>

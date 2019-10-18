@@ -11,7 +11,7 @@
              d:DataContext="{d:DesignInstance toolWindows:SubmissionsViewModel}"
              >
     <UserControl.Resources>
-        <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+        <!--<ResourceDictionary Source="Styles.xaml"></ResourceDictionary>-->
     </UserControl.Resources>
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -20,7 +20,7 @@
             <RowDefinition Height="60"></RowDefinition>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
-            <Label Content="{Binding CodeProject.Name}" Grid.Row="0" Style="{StaticResource Title}"></Label>
+            <Label Content="{Binding CodeProject.Name}" Grid.Row="0" Style="{DynamicResource Title}"></Label>
             <TextBlock TextWrapping="Wrap" Text="{Binding CodeProject.Description}" Margin="10"></TextBlock>
         </StackPanel>
         <ListBox 

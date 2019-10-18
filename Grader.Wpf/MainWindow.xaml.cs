@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using AsyncToolWindowSample.Models;
 using AsyncToolWindowSample.ToolWindows;
+using Grader.Views;
 using Unity;
 
 namespace Grader.Wpf
@@ -21,7 +22,7 @@ namespace Grader.Wpf
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IColorService
     {
         private MainWindowViewModel vm;
         public MainWindow()
@@ -31,6 +32,7 @@ namespace Grader.Wpf
             Setup();
         }
 
+        private MainView _mainView;
         private async void Setup()
         {
             
@@ -39,17 +41,38 @@ namespace Grader.Wpf
 
             vm = new MainWindowViewModel();
             container.RegisterInstance<IVisualStudioService>(vm);
+            container.RegisterInstance<IColorService>(this);
             DataContext = vm;
 
 
-            var view = container.Resolve<MainView>();
-            await view.ToPage("HomeView");
+            _mainView = container.Resolve<MainView>();
+            await _mainView.ToPage("HomeView");
+            SetTheme(this);
 
 
-
-            Region.Content = view;
+            Region.Content = _mainView;
         }
 
-        
+        private bool isDark;
+
+        public void SetTheme(Control control)
+        {
+            if (isDark)
+            {
+                control.Resources["Background"] = new SolidColorBrush(Colors.White);
+                control.Resources["TextColor"] = new SolidColorBrush(Colors.Black);
+            }
+            else
+            {
+                control.Resources["Background"] = new SolidColorBrush(Colors.Black);
+                control.Resources["TextColor"] = new SolidColorBrush(Colors.White);
+            }
+        }
+
+        private void ThemeClick(object sender, RoutedEventArgs e)
+        {
+            isDark = !isDark;
+            SetTheme(this);
+        }
     }
 }

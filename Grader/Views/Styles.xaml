@@ -4,12 +4,12 @@
                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                     xmlns:av="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    mc:Ignorable="d" >
+                    mc:Ignorable="d">
     <Style TargetType="Rectangle">
-        <Setter Property="Fill" Value="#707070"></Setter>
+        <Setter Property="Fill" Value="{DynamicResource TextColor}"></Setter>
     </Style>
     <Style x:Key="Title" TargetType="Label"  >
-        <Setter Property="Foreground" Value="#707070"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"></Setter>
         <Setter Property="FontSize" Value="15"></Setter>
     </Style>
     <Style TargetType="Button">
@@ -22,20 +22,26 @@
         <Setter Property="Foreground" Value="Black"></Setter>
     </Style>
     <Style TargetType="Label">
-        <Setter Property="Foreground" Value="#707070"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"></Setter>
     </Style>
     <Style TargetType="TextBlock">
-        <Setter Property="Foreground" Value="Gray"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"></Setter>
+
+        <!--<Setter Property="Foreground" Value="Gray"></Setter>-->
     </Style>
     <Style x:Key="BigBox" TargetType="TextBox">
         <Setter Property="AcceptsReturn" Value="True"/>
         <Setter Property="MinHeight" Value="80"></Setter>
         <Setter Property="Background" Value="Transparent"></Setter>
-        <Setter Property="Foreground" Value="Gray"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"></Setter>
+
+        <!--<Setter Property="Foreground" Value="Gray"></Setter>-->
     </Style>
     <Style TargetType="TextBox">
         <Setter Property="Background" Value="Transparent"></Setter>
-        <Setter Property="Foreground" Value="Gray"></Setter>
+        <Setter Property="Foreground" Value="{DynamicResource TextColor}"></Setter>
+
+        <!--<Setter Property="Foreground" Value="Gray"></Setter>-->
     </Style>
 
 

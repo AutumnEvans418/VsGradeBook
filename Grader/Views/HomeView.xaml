@@ -9,7 +9,7 @@
              xmlns:toolWindows="clr-namespace:AsyncToolWindowSample.ToolWindows;assembly=Grader.Core"
              d:DesignHeight="1000" d:DesignWidth="728" d:DataContext="{d:DesignInstance toolWindows:HomeViewModel}">
     <UserControl.Resources>
-        <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+        <!--<ResourceDictionary Source="Styles.xaml"></ResourceDictionary>-->
     </UserControl.Resources>
     <ScrollViewer>
         <Grid Margin="50" VerticalAlignment="Center">
@@ -18,12 +18,12 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel>
-                <Label Style="{StaticResource Title}">Students</Label>
+                <Label Style="{DynamicResource Title}">Students</Label>
                 <Rectangle HorizontalAlignment="Stretch" Height="2"/>
                 <Button Command="{Binding CreateSubmissionCommand}">Create Submission</Button>
             </StackPanel>
             <StackPanel Grid.Row="1">
-                <Label Style="{StaticResource Title}">Teachers</Label>
+                <Label Style="{DynamicResource Title}">Teachers</Label>
                 <Rectangle HorizontalAlignment="Stretch" Height="2"/>
                 <Button Command="{Binding NewProjectCommand}">New Project</Button>
                 <Button Command="{Binding SubmissionsCommand}">Submissions</Button>

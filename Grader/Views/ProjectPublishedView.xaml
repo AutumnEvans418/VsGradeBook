@@ -10,7 +10,7 @@
              d:DesignWidth="400" 
              d:DataContext="{d:DesignInstance toolWindows:ProjectPublishedViewModel}">
     <UserControl.Resources>
-        <ResourceDictionary Source="Styles.xaml"></ResourceDictionary>
+        <!--<ResourceDictionary Source="Styles.xaml"></ResourceDictionary>-->
     </UserControl.Resources>
     <ScrollViewer>
         <Grid >
@@ -20,15 +20,15 @@
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
             <StackPanel>
-                <Label HorizontalAlignment="Center" Content="Student Code" Style="{StaticResource Title}"/>
+                <Label HorizontalAlignment="Center" Content="Student Code" Style="{DynamicResource Title}"/>
                 <TextBox IsReadOnly="True" Text="{Binding StudentCode, Mode=OneWay}"></TextBox>
             </StackPanel>
             <StackPanel Grid.Row="1">
-                <Label HorizontalAlignment="Center" Content="Teacher Code" Style="{StaticResource Title}"/>
+                <Label HorizontalAlignment="Center" Content="Teacher Code" Style="{DynamicResource Title}"/>
                 <TextBox IsReadOnly="True" Text="{Binding TeacherCode, Mode=OneWay}"></TextBox>
             </StackPanel>
             <StackPanel  Grid.Row="2">
-                <Label HorizontalAlignment="Center"  Foreground="Red" Content="Please Save!" Style="{StaticResource Title}"></Label>
+                <Label HorizontalAlignment="Center"  Foreground="Red" Content="Please Save!" Style="{DynamicResource Title}"></Label>
                 <Button Content="Save" Command="{Binding SaveCommand}"></Button>
                 <Button Content="Done" Command="{Binding DoneCommand}"></Button>
             </StackPanel>
