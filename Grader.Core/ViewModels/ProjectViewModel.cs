@@ -39,16 +39,24 @@ namespace AsyncToolWindowSample.ToolWindows
             Submission = new Submission();
         }
 
-        public string CsvCases  
+        public string CsvCases
         {
             get => CodeProject.CsvCases;
-            set => CodeProject.CsvCases = SetProperty(CodeProject.CsvCases,value, CodeChanged);
+            set
+            {
+                CodeProject.CsvCases = SetProperty(CodeProject.CsvCases, value);
+                CodeChanged();
+            }
         }
 
         public string CsvExpectedOutput
         {
             get => CodeProject.CsvExpectedOutput;
-            set => CodeProject.CsvExpectedOutput = SetProperty(CodeProject.CsvExpectedOutput,value, CodeChanged);
+            set
+            {
+                CodeProject.CsvExpectedOutput = SetProperty(CodeProject.CsvExpectedOutput, value);
+                CodeChanged();
+            }
         }
 
         void CodeChanged()

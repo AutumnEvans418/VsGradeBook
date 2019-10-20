@@ -64,7 +64,7 @@ namespace Grader.Wpf
             }
             else
             {
-                control.Resources["Background"] = new SolidColorBrush(Colors.DarkSlateGray);
+                control.Resources["Background"] = new SolidColorBrush(Color.FromRgb(64,64,64));
                 control.Resources["TextColor"] = new SolidColorBrush(Colors.White);
             }
         }

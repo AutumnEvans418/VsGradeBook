@@ -106,6 +106,19 @@ namespace ConsoleApp1
         }
 
         [Test]
+        public void Input_Output_Should_Match_Cases()
+        {
+            model.CsvCases = "test";
+            model.CsvExpectedOutput = "test";
+
+            var case1 = model.Cases.Should().HaveCount(1).And.Subject.First();
+            case1.Inputs.First().Should().Be("test");
+            case1.ExpectedOutputs.First().ValueToMatch.Should().Be("test");
+        }
+
+
+
+        [Test]
         public async Task InputWithNoOutput_Should_Pass()
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
@@ -124,6 +137,10 @@ namespace ConsoleApp1
             var result = ProjectViewModel.ConvertToGradeCases(new string[0], new[] {"1,2", "1,2"});
             result.Should().HaveCount(2);
         }
+
+
+
+
 
         [Test]
         public void NegationSyntax_Should_NotChangeContent()
