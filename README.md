@@ -21,7 +21,7 @@ Visual Studio Gradebook is a Visual Studio extension that makes it easy for teac
 - [ ] **3rd party assemblies** When testing the console apps, ensure that the dlls referenced in the code are loaded.
 - [x] **Improved error messages** Output the expected value when a case fails
 - [ ] **Exception Test Cases** create cases that test if a particular input causes or not causes an exception
-- [ ] **Test Case Visual Representation** - create a way to see when you are building a project what the cases will look like.  Create a representation that is less "code" like and more gui based.  Give the option to write in csv format or using a gui.
+- [x] **Test Case Visual Representation** - create a way to see when you are building a project what the cases will look like.  Create a representation that is less "code" like and more gui based.  Give the option to write in csv format or using a gui.
 ## How to Install
 
 - [Install the Visual Studio Extension Here](https://marketplace.visualstudio.com/items?itemName=EvansSoftware.VsGradeBook)
