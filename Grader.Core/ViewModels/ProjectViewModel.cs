@@ -22,6 +22,7 @@ namespace AsyncToolWindowSample.ToolWindows
         private Submission _submission;
         private bool _isStudentSubmission;
         private ObservableCollection<IGradeCase> _cases;
+        private bool _isShowingCode;
 
         public ProjectViewModel(IVisualStudioService visualStudioService,
             IConsoleAppGrader grader, INavigationService navigationService, IGradeBookRepository gradeBookRepository, IMessageService messageService) : base(navigationService)
@@ -68,10 +69,12 @@ namespace AsyncToolWindowSample.ToolWindows
             {
                 CodeProject = project;
                 IsStudentSubmission = true;
+                IsShowingCode = false;
                 Submission.ProjectId = CodeProject.Id;
             }
             else
             {
+                IsShowingCode = true;
                 CodeProject = new CodeProject();
             }
             CodeChanged();
@@ -234,6 +237,12 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             get => _cases;
             set => SetProperty(ref _cases,value);
+        }
+
+        public bool IsShowingCode
+        {
+            get => _isShowingCode;
+            set => SetProperty(ref _isShowingCode,value);
         }
     }
 }

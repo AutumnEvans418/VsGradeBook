@@ -9,6 +9,7 @@
              d:DesignHeight="700"
              d:DesignWidth="400" d:DataContext="{d:DesignInstance toolWindows:ProjectViewModel}">
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="ToVisibilityConverter"></BooleanToVisibilityConverter>
         <!--<ResourceDictionary Source="Styles.xaml"></ResourceDictionary>-->
     </UserControl.Resources>
     <ScrollViewer>
@@ -18,10 +19,14 @@
                 <Label Content="{Binding CodeProject.DateCreated}" ContentStringFormat="{}{0:d}"></Label>
                 <Label Content="{Binding CodeProject.Name}" Style="{DynamicResource Title}"/>
                 <TextBlock Text="{Binding CodeProject.Description}" TextWrapping="Wrap"/>
-                <!--<Label Content="Test Inputs"/>
-                <TextBlock Text="{Binding CsvCases}" Foreground="{DynamicResource TextColor}" />
-                <Label Content="Expected Outputs"/>
-                <TextBlock Text="{Binding CsvExpectedOutput}" Foreground="{DynamicResource TextColor}"/>-->
+                <CheckBox Content="Show Cases as Text"  IsChecked="{Binding IsShowingCode}"/>
+                <StackPanel Visibility="{Binding IsShowingCode, Converter={StaticResource ToVisibilityConverter}}">
+                    <Label Content="Test Inputs" />
+                    <TextBlock Text="{Binding CsvCases}" Foreground="{DynamicResource TextColor}" />
+                    <Label Content="Expected Outputs"/>
+                    <TextBlock Text="{Binding CsvExpectedOutput}" Foreground="{DynamicResource TextColor}"/>
+                </StackPanel>
+             
                 <local:VisualCases></local:VisualCases>
                 <Grid>
                     <Grid.RowDefinitions>
