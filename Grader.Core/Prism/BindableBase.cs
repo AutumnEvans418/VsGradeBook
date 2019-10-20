@@ -57,7 +57,15 @@ namespace AsyncToolWindowSample
 
             return true;
         }
+        protected virtual T SetProperty<T>(T storage, T value, Action onChanged, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(storage, value)) return storage;
 
+            storage = value;
+            onChanged?.Invoke();
+            RaisePropertyChanged(propertyName);
+            return storage;
+        }
         /// <summary>
         /// Raises this object's PropertyChanged event.
         /// </summary>

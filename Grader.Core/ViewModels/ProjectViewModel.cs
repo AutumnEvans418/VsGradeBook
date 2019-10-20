@@ -21,8 +21,6 @@ namespace AsyncToolWindowSample.ToolWindows
         private CodeProject _codeProject;
         private Submission _submission;
         private bool _isStudentSubmission;
-        private string _csvCases;
-        private string _csvExpectedOutput;
         private ObservableCollection<IGradeCase> _cases;
 
         public ProjectViewModel(IVisualStudioService visualStudioService,
@@ -42,20 +40,18 @@ namespace AsyncToolWindowSample.ToolWindows
 
         public string CsvCases  
         {
-            get => _csvCases;
-            set => SetProperty(ref _csvCases,value, CodeChanged);
+            get => CodeProject.CsvCases;
+            set => CodeProject.CsvCases = SetProperty(CodeProject.CsvCases,value, CodeChanged);
         }
 
         public string CsvExpectedOutput
         {
-            get => _csvExpectedOutput;
-            set => SetProperty(ref _csvExpectedOutput,value, CodeChanged);
+            get => CodeProject.CsvExpectedOutput;
+            set => CodeProject.CsvExpectedOutput = SetProperty(CodeProject.CsvExpectedOutput,value, CodeChanged);
         }
 
         void CodeChanged()
         {
-            CodeProject.CsvCases = CsvCases;
-            CodeProject.CsvExpectedOutput = CsvExpectedOutput;
             Cases = new ObservableCollection<IGradeCase>(ConvertTextToGradeCases());
         }
         public bool IsStudentSubmission
@@ -71,8 +67,6 @@ namespace AsyncToolWindowSample.ToolWindows
             if (parameter.ContainsKey("Project") && parameter["Project"] is CodeProject project)
             {
                 CodeProject = project;
-                CsvCases = project.CsvCases;
-                CsvExpectedOutput = project.CsvExpectedOutput;
                 IsStudentSubmission = true;
                 Submission.ProjectId = CodeProject.Id;
             }
@@ -80,6 +74,7 @@ namespace AsyncToolWindowSample.ToolWindows
             {
                 CodeProject = new CodeProject();
             }
+            CodeChanged();
         }
 
         public CodeProject CodeProject
