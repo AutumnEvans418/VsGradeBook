@@ -159,13 +159,13 @@ namespace AsyncToolWindowSample.ToolWindows
 
         }
 
-        private List<IGradeCase> ConvertTextToGradeCases()
+        public List<IGradeCase> ConvertTextToGradeCases()
         {
             var inputs =
-                CodeProject.CsvCases?.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries) ??
+                CsvCases?.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries) ??
                 new string[0];
             var outputs =
-                CodeProject.CsvExpectedOutput?.Split(new string[] {Environment.NewLine},
+                CsvExpectedOutput?.Split(new string[] {Environment.NewLine},
                     StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
             var gradeCases = ConvertToGradeCases(outputs, inputs);
             return gradeCases;
@@ -193,20 +193,20 @@ namespace AsyncToolWindowSample.ToolWindows
 
 
 
-                string[] inputArray = new string[0];
-                if (!string.IsNullOrEmpty(input))
-                {
-                    inputArray = input.Split(new[] {","}, StringSplitOptions.None);
-                }
+                //string[] inputArray = new string[0];
+                //if (!string.IsNullOrEmpty(input))
+                //{
+                //    inputArray = input.Split(new[] {","}, StringSplitOptions.None);
+                //}
 
-                string[] outputArray = new string[0];
+                //string[] outputArray = new string[0];
 
-                if (!string.IsNullOrEmpty(output))
-                {
-                    outputArray = output.Split(new[] {","}, StringSplitOptions.None);
-                }
+                //if (!string.IsNullOrEmpty(output))
+                //{
+                //    outputArray = output.Split(new[] {","}, StringSplitOptions.None);
+                //}
 
-                gradeCases.Add(new GradeCase(inputArray, outputArray, index +1));
+                gradeCases.Add(new GradeCase(input, output, index +1));
             }
 
             if (gradeCases.Any() != true)

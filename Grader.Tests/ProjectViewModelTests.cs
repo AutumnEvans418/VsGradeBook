@@ -373,6 +373,52 @@ $100,15%,$15,$test";
 
         }
 
+        [Test]
+        public void QuotationTest()
+        {
+            model.CsvCases = @"""test"", ""test2 "",""test,test""";
+            model.CsvExpectedOutput = "";
+
+            var result = model.ConvertTextToGradeCases();
+
+            var inp = result.First().Inputs;
+
+            inp[0].Should().Be("test");
+            inp[1].Should().Be("test2 ");
+            inp[2].Should().Be("test,test");
+
+        }
+
+        [Test]
+        public void MessageWithQuotations()
+        {
+            model.CsvExpectedOutput = @"""test""[this is a message],""test2[test]""";
+
+            var result = model.ConvertTextToGradeCases();
+
+            var ot = result.First().ExpectedOutputs;
+            ot[0].ValueToMatch.Should().Be("test");
+            ot[0].Hint.Should().Be("this is a message");
+            ot[1].ValueToMatch.Should().Be("test2[test]");
+            ot[1].Hint.Should().BeNullOrEmpty();
+        }
+
+
+        [Test]
+        public void NegateWithQuotations()
+        {
+            model.CsvExpectedOutput = @"!""test"",""!test2""";
+
+
+            var result = model.ConvertTextToGradeCases();
+
+            var ot = result.First().ExpectedOutputs;
+            ot[0].ValueToMatch.Should().Be("test");
+            ot[0].Negate.Should().BeTrue();
+            ot[1].ValueToMatch.Should().Be("!test2");
+            ot[1].Negate.Should().BeFalse();
+        }
+
 
 
         [Test]

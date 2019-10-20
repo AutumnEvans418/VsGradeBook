@@ -17,7 +17,7 @@ namespace Grader.Tests
         [SetUp]
         public void Setup()
         {
-            gradeCase = new GradeCase(new string[0], new[] {"Hello, World!"},0);
+            gradeCase = new GradeCase("", "Hello, World!",0);
             grader = new ConsoleAppGrader(new CSharpGenerator());
             Grader.Console.Outputs.Clear();
         }
@@ -74,7 +74,7 @@ using System;
     }
 ";
             
-            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(), new List<string>(){"Hello World!"},0), });
+            var result = await grader.Grade(src, new[] { new GradeCase("", "Hello World!",0), });
 
             result.PercentPassing.Should().Be(1);
         }
@@ -97,7 +97,7 @@ using System;
         public async Task ProgramWithComment2_Should_Pass()
         {
             var src = writeLineReadLineSrc;
-            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(){"Hello World!"}, new List<string>() { "Hello World!" },0), });
+            var result = await grader.Grade(src, new[] { new GradeCase("Hello World!",  "Hello World!" ,0), });
 
             result.PercentPassing.Should().Be(1);
         }
@@ -121,7 +121,7 @@ namespace ConsoleApp1
     }
 }
 ";
-            var result = await grader.Grade(src, new[] { new GradeCase(new List<string>(){"0"},new List<string>() ,0), });
+            var result = await grader.Grade(src, new[] { new GradeCase("0","" ,0), });
 
         }
 
