@@ -376,7 +376,7 @@ $100,15%,$15,$test";
         [Test]
         public void QuotationTest()
         {
-            model.CsvCases = @"""test"", ""test2 "",""test,test""";
+            model.CsvCases = @"""test"", ""test2 "",""test,test"", test3 , , "" "" ";
             model.CsvExpectedOutput = "";
 
             var result = model.ConvertTextToGradeCases();
@@ -386,6 +386,9 @@ $100,15%,$15,$test";
             inp[0].Should().Be("test");
             inp[1].Should().Be("test2 ");
             inp[2].Should().Be("test,test");
+            inp[3].Should().Be(" test3 ");
+            inp[4].Should().Be(" ");
+            inp[5].Should().Be(" ");
 
         }
 

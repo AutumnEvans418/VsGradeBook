@@ -14,5 +14,9 @@
         }
         public string Value { get; set; }
         public TokenType TokenType { get; set; }
+        public override string ToString()
+        {
+            return $"{TokenType}:{Value}";
+        }
     }
 }

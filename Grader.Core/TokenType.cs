@@ -5,6 +5,7 @@
         Id,
         Bang,
         Comment,
-        Comma
+        Comma,
+        EndOfFile
     }
 }

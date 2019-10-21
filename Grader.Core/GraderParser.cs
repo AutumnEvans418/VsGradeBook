@@ -9,13 +9,7 @@ namespace Grader
         public IList<string> ParseInput(string input)
         {
             var result = Parse(input);
-            var lst = new List<string>();
-            foreach (var token in result)
-            {
-                Assert(token.TokenType, TokenType.Id);
-                lst.Add(token.Value);
-            }
-            return lst;
+            return result.Where(p => p.TokenType == TokenType.Id).Select(p => p.Value).ToList();
         }
 
         public IList<CaseValue> ParseOutput(string output)
@@ -77,7 +71,7 @@ namespace Grader
             var lst = new List<Token>();
 
             var index = 0;
-            var current = "";
+            //var current = "";
 
             char? get()
             {
@@ -88,70 +82,80 @@ namespace Grader
 
                 return null;
             }
+
+            void Add(TokenType type, string val, bool increment = true)
+            {
+                lst.Add(new Token() { TokenType = type, Value = val });
+                if (increment)
+                    index++;
+            }
+
             while (index < input.Length)
             {
                 var c = get();
                 if (c == '!')
                 {
-                    lst.Add(new Token() { TokenType = TokenType.Bang, Value = "!" });
-                    index++;
-                    current = "";
+                    Add(TokenType.Bang, "!");
                 }
                 else if (c == '"')
                 {
+                    var current = "";
                     index++;
                     c = get();
-                    if (string.IsNullOrWhiteSpace(current))
-                    {
-                        current = "";
-                    }
+
                     while (c != '"')
                     {
                         current += c;
                         index++;
                         c = get();
                     }
-                    lst.Add(new Token(TokenType.Id, current));
-                    current = "";
-                    index++;
+                    Add(TokenType.Id, current);
                 }
                 else if (c == '[')
                 {
+                    var current = "";
                     index++;
                     c = get();
-                    if (string.IsNullOrWhiteSpace(current))
-                    {
-                        current = "";
-                    }
+
                     while (c != ']')
                     {
                         current += c;
                         index++;
                         c = get();
                     }
-                    lst.Add(new Token(TokenType.Id, current));
-                    current = "";
-                    index++;
+                    Add(TokenType.Comment, current);
                 }
-                else if (c == ',' || c == null)
+                else if (c == ',')
                 {
-                    //lst.Add(new Token(TokenType.Id, current));
-                    current = "";
-                    index++;
+                    Add(TokenType.Comma, "");
+                }
+                else if (c == null)
+                {
+                    Add(TokenType.EndOfFile, "");
                 }
                 else
                 {
-                    current += c;
-                    index++;
+                    var stops = new char?[] { ',', '"', '[', null }.ToList();
+                    var current = "";
+                    while (stops.Contains(c) != true)
+                    {
+                        current += c;
+                        index++;
+                        c = get();
+                    }
+                    if(c == '"' && string.IsNullOrWhiteSpace(current))
+                    {
+                    }
+                    else
+                    {
+                        Add(TokenType.Id, current, false);
+                    }
+
                 }
 
             }
 
-            if (current != "")
-            {
-                lst.Add(new Token(TokenType.Id, current));
-                current = "";
-            }
+
 
             return lst;
         }
