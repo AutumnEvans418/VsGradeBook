@@ -17,7 +17,7 @@ namespace Grader.Tests
         [SetUp]
         public void Setup()
         {
-            gradeCase = new GradeCase("", "Hello, World!",0);
+            gradeCase = new GradeCase("", @"""Hello, World!""",0);
             grader = new ConsoleAppGrader(new CSharpGenerator());
             Grader.Console.Outputs.Clear();
         }

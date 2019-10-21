@@ -2,6 +2,10 @@
 {
     public class CaseValue
     {
+        public CaseValue()
+        {
+            
+        }
         public CaseValue(string str)
         {
             var resultContent = "";
