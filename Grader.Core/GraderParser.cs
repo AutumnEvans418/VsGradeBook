@@ -9,50 +9,13 @@ namespace Grader
         public IList<string> ParseInput(string input)
         {
             var result = Parse(input);
-            return result.Where(p => p.TokenType == TokenType.Id).Select(p => p.Value).ToList();
+            return result.Select(p=>p.ValueToMatch).ToList();
         }
 
         public IList<CaseValue> ParseOutput(string output)
         {
-            var result = Parse(output);
-            var lst = new List<CaseValue>();
-
-
-            var index = 0;
-            Token get(int i)
-            {
-                if (i < result.Count && i >= 0)
-                {
-                    return result[i];
-                }
-                return null;
-            }
-            while (index < result.Count)
-            {
-                var c = get(index);
-
-                if (c.TokenType == TokenType.Id)
-                {
-                    var current = new CaseValue();
-                    current.ValueToMatch = c.Value;
-                    if (get(index - 1)?.TokenType == TokenType.Bang)
-                    {
-                        current.Negate = true;
-                    }
-
-                    var cmt = (get(index + 1));
-                    if (cmt?.TokenType == TokenType.Comment)
-                    {
-                        current.Hint = cmt.Value;
-                    }
-                    lst.Add(current);
-                }
-                index++;
-
-
-            }
-
-            return lst;
+            return Parse(output);
+          
         }
 
 
@@ -65,8 +28,7 @@ namespace Grader
         }
 
 
-
-        public IList<Token> Parse(string input)
+        private IList<CaseValue> Parse(string input)
         {
             var lst = new List<Token>();
 
@@ -124,32 +86,9 @@ namespace Grader
                 }
                 else if (ParseTill('"','"', TokenType.Id))
                 {
-                    //var current = "";
-                    //index++;
-                    //c = get();
-
-                    //while (c != '"')
-                    //{
-                       
-                    //    current += c;
-                    //    index++;
-                    //    c = get();
-                    //}
-                    //Add(TokenType.Id, current);
                 }
                 else if (ParseTill('[',']', TokenType.Comment))
                 {
-                    //var current = "";
-                    //index++;
-                    //c = get();
-
-                    //while (c != ']')
-                    //{
-                    //    current += c;
-                    //    index++;
-                    //    c = get();
-                    //}
-                    //Add(TokenType.Comment, current);
                 }
                 else if (c == ',')
                 {
@@ -181,13 +120,14 @@ namespace Grader
 
             }
 
-            CheckSyntax(lst);
+           
 
-            return lst;
+            return CheckSyntax(lst);
         }
 
-        private void CheckSyntax(IEnumerable<Token> lst)
+        private List<CaseValue> CheckSyntax(IEnumerable<Token> lst)
         {
+            var values = new List<CaseValue>();
             var data = lst.ToList();
             var token = data.FirstOrDefault();
 
@@ -206,13 +146,18 @@ namespace Grader
 
             while (data.Count > 0)
             {
+                var val = new CaseValue();
                 if (token?.TokenType == TokenType.Bang)
                 {
+                    val.Negate = true;
                     Eat(TokenType.Bang);
                 }
+
+                val.ValueToMatch = token?.Value;
                 Eat(TokenType.Id);
                 if (token?.TokenType == TokenType.Comment)
                 {
+                    val.Hint = token.Value;
                     Eat(TokenType.Comment);
                 }
                 //delete trailing spaces
@@ -228,11 +173,12 @@ namespace Grader
                 {
                     Eat(TokenType.EndOfFile);
                 }
+                values.Add(val);
 
             }
 
 
-            
+            return values;
         }
     }
 }

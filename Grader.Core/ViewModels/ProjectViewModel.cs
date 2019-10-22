@@ -23,6 +23,7 @@ namespace AsyncToolWindowSample.ToolWindows
         private bool _isStudentSubmission;
         private ObservableCollection<IGradeCase> _cases;
         private bool _isShowingCode;
+        private string _parseErrorMessage;
 
         public ProjectViewModel(IVisualStudioService visualStudioService,
             IConsoleAppGrader grader, INavigationService navigationService, IGradeBookRepository gradeBookRepository, IMessageService messageService) : base(navigationService)
@@ -33,7 +34,7 @@ namespace AsyncToolWindowSample.ToolWindows
             _navigationService = navigationService;
             _gradeBookRepository = gradeBookRepository;
             _messageService = messageService;
-            CodeProject = new CodeProject {CsvCases = "", CsvExpectedOutput = "Hello World!"};
+            CodeProject = new CodeProject { CsvCases = "", CsvExpectedOutput = "Hello World!" };
             TestCommand = new DelegateCommandAsync(Test);
             SubmitCommand = new DelegateCommandAsync(Submit);
             Submission = new Submission();
@@ -59,9 +60,24 @@ namespace AsyncToolWindowSample.ToolWindows
             }
         }
 
-        void CodeChanged()
+        public string ParseErrorMessage
         {
-            Cases = new ObservableCollection<IGradeCase>(ConvertTextToGradeCases());
+            get => _parseErrorMessage;
+            set => SetProperty(_parseErrorMessage,value);
+        }
+
+        async  void CodeChanged()
+        {
+            try
+            {
+                Cases = new ObservableCollection<IGradeCase>(ConvertTextToGradeCases());
+                ParseErrorMessage = "";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                ParseErrorMessage = e.Message;
+            }
         }
         public bool IsStudentSubmission
         {
@@ -105,7 +121,7 @@ namespace AsyncToolWindowSample.ToolWindows
                     Submission.SubmissionFiles = codes.Select(p => new SubmissionFile() { Content = p.Content, FileName = p.FileName }).ToList();
                     if (string.IsNullOrWhiteSpace(Submission.StudentName))
                     {
-                        await _messageService.ShowAlert ("You must enter your name before submitting");
+                        await _messageService.ShowAlert("You must enter your name before submitting");
                         return;
                     }
                     var result = await _gradeBookRepository.AddSubmission(Submission);
@@ -123,7 +139,7 @@ namespace AsyncToolWindowSample.ToolWindows
                 Console.WriteLine(e);
                 await _messageService.ShowAlert(e.ToString());
             }
-         
+
         }
 
         public async Task Test()
@@ -133,7 +149,7 @@ namespace AsyncToolWindowSample.ToolWindows
                 var gradeCases = ConvertTextToGradeCases();
 
                 var codes = await _visualStudioService.GetCSharpFilesAsync();
-                var result = await _grader.Grade(codes.Select(p=>p.Content), gradeCases);
+                var result = await _grader.Grade(codes.Select(p => p.Content), gradeCases);
 
                 Submission.Grade = result.PercentPassing;
                 ErrorMessage = "";
@@ -162,10 +178,10 @@ namespace AsyncToolWindowSample.ToolWindows
         public List<IGradeCase> ConvertTextToGradeCases()
         {
             var inputs =
-                CsvCases?.Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries) ??
+                CsvCases?.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries) ??
                 new string[0];
             var outputs =
-                CsvExpectedOutput?.Split(new string[] {Environment.NewLine},
+                CsvExpectedOutput?.Split(new string[] { Environment.NewLine },
                     StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
             var gradeCases = ConvertToGradeCases(outputs, inputs);
             return gradeCases;
@@ -175,7 +191,7 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             var gradeCases = new List<IGradeCase>();
 
-            var highest = new[] {outputs.Length, inputs.Length}.Max();
+            var highest = new[] { outputs.Length, inputs.Length }.Max();
 
             for (var index = 0; index < highest; index++)
             {
@@ -206,7 +222,7 @@ namespace AsyncToolWindowSample.ToolWindows
                 //    outputArray = output.Split(new[] {","}, StringSplitOptions.None);
                 //}
 
-                gradeCases.Add(new GradeCase(input, output, index +1));
+                gradeCases.Add(new GradeCase(input, output, index + 1));
             }
 
             if (gradeCases.Any() != true)
@@ -244,13 +260,13 @@ namespace AsyncToolWindowSample.ToolWindows
         public ObservableCollection<IGradeCase> Cases
         {
             get => _cases;
-            set => SetProperty(ref _cases,value);
+            set => SetProperty(ref _cases, value);
         }
 
         public bool IsShowingCode
         {
             get => _isShowingCode;
-            set => SetProperty(ref _isShowingCode,value);
+            set => SetProperty(ref _isShowingCode, value);
         }
     }
 }

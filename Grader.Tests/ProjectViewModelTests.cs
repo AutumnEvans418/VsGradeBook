@@ -397,7 +397,16 @@ $100,15%,$15,$test";
         [TestCase(@"""test", typeof(Exception))]
         public void ExpectedOutput_Should_Fail(string expected, Type exception)
         {
-            var type = Assert.Throws(exception,() => model.CsvExpectedOutput = expected);
+           model.CsvExpectedOutput = expected;
+           model.ParseErrorMessage.Should().NotBeNullOrEmpty();
+        }
+
+        [Test]
+        public void QuoteWithTrailingSpace_Should_HaveOneCase()
+        {
+            model.CsvExpectedOutput = @"""asasdf[]""       ";
+            model.Cases.Should().HaveCount(1);
+            model.Cases.First().ExpectedOutputs.Should().HaveCount(1);
         }
 
         [Test]
