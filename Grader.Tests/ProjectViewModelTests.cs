@@ -376,7 +376,7 @@ $100,15%,$15,$test";
         [Test]
         public void QuotationTest()
         {
-            model.CsvCases = @"""test"", ""test2 "",""test,test"", test3 , , "" "" ";
+            model.CsvCases = @"""test"", ""test2 "",""test,test"", test3 , , "" "" ,test[hint] ";
             model.CsvExpectedOutput = "";
 
             var result = model.ConvertTextToGradeCases();
@@ -390,6 +390,14 @@ $100,15%,$15,$test";
             inp[4].Should().Be(" ");
             inp[5].Should().Be(" ");
 
+        }
+
+        [TestCase(@"""test """" test2 """, typeof(Exception))]
+        [TestCase(@"""test ""asdf"" test2 """, typeof(Exception))]
+        [TestCase(@"""test", typeof(Exception))]
+        public void ExpectedOutput_Should_Fail(string expected, Type exception)
+        {
+            var type = Assert.Throws(exception,() => model.CsvExpectedOutput = expected);
         }
 
         [Test]

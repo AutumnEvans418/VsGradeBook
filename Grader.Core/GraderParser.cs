@@ -90,40 +90,66 @@ namespace Grader
                     index++;
             }
 
+            
             while (index < input.Length)
             {
                 var c = get();
+                bool ParseTill(char from, char to, TokenType type)
+                {
+                    if (c == from)
+                    {
+                        var current = "";
+                        index++;
+                        c = get();
+
+                        while (c != to)
+                        {
+                            current += c;
+                            index++;
+                            c = get();
+                            if (c == null)
+                            {
+                                throw new Exception($"Expected a '{to}' but was the end of the text");
+                            }
+                        }
+                        Add(type, current);
+                        return true;
+                    }
+                    return false;
+                }
+
                 if (c == '!')
                 {
                     Add(TokenType.Bang, "!");
                 }
-                else if (c == '"')
+                else if (ParseTill('"','"', TokenType.Id))
                 {
-                    var current = "";
-                    index++;
-                    c = get();
+                    //var current = "";
+                    //index++;
+                    //c = get();
 
-                    while (c != '"')
-                    {
-                        current += c;
-                        index++;
-                        c = get();
-                    }
-                    Add(TokenType.Id, current);
+                    //while (c != '"')
+                    //{
+                       
+                    //    current += c;
+                    //    index++;
+                    //    c = get();
+                    //}
+                    //Add(TokenType.Id, current);
                 }
-                else if (c == '[')
+                else if (ParseTill('[',']', TokenType.Comment))
                 {
-                    var current = "";
-                    index++;
-                    c = get();
+                    //var current = "";
+                    //index++;
+                    //c = get();
 
-                    while (c != ']')
-                    {
-                        current += c;
-                        index++;
-                        c = get();
-                    }
-                    Add(TokenType.Comment, current);
+                    //while (c != ']')
+                    //{
+                    //    current += c;
+                    //    index++;
+                    //    c = get();
+                    //}
+                    //Add(TokenType.Comment, current);
                 }
                 else if (c == ',')
                 {
@@ -155,9 +181,58 @@ namespace Grader
 
             }
 
-
+            CheckSyntax(lst);
 
             return lst;
+        }
+
+        private void CheckSyntax(IEnumerable<Token> lst)
+        {
+            var data = lst.ToList();
+            var token = data.FirstOrDefault();
+
+            void Eat(TokenType tokenType)
+            {
+                if (data[0].TokenType == tokenType)
+                {
+                    data.RemoveAt(0);
+                    token = data.FirstOrDefault();
+                }
+                else
+                {
+                    throw new Exception($"Expected type '{tokenType}' but was '{data[0]}'. Please check your syntax");
+                }
+            }
+
+            while (data.Count > 0)
+            {
+                if (token?.TokenType == TokenType.Bang)
+                {
+                    Eat(TokenType.Bang);
+                }
+                Eat(TokenType.Id);
+                if (token?.TokenType == TokenType.Comment)
+                {
+                    Eat(TokenType.Comment);
+                }
+                //delete trailing spaces
+                if (token?.TokenType == TokenType.Id && string.IsNullOrWhiteSpace(token.Value))
+                {
+                    Eat(TokenType.Id);
+                }
+                if (token != null && token?.TokenType != TokenType.EndOfFile)
+                {
+                    Eat(TokenType.Comma);
+                }
+                else if(token != null)
+                {
+                    Eat(TokenType.EndOfFile);
+                }
+
+            }
+
+
+            
         }
     }
 }
