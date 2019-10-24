@@ -4,6 +4,24 @@ using System.Linq;
 
 namespace Grader
 {
+    public class ParserException : Exception
+    {
+        public ParserException() 
+        {
+            
+        }
+
+        public ParserException(string msg) : base(msg)
+        {
+            
+        }
+        public List<Exception> Exceptions { get; set; } = new List<Exception>();
+
+        public override string ToString()
+        {
+            return $"{(Exceptions.Any() ? Exceptions.Select(p=> p.ToString()).Aggregate((f,s) => f + "\r\n" + s) : "")}\r\n" + base.ToString();
+        }
+    }
     public class GraderParser
     {
         public IList<string> ParseInput(string input)
@@ -19,14 +37,7 @@ namespace Grader
         }
 
 
-        void Assert(TokenType tokenType, TokenType expected)
-        {
-            if (tokenType != expected)
-            {
-                throw new InvalidOperationException($"Unexpected token {tokenType}");
-            }
-        }
-
+        
 
         private IList<CaseValue> Parse(string input)
         {
@@ -71,7 +82,7 @@ namespace Grader
                             c = get();
                             if (c == null)
                             {
-                                throw new Exception($"Expected a '{to}' but was the end of the text");
+                                throw new ParserException($"Expected a '{to}' but was the end of the text");
                             }
                         }
                         Add(type, current);
@@ -140,7 +151,7 @@ namespace Grader
                 }
                 else
                 {
-                    throw new Exception($"Expected type '{tokenType}' but was '{data[0]}'. Please check your syntax");
+                    throw new ParserException($"Expected type '{tokenType}' but was '{data[0]}'. Please check your syntax");
                 }
             }
 

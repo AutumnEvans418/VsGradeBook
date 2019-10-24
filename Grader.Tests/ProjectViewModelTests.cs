@@ -21,7 +21,7 @@ namespace Grader.Tests
         private Fixture fixture;
         private Mock<IVisualStudioService> vsMock;
         private ProjectViewModel model;
-       [SetUp]
+        [SetUp]
         public void Setup()
         {
             fixture = new Fixture();
@@ -29,10 +29,10 @@ namespace Grader.Tests
             fixture.Inject<IConsoleAppGrader>(new ConsoleAppGrader(new CSharpGenerator()));
 
             vsMock = fixture.Freeze<Mock<IVisualStudioService>>();
-             model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
+            model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
 
         }
-        const string  helloWorldSrc = @"
+        const string helloWorldSrc = @"
 using System.Collections;
 using System.Linq;
 using System.Text;
@@ -68,10 +68,10 @@ namespace ConsoleApp1
         [Test]
         public async Task HelloWorld_Should_Pass()
         {
-            
+
             var output = "Hello World!";
 
-            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = helloWorldSrc} }.AsEnumerable()));
+            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
 
             model.CodeProject.CsvExpectedOutput = output;
 
@@ -86,7 +86,7 @@ namespace ConsoleApp1
         public async Task InvalidNumberOfInputs_ShouldGiveErrorMessage()
         {
 
-            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = taxSystemSrc}}.AsEnumerable()));
+            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystemSrc } }.AsEnumerable()));
 
             await model.TestCommand.ExecuteAsync();
             model.ErrorMessage.Should().Be("Case 1: Missing input\r\n");
@@ -97,7 +97,7 @@ namespace ConsoleApp1
         public async Task NoInputOutput_Should_Pass()
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
-                .Returns(Task.FromResult(new[] {new FileContent() {Content = helloWorldSrc}}.AsEnumerable()));
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
             model.CodeProject.CsvExpectedOutput = null;
             model.CodeProject.CsvCases = null;
             await model.TestCommand.ExecuteAsync();
@@ -134,7 +134,7 @@ namespace ConsoleApp1
         [Test]
         public void InputWithoutOutput_Count_Should_BeTwo()
         {
-            var result = ProjectViewModel.ConvertToGradeCases(new string[0], new[] {"1,2", "1,2"});
+            var result = CsvGradeCaseGenerator.ConvertToGradeCases(new string[0], new[] { "1,2", "1,2" });
             result.Should().HaveCount(2);
         }
 
@@ -145,19 +145,19 @@ namespace ConsoleApp1
         [Test]
         public void NegationSyntax_Should_NotChangeContent()
         {
-            var result = ProjectViewModel.ConvertToGradeCases( new[] { "!1,!2" }, new[] { "1,2" });
+            var result = CsvGradeCaseGenerator.ConvertToGradeCases(new[] { "!1,!2" }, new[] { "1,2" });
 
             result.Should().HaveCount(1);
 
             result[0].ExpectedOutputs.Should().HaveCount(2);
-            result[0].ExpectedOutputs.All(p=>p.Negate).Should().BeTrue();
+            result[0].ExpectedOutputs.All(p => p.Negate).Should().BeTrue();
             result[0].ExpectedOutputs.All(p => int.TryParse(p, out var t)).Should().BeTrue();
         }
 
         [Test]
         public void HintSyntax_Should_NotChangeContent()
         {
-            var result = ProjectViewModel.ConvertToGradeCases( new[] { "1[did you handle one?],2[did you handle two?]" }, new[] { "1,2" });
+            var result = CsvGradeCaseGenerator.ConvertToGradeCases(new[] { "1[did you handle one?],2[did you handle two?]" }, new[] { "1,2" });
 
             result.Should().HaveCount(1);
 
@@ -191,10 +191,10 @@ $100,15%,$15,$test[Did you see this?]";
         [Test]
         public async Task Negate_Should_Fail()
         {
-            
+
             vsMock.Setup(p => p.GetCSharpFilesAsync())
                 .Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
-           // model.CodeProject.CsvCases = @"";
+            // model.CodeProject.CsvCases = @"";
             model.CodeProject.CsvExpectedOutput = @"!Hello World";
 
             await model.TestCommand.ExecuteAsync();
@@ -328,7 +328,7 @@ class MainClass
         [Test]
         public async Task TaxSystem_FailingCase_ShouldNotifyWhichCaseFailed()
         {
-            
+
             vsMock.Setup(p => p.GetCSharpFilesAsync())
                 .Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystem } }.AsEnumerable()));
             model.CodeProject.CsvCases = @"10,10
@@ -342,7 +342,7 @@ $100,15%,$15,$test";
             System.Console.WriteLine(model.ErrorMessage);
             model.ErrorMessage.Should().NotBeNullOrWhiteSpace();
 
-            model.Submission.Grade.Should().BeInRange(.6,.7);
+            model.Submission.Grade.Should().BeInRange(.6, .7);
         }
 
 
@@ -366,7 +366,7 @@ $100,15%,$15,$test";
         {
             var cases = "cases";
             var outputs = "outputs";
-            await model.InitializeAsync(new NavigationParameter(){{"Project", new CodeProject(){CsvCases = cases, CsvExpectedOutput = outputs}}});
+            await model.InitializeAsync(new NavigationParameter() { { "Project", new CodeProject() { CsvCases = cases, CsvExpectedOutput = outputs } } });
 
             model.CsvCases.Should().Be(cases);
             model.CsvExpectedOutput.Should().Be(outputs);
@@ -376,10 +376,10 @@ $100,15%,$15,$test";
         [Test]
         public void QuotationTest()
         {
-            model.CsvCases = @"""test"", ""test2 "",""test,test"", test3 , , "" "" ,test[hint] ";
-            model.CsvExpectedOutput = "";
+            var CsvCases = @"""test"", ""test2 "",""test,test"", test3 , , "" "" ,test[hint] ";
+            var CsvExpectedOutput = "";
 
-            var result = model.ConvertTextToGradeCases();
+            var result = CsvGradeCaseGenerator.ConvertTextToGradeCases(CsvCases, CsvExpectedOutput);
 
             var inp = result.First().Inputs;
 
@@ -392,14 +392,24 @@ $100,15%,$15,$test";
 
         }
 
-        [TestCase(@"""test """" test2 """, typeof(Exception))]
-        [TestCase(@"""test ""asdf"" test2 """, typeof(Exception))]
-        [TestCase(@"""test", typeof(Exception))]
-        public void ExpectedOutput_Should_Fail(string expected, Type exception)
+        [TestCase(@"""test """" test2 """)]
+        [TestCase(@"""test ""asdf"" test2 """)]
+        [TestCase(@"""test")]
+        public void ExpectedOutput_Should_Fail(string expected)
         {
-           model.CsvExpectedOutput = expected;
-           model.ParseErrorMessage.Should().NotBeNullOrEmpty();
+            var result = Assert.Throws<ParserException>( () => CsvGradeCaseGenerator.ConvertTextToGradeCases("", expected));
+            result.Exceptions.Should().HaveCount(1);
         }
+
+        [Test]
+        public void TwoErrors_Should_ThrowTwoExceptions()
+        {
+            var exception = Assert.Throws<ParserException>(() =>
+                CsvGradeCaseGenerator.ConvertTextToGradeCases(@"""test """" test2 """, @"""test """" test2 """));
+
+            exception.Exceptions.Should().HaveCount(2);
+        }
+
 
         [Test]
         public void QuoteWithTrailingSpace_Should_HaveOneCase()
@@ -414,7 +424,7 @@ $100,15%,$15,$test";
         {
             model.CsvExpectedOutput = @"""test""[this is a message],""test2[test]""";
 
-            var result = model.ConvertTextToGradeCases();
+            var result = CsvGradeCaseGenerator.ConvertTextToGradeCases(model.CsvCases, model.CsvExpectedOutput);
 
             var ot = result.First().ExpectedOutputs;
             ot[0].ValueToMatch.Should().Be("test");
@@ -430,7 +440,7 @@ $100,15%,$15,$test";
             model.CsvExpectedOutput = @"!""test"",""!test2""";
 
 
-            var result = model.ConvertTextToGradeCases();
+            var result = CsvGradeCaseGenerator.ConvertTextToGradeCases(model.CsvCases, model.CsvExpectedOutput);
 
             var ot = result.First().ExpectedOutputs;
             ot[0].ValueToMatch.Should().Be("test");
@@ -444,8 +454,8 @@ $100,15%,$15,$test";
         [Test]
         public void LongestWord_Should_Pass()
         {
-            var results = ProjectViewModel.ConvertToGradeCases(new[] {"method", "something", "love", "time"},
-                new[] {"test method", "super long something", "I love dogs", "fun& time"});
+            var results = CsvGradeCaseGenerator.ConvertToGradeCases(new[] { "method", "something", "love", "time" },
+                new[] { "test method", "super long something", "I love dogs", "fun& time" });
 
 
             results.Should().HaveCount(4);
@@ -456,9 +466,9 @@ $100,15%,$15,$test";
         [Test]
         public async Task InvalidNumberOfInputs_Should_NotFailAllCases()
         {
-            
 
-            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent(){Content = taxSystemSrc}}.AsEnumerable()));
+
+            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystemSrc } }.AsEnumerable()));
 
             model.CodeProject.CsvCases = "10\r\n12\r\ntest";
             model.CodeProject.CsvExpectedOutput = "11\r\n13.2\r\n";

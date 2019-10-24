@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -63,14 +62,14 @@ namespace AsyncToolWindowSample.ToolWindows
         public string ParseErrorMessage
         {
             get => _parseErrorMessage;
-            set => SetProperty(_parseErrorMessage,value);
+            set => SetProperty(_parseErrorMessage, value);
         }
 
-        async  void CodeChanged()
+        async void CodeChanged()
         {
             try
             {
-                Cases = new ObservableCollection<IGradeCase>(ConvertTextToGradeCases());
+                Cases = new ObservableCollection<IGradeCase>(CsvGradeCaseGenerator.ConvertTextToGradeCases(CsvCases, CsvExpectedOutput));
                 ParseErrorMessage = "";
             }
             catch (Exception e)
@@ -146,7 +145,7 @@ namespace AsyncToolWindowSample.ToolWindows
         {
             try
             {
-                var gradeCases = ConvertTextToGradeCases();
+                var gradeCases = CsvGradeCaseGenerator.ConvertTextToGradeCases(CsvCases, CsvExpectedOutput);
 
                 var codes = await _visualStudioService.GetCSharpFilesAsync();
                 var result = await _grader.Grade(codes.Select(p => p.Content), gradeCases);
@@ -175,63 +174,9 @@ namespace AsyncToolWindowSample.ToolWindows
 
         }
 
-        public List<IGradeCase> ConvertTextToGradeCases()
-        {
-            var inputs =
-                CsvCases?.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries) ??
-                new string[0];
-            var outputs =
-                CsvExpectedOutput?.Split(new string[] { Environment.NewLine },
-                    StringSplitOptions.RemoveEmptyEntries) ?? new string[0];
-            var gradeCases = ConvertToGradeCases(outputs, inputs);
-            return gradeCases;
-        }
-
-        public static List<IGradeCase> ConvertToGradeCases(string[] outputs, string[] inputs)
-        {
-            var gradeCases = new List<IGradeCase>();
-
-            var highest = new[] { outputs.Length, inputs.Length }.Max();
-
-            for (var index = 0; index < highest; index++)
-            {
-                var output = "";
-                var input = "";
-                if (index < inputs.Length)
-                {
-                    input = inputs[index];
-                }
-
-                if (index < outputs.Length)
-                {
-                    output = outputs[index];
-                }
 
 
 
-                //string[] inputArray = new string[0];
-                //if (!string.IsNullOrEmpty(input))
-                //{
-                //    inputArray = input.Split(new[] {","}, StringSplitOptions.None);
-                //}
-
-                //string[] outputArray = new string[0];
-
-                //if (!string.IsNullOrEmpty(output))
-                //{
-                //    outputArray = output.Split(new[] {","}, StringSplitOptions.None);
-                //}
-
-                gradeCases.Add(new GradeCase(input, output, index + 1));
-            }
-
-            if (gradeCases.Any() != true)
-            {
-                gradeCases.Add(new GradeCase(1));
-            }
-
-            return gradeCases;
-        }
 
 
         public string ErrorMessage
