@@ -48,7 +48,7 @@ namespace VsGrader
 
             this.Content = _mainView;
 
-            _mainView.ToPage("HomeView");
+            _ = _mainView.ToPage("HomeView");
         }
 
         public static void RefreshColors(Control mainView)

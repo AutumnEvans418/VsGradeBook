@@ -11,6 +11,6 @@ namespace AsyncToolWindowSample.Models
     public interface IVisualStudioService
     {
         Task<IEnumerable<FileContent>> GetCSharpFilesAsync();
-        void OpenOrCreateCSharpFile(string fileName, string content);
+        Task OpenOrCreateCSharpFile(string fileName, string content);
     }
 }

@@ -60,7 +60,7 @@ namespace AsyncToolWindowSample.ToolWindows
         public async Task ToPage(string page, INavigationParameter parameter)
         {
             Content = pages[page]();
-            await Initialize(Content,parameter);
+            await Initialize(Content,parameter).ConfigureAwait(false);
         }
 
         private async Task Initialize(object ctrl, INavigationParameter parameter)
@@ -74,7 +74,7 @@ namespace AsyncToolWindowSample.ToolWindows
 
                 if (c.DataContext is INavigationAwareAsync awareAsync)
                 {
-                    await awareAsync.InitializeAsync(parameter);
+                    await awareAsync.InitializeAsync(parameter).ConfigureAwait(false);
                 }
             }
         }
@@ -87,13 +87,15 @@ namespace AsyncToolWindowSample.ToolWindows
             modalWindow = new Window();
             modalWindow.Content = view;
 
-            await Initialize(view, parameter);
+            await Initialize(view, parameter).ConfigureAwait(false);
 
             modalWindow.ShowDialog();
             
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task Back()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             modalWindow.Close();
         }

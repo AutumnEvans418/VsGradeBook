@@ -15,12 +15,16 @@ namespace Grader
             _cSharpGenerator = cSharpGenerator;
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         public async Task<IGradeResult> Grade(IEnumerable<string> program, IEnumerable<IGradeCase> cases)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             var caseList = cases.ToList();
             if (caseList.Any() != true)
             {
-                throw new ArgumentException("cases cannot be empty");
+#pragma warning disable CA1303 // Do not pass literals as localized parameters
+                throw new ArgumentException("Cases cannot be empty",nameof(cases));
+#pragma warning restore CA1303 // Do not pass literals as localized parameters
             }
             var generator = _cSharpGenerator;
             var runProgram =generator.Generate(program);
@@ -36,7 +40,9 @@ namespace Grader
                 {
                      runProgram();
                 }
+#pragma warning disable CA1031 // Do not catch general exception types
                 catch (Exception e)
+#pragma warning restore CA1031 // Do not catch general exception types
                 {
                     message =  e.InnerException?.Message;
                 }

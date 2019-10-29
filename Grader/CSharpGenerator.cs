@@ -23,38 +23,41 @@ namespace Grader
 
             var finalCompile = CreateTestCompilation(newTrees);
 
-            var stream = new MemoryStream();
-            var emitResult = finalCompile.Emit(stream);
-
-            if (emitResult.Success)
+            using (var stream = new MemoryStream())
             {
-                stream.Seek(0, SeekOrigin.Begin);
+                var emitResult = finalCompile.Emit(stream);
 
-
-                var assembly = Assembly.Load(stream.ToArray());
-                return () =>
+                if (emitResult.Success)
                 {
-                    if (assembly.EntryPoint.GetParameters().Any())
-                    {
-                        assembly.EntryPoint.Invoke(null, new object[] { new string[] { } });
-                    }
-                    else
-                    {
-                        assembly.EntryPoint.Invoke(null, null);
-                    }
-                };
-                // assembly.EntryPoint.Invoke(null, new object[] { new string[] { } });
+                    stream.Seek(0, SeekOrigin.Begin);
 
-            }
-            else
-            {
-                var msg = "";
-                foreach (var emitResultDiagnostic in emitResult.Diagnostics)
-                {
-                    msg += emitResultDiagnostic.GetMessage() + "\r\n";
+
+                    var assembly = Assembly.Load(stream.ToArray());
+                    return () =>
+                    {
+                        if (assembly.EntryPoint.GetParameters().Any())
+                        {
+                            assembly.EntryPoint.Invoke(null, new object[] { Array.Empty<string>() });
+                        }
+                        else
+                        {
+                            assembly.EntryPoint.Invoke(null, null);
+                        }
+                    };
+                    // assembly.EntryPoint.Invoke(null, new object[] { new string[] { } });
+
                 }
-                throw new CompilationException(msg);
+                else
+                {
+                    var msg = "";
+                    foreach (var emitResultDiagnostic in emitResult.Diagnostics)
+                    {
+                        msg += emitResultDiagnostic.GetMessage() + "\r\n";
+                    }
+                    throw new CompilationException(msg);
+                }
             }
+           
         }
 
         public SyntaxTree[] CreateSyntaxTrees(IEnumerable<string> program)
@@ -77,7 +80,7 @@ namespace Grader
             return newTrees.Select(p=>p.SyntaxTree).ToArray();
         }
 
-        private Compilation CreateTestCompilation(SyntaxTree[] trees)
+        private static Compilation CreateTestCompilation(SyntaxTree[] trees)
         {
             MetadataReference NetStandard = MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51").Location);
             MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);

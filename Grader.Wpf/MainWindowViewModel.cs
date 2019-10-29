@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using AsyncToolWindowSample;
 using AsyncToolWindowSample.Models;
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 
 namespace Grader.Wpf
 {
@@ -38,7 +39,7 @@ namespace ConsoleApp1
             return new[] {new FileContent(){Content = Code, FileName = "Program.cs"}, };
         }
 
-        public void OpenOrCreateCSharpFile(string fileName, string content)
+        public async Task OpenOrCreateCSharpFile(string fileName, string content)
         {
             Code = content;
         }

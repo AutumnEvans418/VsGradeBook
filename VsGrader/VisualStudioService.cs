@@ -7,10 +7,12 @@ using System.Windows;
 using AsyncToolWindowSample.Models;
 using EnvDTE;
 using EnvDTE80;
+using Microsoft;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
 using Process = System.Diagnostics.Process;
+using Task = System.Threading.Tasks.Task;
 
 namespace VsGrader
 {
@@ -24,9 +26,11 @@ namespace VsGrader
         }
         public async Task<IEnumerable<FileContent>> GetCSharpFilesAsync()
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             try
             {
                 var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
+                Assumes.Present(dte);
                 //var project = await SelectedProject(package);
                 var enumer = dte.Solution.Projects.GetEnumerator();
                 enumer.MoveNext();
@@ -42,11 +46,19 @@ namespace VsGrader
                 }
 
                 var code = projectItems
-                    .Where(p => Path.GetExtension(p.Name)?.ToLower() == ".cs")
-                    .Select(p => new FileContent()
+                    .Where(p => 
                     {
-                        Content = File.ReadAllText(p.Properties.Item("FullPath").Value.ToString()),
-                        FileName = p.Properties.Item("FullPath").Value.ToString()
+                        ThreadHelper.ThrowIfNotOnUIThread();
+                        return Path.GetExtension(p.Name)?.ToLower() == ".cs"; 
+                    })
+                    .Select(p =>
+                    {
+                        ThreadHelper.ThrowIfNotOnUIThread();
+                        return new FileContent()
+                        {
+                            Content = File.ReadAllText(p.Properties.Item("FullPath").Value.ToString()),
+                            FileName = p.Properties.Item("FullPath").Value.ToString()
+                        };
                     }).ToList();
                 return code;
             }
@@ -59,12 +71,12 @@ namespace VsGrader
         
         }
 
-        public async void OpenOrCreateCSharpFile(string fileName, string content)
+        public async Task OpenOrCreateCSharpFile(string fileName, string content)
         {
             try
             {
                 var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
-
+                Assumes.Present(dte);
                 await _package.JoinableTaskFactory.SwitchToMainThreadAsync();
 
                 var tempPath = Path.GetTempPath();
@@ -85,6 +97,7 @@ namespace VsGrader
 
         static ProjectItem GetFiles(ProjectItem item, List<ProjectItem> projectItems)
         {
+            ThreadHelper.ThrowIfNotOnUIThread();
             //base case
             if (item.ProjectItems == null)
                 return item;

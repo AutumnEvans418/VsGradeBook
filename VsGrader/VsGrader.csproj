@@ -128,4 +128,9 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <Target Name="IncludePackageReferenceDependencies" AfterTargets="GetVsixSourceItems">
+    <ItemGroup>
+      <VSIXSourceItem Include="@(ReferencePath)" Condition="$([System.String]::new('%(ReferencePath.FusionName)').EndsWith('.dll'))" />
+    </ItemGroup>
+  </Target>
 </Project>

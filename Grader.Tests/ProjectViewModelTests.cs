@@ -366,7 +366,7 @@ $100,15%,$15,$test";
         {
             var cases = "cases";
             var outputs = "outputs";
-            await model.InitializeAsync(new NavigationParameter() { { "Project", new CodeProject() { CsvCases = cases, CsvExpectedOutput = outputs } } });
+             model.Initialize(new NavigationParameter() { { "Project", new CodeProject() { CsvCases = cases, CsvExpectedOutput = outputs } } });
 
             model.CsvCases.Should().Be(cases);
             model.CsvExpectedOutput.Should().Be(outputs);

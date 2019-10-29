@@ -86,18 +86,18 @@ namespace VsGrader
         /// </summary>
         /// <param name="sender">The event sender.</param>
         /// <param name="e">The event args.</param>
-        private void Execute(object sender, EventArgs e)
+        private async void Execute(object sender, EventArgs e)
         {
-            this.package.JoinableTaskFactory.RunAsync(async delegate
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+            ToolWindowPane window = await this.package.ShowToolWindowAsync(typeof(VsGraderView), 0, true, this.package.DisposalToken);
+            if ((null == window) || (null == window.Frame))
             {
-                ToolWindowPane window = await this.package.ShowToolWindowAsync(typeof(VsGraderView), 0, true, this.package.DisposalToken);
-                if ((null == window) || (null == window.Frame))
-                {
-                    throw new NotSupportedException("Cannot create tool window");
-                }
-                IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
-                ErrorHandler.ThrowOnFailure(windowFrame.Show());
-            }, JoinableTaskCreationOptions.LongRunning);
+                throw new NotSupportedException("Cannot create tool window");
+            }
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            var windowFrame = (IVsWindowFrame)window.Frame;
+            ErrorHandler.ThrowOnFailure(windowFrame.Show());
         }
     }
 }

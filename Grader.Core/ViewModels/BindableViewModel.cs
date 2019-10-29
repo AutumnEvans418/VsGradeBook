@@ -2,6 +2,7 @@
 
 namespace AsyncToolWindowSample.ToolWindows
 {
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
     public class BindableViewModel : BindableBase, INavigationAware, INavigationAwareAsync
     {
         private readonly INavigationService _navigationService;

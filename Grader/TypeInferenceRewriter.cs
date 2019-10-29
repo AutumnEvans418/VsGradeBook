@@ -1,6 +1,7 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 
 namespace Grader
 {
@@ -15,6 +16,10 @@ namespace Grader
 
         public override SyntaxNode VisitArgument(ArgumentSyntax node)
         {
+            if(node == null)
+            {
+                throw new ArgumentNullException(nameof(node));
+            }
             if (node.Expression is InvocationExpressionSyntax syntax)
             {
                 if (InvocationExpressionStatementSyntax(node, syntax, out var newNode))
@@ -28,6 +33,8 @@ namespace Grader
        
         public override SyntaxNode VisitExpressionStatement(ExpressionStatementSyntax node)
         {
+            if (node == null) throw new ArgumentNullException(nameof(node));
+
             if (node.Expression is InvocationExpressionSyntax invoke)
             {
                 if (InvocationExpressionStatementSyntax(node, invoke, out var syntaxNode))
@@ -39,6 +46,7 @@ namespace Grader
         }
         public override SyntaxNode VisitLocalDeclarationStatement(LocalDeclarationStatementSyntax node)
         {
+            if (node == null) throw new ArgumentNullException(nameof(node));
             foreach (var variableDeclaratorSyntax in node.Declaration.Variables)
             {
                 var value = variableDeclaratorSyntax.Initializer.Value;
@@ -63,7 +71,7 @@ namespace Grader
             var symbol = _model.GetSymbolInfo(invoke);
             
             var result = symbol.Symbol?.ToString();
-            if (result?.StartsWith("System.Console") == true)
+            if (result?.StartsWith("System.Console", StringComparison.InvariantCulture) == true)
             {
                 if (invoke.Expression is IdentifierNameSyntax methodId)
                 {

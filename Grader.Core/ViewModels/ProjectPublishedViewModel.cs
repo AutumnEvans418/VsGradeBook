@@ -41,7 +41,7 @@ namespace AsyncToolWindowSample.ToolWindows
         }
 
         private CodeProject _codeProject;
-        public async override Task InitializeAsync(INavigationParameter parameter)
+        public override void Initialize(INavigationParameter parameter)
         {
             if (parameter["Project"] is CodeProject codeProject)
             {

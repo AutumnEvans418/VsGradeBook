@@ -65,7 +65,7 @@ namespace AsyncToolWindowSample.ToolWindows
             set => SetProperty(_parseErrorMessage, value);
         }
 
-        async void CodeChanged()
+        void CodeChanged()
         {
             try
             {
@@ -84,7 +84,7 @@ namespace AsyncToolWindowSample.ToolWindows
             set => SetProperty(ref _isStudentSubmission, value);
         }
 
-        public override async Task InitializeAsync(INavigationParameter parameter)
+        public override void Initialize(INavigationParameter parameter)
         {
             Submission = new Submission();
 
