@@ -12,17 +12,6 @@ Visual Studio Gradebook is a Visual Studio extension that makes it easy for teac
   they can submit the program within visual studio
 - Teachers can then see the submissions from students within visual studio and be able to open the student's submissions from within visual studio.  Teachers then can review the code and see their output and percent passed.
 
-## To Do List
-- [ ] **Validation** Validate entry fields 
-- [x] **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
-- [x] **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message
-- [ ] **Exact Match** Add ability Match the output exactly
-- [ ] **Ordered Match** Add ability to create test case that must happen in a certain order.  This could be used to specify that output should occur in a certain order.
-- [x] **Quotations and Commas** Handle commas and quotations in the CSV format.  At the moment, commas cannot be used in test cases 
-- [ ] **3rd party assemblies** When testing the console apps, ensure that the dlls referenced in the code are loaded.
-- [x] **Improved error messages** Output the expected value when a case fails
-- [ ] **Exception Test Cases** create cases that test if a particular input causes or not causes an exception
-- [x] **Test Case Visual Representation** - create a way to see when you are building a project what the cases will look like.  Create a representation that is less "code" like and more gui based.  Give the option to write in csv format or using a gui.
 ## How to Install
 
 - [Install the Visual Studio Extension Here](https://marketplace.visualstudio.com/items?itemName=EvansSoftware.VsGradeBook)
@@ -242,4 +231,16 @@ Here is the main packages used in this project that makes this whole thing work.
 - Coding Challenges
   - [Coder Byte](https://coderbyte.com/) 
 
-
+## To Do List
+- [ ] **Validation** Validate entry fields 
+- [ ] **Save** Automatically save when test is clicked
+- [ ] **Fix black text issue on submissions page**
+- [x] **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
+- [x] **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message
+- [ ] **Exact Match** Add ability Match the output exactly
+- [ ] **Ordered Match** Add ability to create test case that must happen in a certain order.  This could be used to specify that output should occur in a certain order.
+- [x] **Quotations and Commas** Handle commas and quotations in the CSV format.  At the moment, commas cannot be used in test cases 
+- [ ] **3rd party assemblies** When testing the console apps, ensure that the dlls referenced in the code are loaded.
+- [x] **Improved error messages** Output the expected value when a case fails
+- [ ] **Exception Test Cases** create cases that test if a particular input causes or not causes an exception
+- [x] **Test Case Visual Representation** - create a way to see when you are building a project what the cases will look like.  Create a representation that is less "code" like and more gui based.  Give the option to write in csv format or using a gui.
