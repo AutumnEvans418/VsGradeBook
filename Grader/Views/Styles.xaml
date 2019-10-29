@@ -37,12 +37,13 @@
         <Setter Property="MinHeight" Value="80"></Setter>
         <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"></Setter>
-
+        <Setter Property="CaretBrush" Value="{DynamicResource TextColor}"></Setter>
         <!--<Setter Property="Foreground" Value="Gray"></Setter>-->
     </Style>
     <Style TargetType="TextBox">
         <Setter Property="Background" Value="Transparent"></Setter>
         <Setter Property="Foreground" Value="{DynamicResource TextColor}"></Setter>
+        <Setter Property="CaretBrush" Value="{DynamicResource TextColor}"></Setter>
 
         <!--<Setter Property="Foreground" Value="Gray"></Setter>-->
     </Style>
