@@ -118,7 +118,7 @@
   -->
   <Target Name="IncludePackageReferenceDependencies" AfterTargets="GetVsixSourceItems">
     <ItemGroup>
-      <VSIXSourceItem Include="@(ReferencePath)" />
+      <VSIXSourceItem Include="@(ReferencePath)"  Condition="$([System.String]::new('%(ReferencePath.FusionName)').StartsWith('Newtonsoft'))" />
     </ItemGroup>
   </Target>
 </Project>
