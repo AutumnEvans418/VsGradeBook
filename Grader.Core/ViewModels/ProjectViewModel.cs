@@ -141,7 +141,7 @@ namespace AsyncToolWindowSample.ToolWindows
             try
             {
                 var gradeCases = CsvGradeCaseGenerator.ConvertTextToGradeCases(CsvCases, CsvExpectedOutput);
-
+                await _visualStudioService.SaveAllFiles();
                 var codes = await _visualStudioService.GetCSharpFilesAsync();
                 var result = await _grader.Grade(codes.Select(p => p.Content), gradeCases);
 

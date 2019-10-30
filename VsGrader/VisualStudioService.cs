@@ -24,6 +24,29 @@ namespace VsGrader
         {
             _package = package;
         }
+
+        public async Task SaveAllFiles()
+        {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+            try
+            {
+                var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
+                Assumes.Present(dte);
+                var projectItems = await GetProjectItems(dte);
+                foreach (var projectItem in projectItems)
+                {
+                    projectItem.Save();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                MessageBox.Show(e.ToString());
+                throw;
+            }
+           
+        }
+
         public async Task<IEnumerable<FileContent>> GetCSharpFilesAsync()
         {
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
@@ -32,18 +55,7 @@ namespace VsGrader
                 var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
                 Assumes.Present(dte);
                 //var project = await SelectedProject(package);
-                var enumer = dte.Solution.Projects.GetEnumerator();
-                enumer.MoveNext();
-                var project = enumer.Current;
-                var projectItems = new List<ProjectItem>();
-                await _package.JoinableTaskFactory.SwitchToMainThreadAsync();
-                var items = ((Project)project).ProjectItems.GetEnumerator();
-                while (items.MoveNext())
-                {
-                    var item = (ProjectItem)items.Current;
-                    //Recursion to get all ProjectItems
-                    projectItems.Add(GetFiles(item, projectItems));
-                }
+                var projectItems = await GetProjectItems(dte);
 
                 var code = projectItems
                     .Where(p => 
@@ -69,6 +81,24 @@ namespace VsGrader
                 throw;
             }
         
+        }
+
+        private async Task<List<ProjectItem>> GetProjectItems(DTE2 dte)
+        {
+            var enumer = dte.Solution.Projects.GetEnumerator();
+            enumer.MoveNext();
+            var project = enumer.Current;
+            var projectItems = new List<ProjectItem>();
+            await _package.JoinableTaskFactory.SwitchToMainThreadAsync();
+            var items = ((Project) project).ProjectItems.GetEnumerator();
+            while (items.MoveNext())
+            {
+                var item = (ProjectItem) items.Current;
+                //Recursion to get all ProjectItems
+                projectItems.Add(GetFiles(item, projectItems));
+            }
+
+            return projectItems;
         }
 
         public async Task OpenOrCreateCSharpFile(string fileName, string content)

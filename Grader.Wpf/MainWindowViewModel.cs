@@ -34,6 +34,11 @@ namespace ConsoleApp1
 ";
         }
 
+        public async Task SaveAllFiles()
+        {
+            
+        }
+
         public async Task<IEnumerable<FileContent>> GetCSharpFilesAsync()
         {
             return new[] {new FileContent(){Content = Code, FileName = "Program.cs"}, };
