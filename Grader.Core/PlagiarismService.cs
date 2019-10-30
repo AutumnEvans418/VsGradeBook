@@ -13,24 +13,20 @@ namespace Grader.Web
         {
             _repository = repository;
         }
-
+        
         public async Task Check(int projectId)
         {
             var submissions = await _repository.GetSubmissions(projectId);
 
             var combinations = Combinations(submissions);
             var plagiarized = new List<Submission>();
-            foreach (var (r, t) in combinations)
+            foreach (var (first, second) in combinations)
             {
-                if (r.SubmissionFiles.Any(p => t.SubmissionFiles.Select(s => s.Content).Contains(p.Content)))
+                if (first.SubmissionFiles.Any(p => 
+                    second.SubmissionFiles.Select(s => s.Content.RemoveWhiteSpace()).Contains(p.Content.RemoveWhiteSpace())))
                 {
-                    plagiarized.Add(r);
-                    plagiarized.Add(t);
-                }
-                else if (t.SubmissionFiles.Any(p => r.SubmissionFiles.Select(s => s.Content).Contains(p.Content)))
-                {
-                    plagiarized.Add(r);
-                    plagiarized.Add(t);
+                    plagiarized.Add(first);
+                    plagiarized.Add(second);
                 }
             }
 

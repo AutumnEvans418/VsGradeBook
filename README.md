@@ -242,7 +242,7 @@ Here is the main packages used in this project that makes this whole thing work.
 - [x] **Validation** Validate entry fields 
 - [x] **Case insensitity** add ability to ignore the case of the output
 - [x] **Regular Expressions** Add capability to handle the dreaded regular expressions
-- [ ] **Check for plagarism** Check if the code has been plagarized.
+- [x] **Check for plagarism** Check if the code has been plagarized.
 - [x] **Save** Automatically save when test is clicked
 - [x] **Fix black text issue on submissions page**
 - [x] **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output

@@ -25,9 +25,11 @@ namespace Grader.Tests
         }
 
         [TestCase("test", "tset", "test", true, false, true)]
+        [TestCase("asdf", "test", "test", false, true, true)]
         [TestCase("test", "test", "test", true, true, true)]
         [TestCase("asdf", "asdf", "test", true, true, false)]
         [TestCase("", "asdf", "test", false, false, false)]
+        [TestCase(@"public class test{}", @"public  class test {}", @"test", true, true, false)]
         public async Task ThreeSubmissions_Should_Be(string sub1, string sub2, string sub3, bool plag1, bool plag2, bool plag3)
         {
             var data =new []
