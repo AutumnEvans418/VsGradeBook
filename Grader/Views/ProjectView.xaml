@@ -19,9 +19,9 @@
                 <TextBox MinHeight="10" Text="{Binding CodeProject.Name}" AcceptsTab="False" AcceptsReturn="False"/>
                 <Label Content="Description"/>
                 <TextBox Style="{DynamicResource BigBox}" Text="{Binding CodeProject.Description}"  TextWrapping="Wrap"></TextBox>
-                <Label Content="Cases (CSV Style)"/>
+                <Label Content="Sample Inputs (CSV Style)"/>
                 <TextBox Style="{DynamicResource BigBox}"  Text="{Binding CsvCases, UpdateSourceTrigger=PropertyChanged}" />
-                <Label Content="Expected Output (CSV Style)"/>
+                <Label Content="Expected Outputs (CSV Style)"/>
                 <TextBox Style="{DynamicResource BigBox}" Text="{Binding CsvExpectedOutput, UpdateSourceTrigger=PropertyChanged}"/>
                 <views:VisualCases></views:VisualCases>
                 <Grid>

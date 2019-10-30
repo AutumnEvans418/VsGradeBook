@@ -21,7 +21,7 @@
                 <TextBlock Margin="5" Text="{Binding CodeProject.Description}" TextWrapping="Wrap"/>
                 <CheckBox Margin="0,0,0,10" Content="Show Cases as Text"  IsChecked="{Binding IsShowingCode}"/>
                 <StackPanel Visibility="{Binding IsShowingCode, Converter={StaticResource ToVisibilityConverter}}">
-                    <Label Content="Test Inputs" />
+                    <Label Content="Sample Inputs" />
                     <TextBlock Text="{Binding CsvCases}" Foreground="{DynamicResource TextColor}" />
                     <Label Content="Expected Outputs"/>
                     <TextBlock Text="{Binding CsvExpectedOutput}" Foreground="{DynamicResource TextColor}"/>

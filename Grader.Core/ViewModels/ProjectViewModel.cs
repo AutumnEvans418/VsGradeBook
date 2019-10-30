@@ -136,7 +136,7 @@ namespace AsyncToolWindowSample.ToolWindows
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                await _messageService.ShowAlert(e.ToString());
+                await _messageService.ShowAlert(e.Message);
             }
 
         }
