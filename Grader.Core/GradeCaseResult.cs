@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace Grader
 {
@@ -28,7 +29,20 @@ namespace Grader
             }
             foreach (var caseExpectedOutput in Case.ExpectedOutputs)
             {
-                var testResult = ActualOutput.All(p => p?.Contains(caseExpectedOutput.ValueToMatch) != true);
+                var testResult = false;
+                if (caseExpectedOutput.CaseInsensitive)
+                {
+                    testResult = ActualOutput.All(p => p?.ToLowerInvariant().Contains(caseExpectedOutput.ValueToMatch.ToLowerInvariant()) != true);
+                }
+                else
+                {
+                    testResult = ActualOutput.All(p => p?.Contains(caseExpectedOutput.ValueToMatch) != true);
+                }
+
+                if (caseExpectedOutput.Regex)
+                {
+                    testResult = ActualOutput.All(p => p != null && Regex.IsMatch(p, caseExpectedOutput.ValueToMatch) != true);
+                }
                 if (caseExpectedOutput.Negate)
                 {
                     testResult = !testResult;

@@ -88,6 +88,16 @@ namespace Grader
                 {
                     Add(TokenType.Regex, "^r");
                     index++;
+                    var current = "";
+                    c = get();
+
+                    while (c != null)
+                    {
+                        current += c;
+                        index++;
+                        c = get();
+                    }
+                    Add(TokenType.Id, current);
                 }
                 else if (ParseTill('"','"', TokenType.Id))
                 {
