@@ -18,7 +18,7 @@
                
                 <Label Content="{Binding CodeProject.DateCreated}" ContentStringFormat="{}{0:d}"></Label>
                 <Label Content="{Binding CodeProject.Name}" Style="{DynamicResource Title}"/>
-                <TextBlock Margin="5" Text="{Binding CodeProject.Description}" TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding CodeProject.Description}" Foreground="{DynamicResource TextColor}" TextWrapping="Wrap" Margin="5"/>
                 <CheckBox Margin="0,0,0,10" Content="Show Cases as Text"  IsChecked="{Binding IsShowingCode}"/>
                 <StackPanel Visibility="{Binding IsShowingCode, Converter={StaticResource ToVisibilityConverter}}">
                     <Label Content="Sample Inputs" />
@@ -27,7 +27,7 @@
                     <TextBlock Text="{Binding CsvExpectedOutput}" Foreground="{DynamicResource TextColor}"/>
                 </StackPanel>
              
-                <local:VisualCases></local:VisualCases>
+                <local:VisualCases Margin="0,10"></local:VisualCases>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="2*"></RowDefinition>

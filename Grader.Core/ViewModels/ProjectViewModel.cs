@@ -118,11 +118,6 @@ namespace AsyncToolWindowSample.ToolWindows
                     var codes = await _visualStudioService.GetCSharpFilesAsync();
 
                     Submission.SubmissionFiles = codes.Select(p => new SubmissionFile() { Content = p.Content, FileName = p.FileName }).ToList();
-                    if (string.IsNullOrWhiteSpace(Submission.StudentName))
-                    {
-                        await _messageService.ShowAlert("You must enter your name before submitting");
-                        return;
-                    }
                     var result = await _gradeBookRepository.AddSubmission(Submission);
                     await _messageService.ShowAlert("Submitted!");
                     await _navigationService.ToPage("HomeView");
