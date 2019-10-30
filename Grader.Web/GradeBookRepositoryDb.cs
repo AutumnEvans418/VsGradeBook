@@ -86,14 +86,15 @@ namespace Grader
             }
         }
 
-        public async Task Plagiarized(Submission submission, Submission submission1)
+        public async Task Plagiarized(IEnumerable<Submission> submissions)
         {
             using (var db = _dbFunc())
             {
-                submission.IsPlagiarized = true;
-                submission1.IsPlagiarized = true;
-                db.Submissions.Update(submission);
-                db.Submissions.Update(submission1);
+                foreach (var submission in submissions)
+                {
+                    submission.IsPlagiarized = true;
+                    db.Submissions.Update(submission);
+                }
                 await db.SaveChangesAsync();
             }
         }

@@ -92,7 +92,7 @@ namespace Grader
             throw new NotImplementedException();
         }
 
-        public Task Plagiarized(Submission submission, Submission submission1)
+        public Task Plagiarized(IEnumerable<Submission> submissions)
         {
             throw new NotImplementedException();
         }

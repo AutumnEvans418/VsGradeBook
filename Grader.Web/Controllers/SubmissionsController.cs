@@ -10,10 +10,12 @@ namespace Grader.Web.Controllers
     public class SubmissionsController : ControllerBase
     {
         private readonly IGradeBookRepository _gradeBookRepository;
+        private readonly IPlagiarismService _plagiarismService;
 
-        public SubmissionsController(IGradeBookRepository gradeBookRepository)
+        public SubmissionsController(IGradeBookRepository gradeBookRepository, IPlagiarismService plagiarismService)
         {
             _gradeBookRepository = gradeBookRepository;
+            _plagiarismService = plagiarismService;
         }
 
         [HttpGet]
@@ -23,9 +25,11 @@ namespace Grader.Web.Controllers
         }
 
         [HttpPost]
-        public Task<Submission> AddSubmission([FromBody] Submission submission)
+        public async Task<Submission> AddSubmission([FromBody] Submission submission)
         {
-            return _gradeBookRepository.AddSubmission(submission);
+            var result = await _gradeBookRepository.AddSubmission(submission);
+            await _plagiarismService.Check(result.ProjectId);
+            return result;
         }
     }
 }

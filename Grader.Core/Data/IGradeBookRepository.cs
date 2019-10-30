@@ -13,6 +13,6 @@ namespace Grader
         Task<IEnumerable<CodeProject>> GetCodeProjects();
 
         Task<IEnumerable<Submission>> GetSubmissions(int projectId);
-        Task Plagiarized(Submission submission, Submission submission1);
+        Task Plagiarized(IEnumerable<Submission> submissions);
     }
 }
