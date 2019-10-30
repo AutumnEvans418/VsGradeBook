@@ -194,7 +194,6 @@ $100,15%,$15,$test[Did you see this?]";
 
             vsMock.Setup(p => p.GetCSharpFilesAsync())
                 .Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
-            // model.CodeProject.CsvCases = @"";
             model.CodeProject.CsvExpectedOutput = @"!Hello World";
 
             await model.TestCommand.ExecuteAsync();
@@ -203,6 +202,29 @@ $100,15%,$15,$test[Did you see this?]";
             model.ErrorMessage.Should().Contain("Not Expected 'Hello World'");
         }
 
+        [Test]
+        public async Task HelloWorld_CaseInsensitive_Should_Pass()
+        {
+            vsMock.Setup(p => p.GetCSharpFilesAsync())
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
+            model.CodeProject.CsvExpectedOutput = @"^ihello world!";
+
+            await model.TestCommand.ExecuteAsync();
+            model.Submission.Grade.Should().Be(1);
+
+        }
+
+        [Test]
+        public async Task HelloWorld_Regex_Should_Pass()
+        {
+            vsMock.Setup(p => p.GetCSharpFilesAsync())
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
+            model.CodeProject.CsvExpectedOutput = @"^r[a-zA-Z]";
+
+            await model.TestCommand.ExecuteAsync();
+            model.Submission.Grade.Should().Be(1);
+
+        }
         [Test]
         public async Task Negate_Should_Pass()
         {

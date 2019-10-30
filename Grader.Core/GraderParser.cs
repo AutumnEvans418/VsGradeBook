@@ -1,27 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Grader
 {
-    public class ParserException : Exception
-    {
-        public ParserException() 
-        {
-            
-        }
-
-        public ParserException(string msg) : base(msg)
-        {
-            
-        }
-        public List<Exception> Exceptions { get; set; } = new List<Exception>();
-
-        public override string ToString()
-        {
-            return $"{(Exceptions.Any() ? Exceptions.Select(p=> p.ToString()).Aggregate((f,s) => f + "\r\n" + s) : "")}\r\n" + base.ToString();
-        }
-    }
     public class GraderParser
     {
         public IList<string> ParseInput(string input)
@@ -44,13 +25,16 @@ namespace Grader
             var lst = new List<Token>();
 
             var index = 0;
-            //var current = "";
 
-            char? get()
+            char? get(int? i = null)
             {
-                if (index < input.Length)
+                if (i == null)
                 {
-                    return input[index];
+                    i = index;
+                }  
+                if (i < input.Length)
+                {
+                    return input[(int) i];
                 }
 
                 return null;
@@ -94,6 +78,16 @@ namespace Grader
                 if (c == '!')
                 {
                     Add(TokenType.Bang, "!");
+                }
+                else if (c == '^' && get(index + 1) == 'i')
+                {
+                    Add(TokenType.CaseInsensitive, "^i");
+                    index++;
+                }
+                else if (c == '^' && get(index + 1) == 'r')
+                {
+                    Add(TokenType.Regex, "^r");
+                    index++;
                 }
                 else if (ParseTill('"','"', TokenType.Id))
                 {
@@ -158,12 +152,25 @@ namespace Grader
             while (data.Count > 0)
             {
                 var val = new CaseValue();
-                if (token?.TokenType == TokenType.Bang)
+                while (token != null && token.TokenType != TokenType.Id)
                 {
-                    val.Negate = true;
-                    Eat(TokenType.Bang);
+                    if (token?.TokenType == TokenType.Bang)
+                    {
+                        val.Negate = true;
+                        Eat(TokenType.Bang);
+                    }
+                    if (token?.TokenType == TokenType.CaseInsensitive)
+                    {
+                        val.CaseInsensitive = true;
+                        Eat(TokenType.CaseInsensitive);
+                    }
+                    if (token?.TokenType == TokenType.Regex)
+                    {
+                        val.Regex = true;
+                        Eat(TokenType.Regex);
+                        break;
+                    }
                 }
-
                 val.ValueToMatch = token?.Value;
                 Eat(TokenType.Id);
                 if (token?.TokenType == TokenType.Comment)

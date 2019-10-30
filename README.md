@@ -236,7 +236,7 @@ Here is the main packages used in this project that makes this whole thing work.
 - [ ] **Case insensitity** add ability to ignore the case of the output
 - [ ] **Regular Expressions** Add capability to handle the dreaded regular expressions
 - [ ] **Check for plagarism** Check if the code has been plagarized.
-- [ ] **Save** Automatically save when test is clicked
+- [x] **Save** Automatically save when test is clicked
 - [x] **Fix black text issue on submissions page**
 - [x] **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
 - [x] **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message

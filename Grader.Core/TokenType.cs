@@ -6,6 +6,8 @@
         Bang,
         Comment,
         Comma,
-        EndOfFile
+        EndOfFile,
+        Regex,
+        CaseInsensitive
     }
 }

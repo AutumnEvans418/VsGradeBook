@@ -34,6 +34,8 @@
         public string Hint { get; set; }
         public string ValueToMatch { get; set; }
         public bool Negate { get; set; }
+        public bool Regex { get; set; }
+        public bool CaseInsensitive { get; set; }
 
         public static implicit operator string(CaseValue value)
         {
