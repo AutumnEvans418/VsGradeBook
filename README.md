@@ -18,14 +18,21 @@ Visual Studio Gradebook is a Visual Studio extension that makes it easy for teac
 - To open the view, go to View -> Other Windows -> Vs Grade Book
 - To see more details on how to create projects for students, view the problem examples below
 
-## Negation and Hints
+## Negation, Hints, and other Commands
 
 In the example below we put ```!Hello World![Did you remove hello world?]``` inside the expected output box.  
 **Negation** - The "!" at the beginning of the input negates the expected output.  This means we are looking for an output that is **not** "Hello World!"  
 **Hints** - The text in the brackets signifies a hint.  If the test fails to find/negate an expected output, it will output the message in red (see below).  
 This allows you to create better and more expressive test cases, such as handling errors.
 ![Negation and Hints Example](Images/NegationAndHint.PNG)
-
+### Other Commands
+Command | Details
+--- | ---
+``^r`` | Regular Expressions are supported, however, they cannot be comma seperated.  Simply start your line with the command
+``^i`` | Case insensitivity can be set.  These will check the output with checking case
+``!`` | Negation
+``[]`` | Hint Messages that show when an expected case fails
+``""`` | You can put long strings in quotes so that commas are ignored
 ## Problem Examples
 The examples below will show you how this extension works in detail and gives some examples of projects that have been implemented with this extension.  Problems like these can be given to students and used to automate parts of the grading process.
 ### Letter Capitalize Function
@@ -233,8 +240,8 @@ Here is the main packages used in this project that makes this whole thing work.
 
 ## To Do List
 - [x] **Validation** Validate entry fields 
-- [ ] **Case insensitity** add ability to ignore the case of the output
-- [ ] **Regular Expressions** Add capability to handle the dreaded regular expressions
+- [x] **Case insensitity** add ability to ignore the case of the output
+- [x] **Regular Expressions** Add capability to handle the dreaded regular expressions
 - [ ] **Check for plagarism** Check if the code has been plagarized.
 - [x] **Save** Automatically save when test is clicked
 - [x] **Fix black text issue on submissions page**
