@@ -76,6 +76,27 @@ namespace Grader
                 return await db.CodeProjects.ToListAsync();
             }
         }
+
+        public async Task<IEnumerable<Submission>> GetSubmissions(int projectId)
+        {
+            using (var db = _dbFunc())
+            {
+                return await db.Submissions.Where(p => p.ProjectId == projectId).Include(p => p.SubmissionFiles)
+                    .ToListAsync();
+            }
+        }
+
+        public async Task Plagiarized(Submission submission, Submission submission1)
+        {
+            using (var db = _dbFunc())
+            {
+                submission.IsPlagiarized = true;
+                submission1.IsPlagiarized = true;
+                db.Submissions.Update(submission);
+                db.Submissions.Update(submission1);
+                await db.SaveChangesAsync();
+            }
+        }
     }
 
 

@@ -86,5 +86,15 @@ namespace Grader
             var str = await _client.GetStringAsync(url);
             return JsonConvert.DeserializeObject<IEnumerable<CodeProject>>(str);
         }
+
+        public Task<IEnumerable<Submission>> GetSubmissions(int projectId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Plagiarized(Submission submission, Submission submission1)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

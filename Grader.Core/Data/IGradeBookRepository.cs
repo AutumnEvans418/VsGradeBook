@@ -11,5 +11,8 @@ namespace Grader
         Task<Submission> AddSubmission(Submission submission);
         Task<IEnumerable<Submission>> GetSubmissions(Guid teacherCode);
         Task<IEnumerable<CodeProject>> GetCodeProjects();
+
+        Task<IEnumerable<Submission>> GetSubmissions(int projectId);
+        Task Plagiarized(Submission submission, Submission submission1);
     }
 }

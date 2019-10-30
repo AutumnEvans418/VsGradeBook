@@ -11,7 +11,7 @@ namespace Grader
         public int ProjectId { get; set; }
         public string StudentName { get; set; }
         public DateTimeOffset DateCreated { get; set; }
-
+        public bool IsPlagiarized { get; set; }
         public Submission()
         {
             DateCreated = DateTimeOffset.Now;
