@@ -33,6 +33,8 @@ Command | Details
 ``!`` | Negation
 ``[]`` | Hint Messages that show when an expected case fails
 ``""`` | You can put long strings in quotes so that commas are ignored
+## Plagiarism Service
+When students make submissions, the student's code is compared to other submissions.  If the code is likely been plagiarized, ``Plagiarized!`` will appear on the submissions screen for teachers.
 ## Problem Examples
 The examples below will show you how this extension works in detail and gives some examples of projects that have been implemented with this extension.  Problems like these can be given to students and used to automate parts of the grading process.
 ### Letter Capitalize Function
