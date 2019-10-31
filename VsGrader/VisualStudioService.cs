@@ -33,7 +33,11 @@ namespace VsGrader
                 var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
                 Assumes.Present(dte);
                 var projectItems = await GetProjectItems(dte);
-                foreach (var projectItem in projectItems)
+                foreach (var projectItem in projectItems.Where(p =>
+                {
+                    ThreadHelper.ThrowIfNotOnUIThread();
+                    return p.IsDirty && Path.GetExtension(p.Name)?.ToLower() == ".cs";
+                }))
                 {
                     projectItem.Save();
                 }
@@ -44,7 +48,7 @@ namespace VsGrader
                 MessageBox.Show(e.ToString());
                 throw;
             }
-           
+
         }
 
         public async Task<IEnumerable<FileContent>> GetCSharpFilesAsync()
@@ -58,10 +62,10 @@ namespace VsGrader
                 var projectItems = await GetProjectItems(dte);
 
                 var code = projectItems
-                    .Where(p => 
+                    .Where(p =>
                     {
                         ThreadHelper.ThrowIfNotOnUIThread();
-                        return Path.GetExtension(p.Name)?.ToLower() == ".cs"; 
+                        return Path.GetExtension(p.Name)?.ToLower() == ".cs";
                     })
                     .Select(p =>
                     {
@@ -80,7 +84,7 @@ namespace VsGrader
                 MessageBox.Show(e.ToString());
                 throw;
             }
-        
+
         }
 
         private async Task<List<ProjectItem>> GetProjectItems(DTE2 dte)
@@ -90,10 +94,10 @@ namespace VsGrader
             var project = enumer.Current;
             var projectItems = new List<ProjectItem>();
             await _package.JoinableTaskFactory.SwitchToMainThreadAsync();
-            var items = ((Project) project).ProjectItems.GetEnumerator();
+            var items = ((Project)project).ProjectItems.GetEnumerator();
             while (items.MoveNext())
             {
-                var item = (ProjectItem) items.Current;
+                var item = (ProjectItem)items.Current;
                 //Recursion to get all ProjectItems
                 projectItems.Add(GetFiles(item, projectItems));
             }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
     <Metadata>
-        <Identity Id="VsGrader.6ce94d36-227c-4ee8-8b90-42deb76cd8ae" Version="1.11" Language="en-US" Publisher="Evans Software" />
+        <Identity Id="VsGrader.6ce94d36-227c-4ee8-8b90-42deb76cd8ae" Version="1.12" Language="en-US" Publisher="Evans Software" />
         <DisplayName>Visual Studio Grade Book</DisplayName>
         <Description xml:space="preserve">A grading system for console apps that is built into visual studio.  No need to zip code and submit on some external website.</Description>
         <MoreInfo>https://github.com/chrisevans9629/VsGradeBook</MoreInfo>

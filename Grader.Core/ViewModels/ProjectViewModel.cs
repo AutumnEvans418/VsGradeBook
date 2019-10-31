@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.Models;
 using Grader;
@@ -141,7 +142,15 @@ namespace AsyncToolWindowSample.ToolWindows
             try
             {
                 var gradeCases = CsvGradeCaseGenerator.ConvertTextToGradeCases(CsvCases, CsvExpectedOutput);
-                await _visualStudioService.SaveAllFiles();
+                try
+                {
+                    await _visualStudioService.SaveAllFiles();
+                }
+                catch (COMException e)
+                {
+                    Console.WriteLine(e);
+                    ErrorMessage = e.Message;
+                }
                 var codes = await _visualStudioService.GetCSharpFilesAsync();
                 var result = await _grader.Grade(codes.Select(p => p.Content), gradeCases);
 
