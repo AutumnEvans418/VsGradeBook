@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
             <Label Content="{Binding CodeProject.Name}" Grid.Row="0" Style="{DynamicResource Title}"></Label>
-            <TextBlock TextWrapping="Wrap" Text="{Binding CodeProject.Description}" Margin="10"></TextBlock>
+            <TextBlock TextWrapping="Wrap" Text="{Binding CodeProject.Description}" Foreground="{DynamicResource TextColor}" Margin="10"></TextBlock>
         </StackPanel>
         <ListBox 
             Grid.Row="1" 
