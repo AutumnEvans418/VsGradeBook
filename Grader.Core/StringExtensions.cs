@@ -1,9 +1,25 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Grader.Web
 {
-    public static class StringExtensions
+    public class IndexedItem<T>
     {
+        public T Model { get; set; }
+        public int Index { get; set; }
+    }
+    public static class Extensions
+    {
+        public static IEnumerable<IndexedItem<T>> ToIndexedItem<T>(this IEnumerable<T> data)
+        {
+            var dataArray = data.ToList();
+            for (var i = 0; i < dataArray.Count; i++)
+            {
+                yield return new IndexedItem<T>(){Index = i,Model = dataArray[i]};
+            }
+        }
+
         public static string RemoveWhiteSpace(this string str)
         {
             var result = new StringBuilder();

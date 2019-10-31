@@ -36,12 +36,12 @@ namespace Grader.Web
 
         private static IEnumerable<(Submission r, Submission t)> Combinations(IEnumerable<Submission> submissions) 
         {
-            var list1 = submissions.ToList();
+            var list1 = submissions.ToIndexedItem().ToList();
 
-            var list2 = submissions.ToList();
+            var list2 = submissions.ToIndexedItem().ToList();
 
-            var combinations = (from r in list1 from t in list2 orderby r.ProjectId where r.ProjectId > t.ProjectId select (r, t)).ToList();
-            return combinations;
+            var combinations = (from r in list1 from t in list2 orderby r.Index where r.Index > t.Index select (r, t)).ToList();
+            return combinations.Select(p=> (p.r.Model,p.t.Model));
         }
     }
 }

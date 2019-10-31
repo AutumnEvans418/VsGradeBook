@@ -55,5 +55,38 @@ namespace Grader.Tests
                 repository.Verify(p => p.Plagiarized(It.Is<IEnumerable<Submission>>(r => r.Any(t => t.SubmissionFiles[0].Content == sub3))));
             }
         }
+
+
+        [TestCase("test", "tset", "test", true, false, true)]
+        [TestCase("asdf", "test", "test", false, true, true)]
+        [TestCase("test", "test", "test", true, true, true)]
+        [TestCase("asdf", "asdf", "test", true, true, false)]
+        [TestCase("", "asdf", "test", false, false, false)]
+        [TestCase(@"public class test{}", @"public  class test {}", @"test", true, true, false)]
+        public async Task ThreeSubmissions_Id_Should_Be(string sub1, string sub2, string sub3, bool plag1, bool plag2, bool plag3)
+        {
+            var data = new[]
+            {
+                new Submission(){SubmissionFiles = {new SubmissionFile(){Content = sub1}}, ProjectId = 1, Id = 2},
+                new Submission(){SubmissionFiles = {new SubmissionFile(){Content = sub2}}, ProjectId = 1, Id = 1},
+                new Submission(){SubmissionFiles = {new SubmissionFile(){Content = sub3}}, ProjectId = 1, Id = 3},
+            };
+
+            repository.Setup(p => p.GetSubmissions(It.IsAny<int>())).Returns(Task.FromResult(data.AsEnumerable()));
+
+            await plagiarismService.Check(fixture.Create<int>());
+            if (plag1)
+            {
+                repository.Verify(p => p.Plagiarized(It.Is<IEnumerable<Submission>>(r => r.Any(t => t.SubmissionFiles[0].Content == sub1))));
+            }
+            if (plag2)
+            {
+                repository.Verify(p => p.Plagiarized(It.Is<IEnumerable<Submission>>(r => r.Any(t => t.SubmissionFiles[0].Content == sub2))));
+            }
+            if (plag3)
+            {
+                repository.Verify(p => p.Plagiarized(It.Is<IEnumerable<Submission>>(r => r.Any(t => t.SubmissionFiles[0].Content == sub3))));
+            }
+        }
     }
 }

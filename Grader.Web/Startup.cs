@@ -32,7 +32,7 @@ namespace Grader.Web
             //    p.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("Grader.Web")));
 
             services.AddDbContext<GradeBookDbContext>(p =>
-                p.UseSqlite("Data Source=Grader.db", b => b.MigrationsAssembly("Grader.Web")));
+                p.UseSqlite("Data Source=Grader.db", b => b.MigrationsAssembly("Grader.Web")), ServiceLifetime.Transient);
 
 
 
