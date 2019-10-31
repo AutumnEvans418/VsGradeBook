@@ -8,6 +8,7 @@ using AsyncToolWindowSample.Models;
 using EnvDTE;
 using EnvDTE80;
 using Microsoft;
+using Microsoft.VisualStudio.ComponentModelHost;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
@@ -32,7 +33,7 @@ namespace VsGrader
             {
                 var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
                 Assumes.Present(dte);
-                var projectItems = await GetProjectItems(dte);
+                var projectItems = await GetProjectItemsAsync(dte);
                 foreach (var projectItem in projectItems.Where(p =>
                 {
                     ThreadHelper.ThrowIfNotOnUIThread();
@@ -56,10 +57,15 @@ namespace VsGrader
             await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             try
             {
+
+                var componentModel = (IComponentModel)await _package.GetServiceAsync(typeof(SComponentModel));
+                var workspace = componentModel.GetService<Microsoft.VisualStudio.LanguageServices.VisualStudioWorkspace>();
+
+                
                 var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
                 Assumes.Present(dte);
                 //var project = await SelectedProject(package);
-                var projectItems = await GetProjectItems(dte);
+                var projectItems = await GetProjectItemsAsync(dte);
 
                 var code = projectItems
                     .Where(p =>
@@ -87,8 +93,9 @@ namespace VsGrader
 
         }
 
-        private async Task<List<ProjectItem>> GetProjectItems(DTE2 dte)
+        private async Task<List<ProjectItem>> GetProjectItemsAsync(DTE2 dte)
         {
+            await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
             var enumer = dte.Solution.Projects.GetEnumerator();
             enumer.MoveNext();
             var project = enumer.Current;
