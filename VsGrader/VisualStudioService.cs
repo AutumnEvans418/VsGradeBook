@@ -9,6 +9,7 @@ using EnvDTE;
 using EnvDTE80;
 using Microsoft;
 using Microsoft.VisualStudio.ComponentModelHost;
+using Microsoft.VisualStudio.LanguageServices;
 using Microsoft.VisualStudio.PlatformUI;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Threading;
@@ -58,10 +59,8 @@ namespace VsGrader
             try
             {
 
-                var componentModel = (IComponentModel)await _package.GetServiceAsync(typeof(SComponentModel));
-                var workspace = componentModel.GetService<Microsoft.VisualStudio.LanguageServices.VisualStudioWorkspace>();
+               
 
-                
                 var dte = await _package.GetServiceAsync(typeof(DTE)) as DTE2;
                 Assumes.Present(dte);
                 //var project = await SelectedProject(package);
@@ -91,6 +90,21 @@ namespace VsGrader
                 throw;
             }
 
+        }
+
+        public async Task<IEnumerable<string>> GetReferences()
+        {
+            var componentModel = (IComponentModel)await _package.GetServiceAsync(typeof(SComponentModel));
+            Assumes.Present(componentModel);
+            var workspace = componentModel.GetService<VisualStudioWorkspace>();
+
+            var assemblies = workspace.CurrentSolution.Projects.SelectMany(p => p.MetadataReferences).Cast<Microsoft.CodeAnalysis.MetadataReference>().ToList();
+
+            foreach (var metadataReference in assemblies)
+            {
+                
+            }
+            return assemblies.Select(p => p.Display);
         }
 
         private async Task<List<ProjectItem>> GetProjectItemsAsync(DTE2 dte)

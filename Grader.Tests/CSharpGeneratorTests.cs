@@ -30,7 +30,7 @@ using System;
 
     }
 ";
-            var tree = generator.CreateSyntaxTrees(new[] {src }).First();
+            var tree = generator.CreateSyntaxTrees(new[] {src }, null).First();
 
             tree.GetText().ToString().Should().Contain("Grader.Console.WriteLine");
 
@@ -40,7 +40,7 @@ using System;
         [Test]
         public void WriteLineWithReadLine_Should_UseGrader()
         {
-            var tree = generator.CreateSyntaxTrees(new[] { ConsoleAppGraderTests.writeLineReadLineSrc }).First();
+            var tree = generator.CreateSyntaxTrees(new[] { ConsoleAppGraderTests.writeLineReadLineSrc }, null).First();
 
             tree.GetText().ToString().Should().Contain("Grader.Console.WriteLine(Grader.Console.ReadLine())");
         }

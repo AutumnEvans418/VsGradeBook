@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.Models;
@@ -29,6 +30,7 @@ namespace Grader.Tests
             fixture.Inject<IConsoleAppGrader>(new ConsoleAppGrader(new CSharpGenerator()));
 
             vsMock = fixture.Freeze<Mock<IVisualStudioService>>();
+            vsMock.Setup(p => p.GetReferences()).Returns(Task.FromResult<IEnumerable<string>>(null));
             model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
 
         }

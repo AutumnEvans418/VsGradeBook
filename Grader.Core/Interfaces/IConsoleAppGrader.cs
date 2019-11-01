@@ -5,6 +5,6 @@ namespace Grader
 {
     public interface IConsoleAppGrader
     {
-        Task<IGradeResult> Grade(IEnumerable<string> codes, IEnumerable<IGradeCase> gradeCases);
+        Task<IGradeResult> Grade(IEnumerable<string> codes, IEnumerable<IGradeCase> gradeCases, IEnumerable<string> references = null);
     }
 }

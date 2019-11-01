@@ -151,8 +151,10 @@ namespace AsyncToolWindowSample.ToolWindows
                     Console.WriteLine(e);
                     ErrorMessage = e.Message;
                 }
+
+                var references = await _visualStudioService.GetReferences();
                 var codes = await _visualStudioService.GetCSharpFilesAsync();
-                var result = await _grader.Grade(codes.Select(p => p.Content), gradeCases);
+                var result = await _grader.Grade(codes.Select(p => p.Content), gradeCases, references);
 
                 Submission.Grade = result.PercentPassing;
                 ErrorMessage = "";

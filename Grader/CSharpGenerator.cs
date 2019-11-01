@@ -14,14 +14,14 @@ namespace Grader
 {
     public class CSharpGenerator : ICSharpGenerator
     {
-        public Action Generate(IEnumerable<string> program)
+        public Action Generate(IEnumerable<string> program, IEnumerable<string> references)
         {
 
 
-            var newTrees = CreateSyntaxTrees(program);
+            var newTrees = CreateSyntaxTrees(program, references);
 
 
-            var finalCompile = CreateTestCompilation(newTrees);
+            var finalCompile = CreateTestCompilation(newTrees, references);
 
             using (var stream = new MemoryStream())
             {
@@ -60,9 +60,9 @@ namespace Grader
            
         }
 
-        public SyntaxTree[] CreateSyntaxTrees(IEnumerable<string> program)
+        public SyntaxTree[] CreateSyntaxTrees(IEnumerable<string> program, IEnumerable<string> references)
         {
-            Compilation test = CreateTestCompilation(program.Select(p => CSharpSyntaxTree.ParseText(p)).ToArray());
+            Compilation test = CreateTestCompilation(program.Select(p => CSharpSyntaxTree.ParseText(p)).ToArray(), references);
 
 
             var newTrees = test.SyntaxTrees.Select(p =>
@@ -75,12 +75,12 @@ namespace Grader
             }).ToArray();
             if (newTrees.Any(p => p.HasChanges))
             {
-                return CreateSyntaxTrees(newTrees.Select(r=>r.SyntaxTree.GetText().ToString()));
+                return CreateSyntaxTrees(newTrees.Select(r=>r.SyntaxTree.GetText().ToString()), references);
             }
             return newTrees.Select(p=>p.SyntaxTree).ToArray();
         }
 
-        private static Compilation CreateTestCompilation(SyntaxTree[] trees)
+        private static Compilation CreateTestCompilation(SyntaxTree[] trees, IEnumerable<string> extraReferences)
         {
             MetadataReference NetStandard = MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51").Location);
             MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
@@ -99,8 +99,15 @@ namespace Grader
             var core = MetadataReference.CreateFromFile(typeof(System.Linq.IQueryable<>).Assembly.Location);
             var data = MetadataReference.CreateFromFile(typeof(System.Data.DataColumn).Assembly.Location);
 
-            MetadataReference[] references = { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, grader, NetStandard , core,data};
-
+            var references =new List<MetadataReference> { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, grader, NetStandard , core,data};
+            if (extraReferences != null)
+            {
+                foreach (var extraReference in extraReferences)
+                {
+                    references.Add(MetadataReference.CreateFromFile(extraReference));
+                }
+            }
+            
             return CSharpCompilation.Create("Test", trees, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
         }
     }

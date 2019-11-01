@@ -13,6 +13,9 @@ namespace AsyncToolWindowSample.Models
         Task SaveAllFiles();
 
         Task<IEnumerable<FileContent>> GetCSharpFilesAsync();
+
+        Task<IEnumerable<string>> GetReferences();
+
         Task OpenOrCreateCSharpFile(string fileName, string content);
     }
 }

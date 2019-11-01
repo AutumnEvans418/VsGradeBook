@@ -16,7 +16,7 @@ namespace Grader
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        public async Task<IGradeResult> Grade(IEnumerable<string> program, IEnumerable<IGradeCase> cases)
+        public async Task<IGradeResult> Grade(IEnumerable<string> program, IEnumerable<IGradeCase> cases, IEnumerable<string> references = null)
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             var caseList = cases.ToList();
@@ -27,7 +27,7 @@ namespace Grader
 #pragma warning restore CA1303 // Do not pass literals as localized parameters
             }
             var generator = _cSharpGenerator;
-            var runProgram =generator.Generate(program);
+            var runProgram =generator.Generate(program, references);
 
             var list = new List<IGradeCaseResult>();
             for (var i=0; i < caseList.ToList().Count; i++)
