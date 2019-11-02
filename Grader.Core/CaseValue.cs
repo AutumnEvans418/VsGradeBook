@@ -36,6 +36,7 @@
         public bool Negate { get; set; }
         public bool Regex { get; set; }
         public bool CaseInsensitive { get; set; }
+        public bool Exception { get; set; }
 
         public static implicit operator string(CaseValue value)
         {

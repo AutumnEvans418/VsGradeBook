@@ -22,12 +22,14 @@ namespace Grader.Tests
         private Fixture fixture;
         private Mock<IVisualStudioService> vsMock;
         private ProjectViewModel model;
+        private ConsoleAppGrader consoleAppGrader;
         [SetUp]
         public void Setup()
         {
             fixture = new Fixture();
             fixture.Customize(new AutoMoqCustomization() { ConfigureMembers = true, GenerateDelegates = true });
-            fixture.Inject<IConsoleAppGrader>(new ConsoleAppGrader(new CSharpGenerator()));
+            consoleAppGrader = new ConsoleAppGrader(new CSharpGenerator());
+            fixture.Inject<IConsoleAppGrader>(consoleAppGrader);
 
             vsMock = fixture.Freeze<Mock<IVisualStudioService>>();
             vsMock.Setup(p => p.GetReferences()).Returns(Task.FromResult<IEnumerable<string>>(null));
@@ -67,6 +69,35 @@ namespace ConsoleApp1
     }
 }
 ";
+        const string throwExceptionSrc = @"
+using System;
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            throw new Exception(""Test"");
+        }
+    }
+}
+";
+
+        [TestCase("^exTest", true, "")]
+        [TestCase("^exNotTest", false, "NotTest")]
+        [TestCase("Test", false, "Case 1: Test")]
+        public async Task Exception_Should_Do( string output, bool pass, string message)
+        {
+            var cases = CsvGradeCaseGenerator.ConvertTextToGradeCases("", output);
+
+            var results = await consoleAppGrader.Grade(throwExceptionSrc, cases);
+
+            var caseResult = results.CaseResults.Single();
+            caseResult.Pass.Should().Be(pass);
+            caseResult.ErrorMessage.Should().Be(message);
+        }
+
         [Test]
         public async Task HelloWorld_Should_Pass()
         {
@@ -155,6 +186,23 @@ namespace ConsoleApp1
             result[0].ExpectedOutputs.All(p => p.Negate).Should().BeTrue();
             result[0].ExpectedOutputs.All(p => int.TryParse(p, out var t)).Should().BeTrue();
         }
+
+        [TestCase("","^ex1",true, "1")]
+        [TestCase("","1",false, "1")]
+        [TestCase("test","^exthis is a test",true, "this is a test")]
+        [TestCase("test","^ex\"this is a test\"",true, "this is a test")]
+        [TestCase("test", "this is^ex a test", false, "this is^ex a test")]
+        public void ExceptionSyntax_Should_SetException(string input, string outputstr, bool isException, string msg)
+        {
+            var result = CsvGradeCaseGenerator.ConvertTextToGradeCases(input, outputstr);
+
+            var output = result.Single().ExpectedOutputs.Single();
+            output.Exception.Should().Be(isException);
+            output.ValueToMatch.Should().Be(msg);
+        }
+
+
+
 
         [Test]
         public void HintSyntax_Should_NotChangeContent()
@@ -390,7 +438,7 @@ $100,15%,$15,$test";
         {
             var cases = "cases";
             var outputs = "outputs";
-             model.Initialize(new NavigationParameter() { { "Project", new CodeProject() { CsvCases = cases, CsvExpectedOutput = outputs } } });
+            model.Initialize(new NavigationParameter() { { "Project", new CodeProject() { CsvCases = cases, CsvExpectedOutput = outputs } } });
 
             model.CsvCases.Should().Be(cases);
             model.CsvExpectedOutput.Should().Be(outputs);
@@ -421,7 +469,7 @@ $100,15%,$15,$test";
         [TestCase(@"""test")]
         public void ExpectedOutput_Should_Fail(string expected)
         {
-            var result = Assert.Throws<ParserException>( () => CsvGradeCaseGenerator.ConvertTextToGradeCases("", expected));
+            var result = Assert.Throws<ParserException>(() => CsvGradeCaseGenerator.ConvertTextToGradeCases("", expected));
             result.Exceptions.Should().HaveCount(1);
         }
 

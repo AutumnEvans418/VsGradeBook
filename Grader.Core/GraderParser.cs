@@ -84,6 +84,11 @@ namespace Grader
                     Add(TokenType.CaseInsensitive, "^i");
                     index++;
                 }
+                else if (c == '^' && get(index + 1) == 'e' && get(index + 2) == 'x')
+                {
+                    Add(TokenType.Exception, "^ex");
+                    index += 2;
+                }
                 else if (c == '^' && get(index + 1) == 'r')
                 {
                     Add(TokenType.Regex, "^r");
@@ -174,12 +179,18 @@ namespace Grader
                         val.CaseInsensitive = true;
                         Eat(TokenType.CaseInsensitive);
                     }
+                    if (token?.TokenType == TokenType.Exception)
+                    {
+                        val.Exception = true;
+                        Eat(TokenType.Exception);
+                    }
                     if (token?.TokenType == TokenType.Regex)
                     {
                         val.Regex = true;
                         Eat(TokenType.Regex);
                         break;
                     }
+
                 }
                 val.ValueToMatch = token?.Value;
                 Eat(TokenType.Id);

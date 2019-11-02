@@ -8,6 +8,7 @@
         Comma,
         EndOfFile,
         Regex,
-        CaseInsensitive
+        CaseInsensitive,
+        Exception
     }
 }
