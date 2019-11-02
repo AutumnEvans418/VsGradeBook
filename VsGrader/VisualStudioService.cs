@@ -99,11 +99,7 @@ namespace VsGrader
             var workspace = componentModel.GetService<VisualStudioWorkspace>();
 
             var assemblies = workspace.CurrentSolution.Projects.SelectMany(p => p.MetadataReferences).Cast<Microsoft.CodeAnalysis.MetadataReference>().ToList();
-
-            foreach (var metadataReference in assemblies)
-            {
-                
-            }
+           
             return assemblies.Select(p => p.Display);
         }
 

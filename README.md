@@ -252,7 +252,7 @@ Here is the main packages used in this project that makes this whole thing work.
 - [ ] **Exact Match** Add ability Match the output exactly
 - [ ] **Ordered Match** Add ability to create test case that must happen in a certain order.  This could be used to specify that output should occur in a certain order.
 - [x] **Quotations and Commas** Handle commas and quotations in the CSV format.  At the moment, commas cannot be used in test cases 
-- [ ] **3rd party assemblies** When testing the console apps, ensure that the dlls referenced in the code are loaded.
+- [x] **3rd party assemblies** When testing the console apps, ensure that the dlls referenced in the code are loaded.
 - [x] **Improved error messages** Output the expected value when a case fails
 - [ ] **Exception Test Cases** create cases that test if a particular input causes or not causes an exception
 - [x] **Test Case Visual Representation** - create a way to see when you are building a project what the cases will look like.  Create a representation that is less "code" like and more gui based.  Give the option to write in csv format or using a gui.
