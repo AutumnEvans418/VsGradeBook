@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -6,12 +7,16 @@ namespace Grader
 {
     public class GradeCaseResult : IGradeCaseResult
     {
-        public GradeCaseResult(IGradeCase @case, IEnumerable<string> actualOutput, string errorMessage)
+        private readonly Exception _exception;
+
+        public GradeCaseResult(IGradeCase @case, IEnumerable<string> actualOutput, Exception exception = null)
         {
-            if (string.IsNullOrWhiteSpace(errorMessage) != true)
+            _exception = exception;
+            if (exception != null)
             {
+                var errorMessage = exception.Message;
                 _hasErrors = true;
-                ErrorMessage = $"Case {@case.CaseNumber}: " + errorMessage;
+                ErrorMessage = $"Case {@case.CaseNumber}: " + errorMessage + "\r\n";
             }
             Case = @case;
             ActualOutput = actualOutput;
@@ -22,32 +27,38 @@ namespace Grader
         private void Evaluate()
         {
             Pass = true;
-            if (_hasErrors)
+            if (_hasErrors && Case.ExpectedOutputs.Any(r=>r.Exception) != true)
             {
                 Pass = false;
                 return;
             }
             foreach (var caseExpectedOutput in Case.ExpectedOutputs)
             {
-                var testResult = false;
+                var testResultFail = false;
                 if (caseExpectedOutput.CaseInsensitive)
                 {
-                    testResult = ActualOutput.All(p => p?.ToLowerInvariant().Contains(caseExpectedOutput.ValueToMatch.ToLowerInvariant()) != true);
+                    testResultFail = ActualOutput.All(p => p?.ToLowerInvariant().Contains(caseExpectedOutput.ValueToMatch.ToLowerInvariant()) != true);
                 }
                 else
                 {
-                    testResult = ActualOutput.All(p => p?.Contains(caseExpectedOutput.ValueToMatch) != true);
+                    testResultFail = ActualOutput.All(p => p?.Contains(caseExpectedOutput.ValueToMatch) != true);
                 }
 
+                if (_exception != null && caseExpectedOutput.Exception)
+                {
+                    var msg = _exception.Message;
+
+                    testResultFail = msg.Contains(caseExpectedOutput.ValueToMatch) != true;
+                }
                 if (caseExpectedOutput.Regex)
                 {
-                    testResult = ActualOutput.All(p => p != null && Regex.IsMatch(p, caseExpectedOutput.ValueToMatch) != true);
+                    testResultFail = ActualOutput.All(p => p != null && Regex.IsMatch(p, caseExpectedOutput.ValueToMatch) != true);
                 }
                 if (caseExpectedOutput.Negate)
                 {
-                    testResult = !testResult;
+                    testResultFail = !testResultFail;
                 }
-                if (testResult)
+                if (testResultFail)
                 {
                     Pass = false;
                     if (string.IsNullOrWhiteSpace(caseExpectedOutput.Hint) != true)
@@ -60,6 +71,10 @@ namespace Grader
                         expected = "Not Expected";
                     }
                     ErrorMessage += $"Case {Case.CaseNumber}: {expected} '{caseExpectedOutput.ValueToMatch}'\r\n";
+                }
+                else
+                {
+                    ErrorMessage = "";
                 }
 
             }

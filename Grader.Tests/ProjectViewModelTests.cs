@@ -85,8 +85,8 @@ namespace ConsoleApp1
 ";
 
         [TestCase("^exTest", true, "")]
-        [TestCase("^exNotTest", false, "NotTest")]
-        [TestCase("Test", false, "Case 1: Test")]
+        [TestCase("^exNotTest", false, "Case 1: Test\r\nCase 1: Expected 'NotTest'\r\nCase 1: Failed")]
+        [TestCase("Test", false, "Case 1: Test\r\n")]
         public async Task Exception_Should_Do( string output, bool pass, string message)
         {
             var cases = CsvGradeCaseGenerator.ConvertTextToGradeCases("", output);

@@ -32,10 +32,11 @@ namespace Grader
             var list = new List<IGradeCaseResult>();
             for (var i=0; i < caseList.ToList().Count; i++)
             {
+                Exception exception = null;
                 var gradeCase = caseList[i];
                 Console.Outputs.Clear();
                 Console.Inputs = gradeCase.Inputs.ToList();
-                var message = "";
+                //var message = "";
                 try
                 {
                      runProgram();
@@ -44,12 +45,12 @@ namespace Grader
                 catch (Exception e)
 #pragma warning restore CA1031 // Do not catch general exception types
                 {
-                    message =  e.InnerException?.Message;
+                    exception = e.InnerException;
                 }
 
 
                 var outputs = Console.Outputs.ToList();
-                list.Add(new GradeCaseResult(gradeCase, outputs, message));
+                list.Add(new GradeCaseResult(gradeCase, outputs, exception));
             }
 
             return new GradeResult(list);
