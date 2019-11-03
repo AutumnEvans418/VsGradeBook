@@ -45,6 +45,7 @@ namespace Grader.Tests
         [TestCase("-1", "^exInvalid", true, "", SourceCodeStrings.taxSystemExceptionHandling)]
         [TestCase("-1", "11", false, "Case 1: Exception('Invalid Price')\r\nCase 1: Expected '11'\r\nCase 1: Failed", SourceCodeStrings.taxSystemExceptionHandling)]
         [TestCase("", "^i^exHello World!", false, "Case 1: Expected Exception('Hello World!')\r\nCase 1: Failed", SourceCodeStrings.helloWorldSrc)]
+        [TestCase("", "^0Hello World!", true, "", SourceCodeStrings.helloWorldSrc)]
         public async Task Exception_Should_Do(string input, string output, bool pass, string message, string sourceCode)
         {
             var cases = CsvGradeCaseGenerator.ConvertTextToGradeCases(input, output);

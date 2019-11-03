@@ -89,6 +89,19 @@ namespace Grader
                     Add(TokenType.Exception, "^ex");
                     index += 2;
                 }
+                else if(c == '^' && char.IsDigit(get(index + 1) ?? ' '))
+                {
+                    c = get();
+                    var current = "^";
+                    index++;
+                    while (c is char car && char.IsDigit(car))
+                    {
+                        current += c;
+                        index++;
+                        c = get();
+                    }
+                    Add(TokenType.Order, current);
+                }
                 else if (c == '^' && get(index + 1) == 'r')
                 {
                     Add(TokenType.Regex, "^r");
@@ -174,23 +187,26 @@ namespace Grader
                         val.Negate = true;
                         Eat(TokenType.Bang);
                     }
-                    if (token?.TokenType == TokenType.CaseInsensitive)
+                    else if (token?.TokenType == TokenType.CaseInsensitive)
                     {
                         val.CaseInsensitive = true;
                         Eat(TokenType.CaseInsensitive);
                     }
-                    if (token?.TokenType == TokenType.Exception)
+                    else if (token?.TokenType == TokenType.Exception)
                     {
                         val.Exception = true;
                         Eat(TokenType.Exception);
                     }
-                    if (token?.TokenType == TokenType.Regex)
+                    else if (token?.TokenType == TokenType.Regex)
                     {
                         val.Regex = true;
                         Eat(TokenType.Regex);
                         break;
                     }
-
+                    else
+                    {
+                        throw new ParserException($"Did not recognize token {token}");
+                    }
                 }
                 val.ValueToMatch = token?.Value;
                 Eat(TokenType.Id);

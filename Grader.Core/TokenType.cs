@@ -9,6 +9,8 @@
         EndOfFile,
         Regex,
         CaseInsensitive,
-        Exception
+        Exception,
+        Equal,
+        Order
     }
 }
