@@ -148,7 +148,7 @@ namespace ConsoleApp1
 
             var result = await grader.Grade(src, new[] { new GradeCase(1), });
 
-            result.CaseResults.First().ErrorMessage.Should().Be("Case 1: Missing input");
+            result.CaseResults.First().ErrorMessage.Should().Be("Case 1: MissingConsoleInputException('Missing input')\r\nCase 1: Failed");
         }
         [Test]
         public async Task Grade_Should_NotThrowException()

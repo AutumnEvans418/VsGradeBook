@@ -53,6 +53,7 @@
     <Compile Include="ConsoleAppGraderTests.cs" />
     <Compile Include="CSharpGeneratorTests.cs" />
     <Compile Include="PlagiarismServiceTests.cs" />
+    <Compile Include="SourceCodeStrings.cs" />
     <Compile Include="ProjectViewModelTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TaxProgram.cs" />

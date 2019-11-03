@@ -36,62 +36,20 @@ namespace Grader.Tests
             model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
 
         }
-        const string helloWorldSrc = @"
-using System.Collections;
-using System.Linq;
-using System.Text;
- 
-namespace HelloWorld
-{
-    class Program
-    {
-        static void Main(string[] args)
+        
+        [TestCase("","^exTest", true, "", SourceCodeStrings.throwExceptionSrc)]
+        [TestCase("", "^ex^itest", true, "", SourceCodeStrings.throwExceptionSrc)]
+        [TestCase("", "^exNotTest", false, "Case 1: Exception('Test')\r\nCase 1: Expected Exception('NotTest')\r\nCase 1: Failed", SourceCodeStrings.throwExceptionSrc)]
+        [TestCase("", "Test", false, "Case 1: Exception('Test')\r\nCase 1: Expected 'Test'\r\nCase 1: Failed", SourceCodeStrings.throwExceptionSrc)]
+        [TestCase("10", "11", true, "", SourceCodeStrings.taxSystemExceptionHandling)]
+        [TestCase("-1", "^exInvalid", true, "", SourceCodeStrings.taxSystemExceptionHandling)]
+        [TestCase("-1", "11", false, "Case 1: Exception('Invalid Price')\r\nCase 1: Expected '11'\r\nCase 1: Failed", SourceCodeStrings.taxSystemExceptionHandling)]
+        [TestCase("", "^i^exHello World!", false, "Case 1: Expected Exception('Hello World!')\r\nCase 1: Failed", SourceCodeStrings.helloWorldSrc)]
+        public async Task Exception_Should_Do(string input, string output, bool pass, string message, string sourceCode)
         {
-            System.Console.WriteLine(""Hello World!"");
-        }
-    }
-}";
+            var cases = CsvGradeCaseGenerator.ConvertTextToGradeCases(input, output);
 
-        const string taxSystemSrc = @"
-using System;
-
-namespace ConsoleApp1
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine(""Enter Price"");
-            var price = double.Parse(Console.ReadLine());
-
-            Console.WriteLine((price * 1.10));
-        }
-    }
-}
-";
-        const string throwExceptionSrc = @"
-using System;
-
-namespace ConsoleApp1
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            throw new Exception(""Test"");
-        }
-    }
-}
-";
-
-        [TestCase("^exTest", true, "")]
-        [TestCase("^exNotTest", false, "Case 1: Test\r\nCase 1: Expected 'NotTest'\r\nCase 1: Failed")]
-        [TestCase("Test", false, "Case 1: Test\r\n")]
-        public async Task Exception_Should_Do( string output, bool pass, string message)
-        {
-            var cases = CsvGradeCaseGenerator.ConvertTextToGradeCases("", output);
-
-            var results = await consoleAppGrader.Grade(throwExceptionSrc, cases);
+            var results = await consoleAppGrader.Grade(sourceCode, cases);
 
             var caseResult = results.CaseResults.Single();
             caseResult.Pass.Should().Be(pass);
@@ -104,7 +62,7 @@ namespace ConsoleApp1
 
             var output = "Hello World!";
 
-            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
+            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent() { Content = SourceCodeStrings.helloWorldSrc } }.AsEnumerable()));
 
             model.CodeProject.CsvExpectedOutput = output;
 
@@ -119,10 +77,10 @@ namespace ConsoleApp1
         public async Task InvalidNumberOfInputs_ShouldGiveErrorMessage()
         {
 
-            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystemSrc } }.AsEnumerable()));
+            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent() { Content = SourceCodeStrings.taxSystemSrc } }.AsEnumerable()));
 
             await model.TestCommand.ExecuteAsync();
-            model.ErrorMessage.Should().Be("Case 1: Missing input\r\n");
+            model.ErrorMessage.Should().Be($"Case 1: {nameof(MissingConsoleInputException)}('Missing input')\r\nCase 1: Expected 'Hello World!'\r\nCase 1: Failed\r\n");
         }
 
 
@@ -130,7 +88,7 @@ namespace ConsoleApp1
         public async Task NoInputOutput_Should_Pass()
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
-                .Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = SourceCodeStrings.helloWorldSrc } }.AsEnumerable()));
             model.CodeProject.CsvExpectedOutput = null;
             model.CodeProject.CsvCases = null;
             await model.TestCommand.ExecuteAsync();
@@ -155,7 +113,7 @@ namespace ConsoleApp1
         public async Task InputWithNoOutput_Should_Pass()
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
-                .Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystemSrc } }.AsEnumerable()));
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = SourceCodeStrings.taxSystemSrc } }.AsEnumerable()));
             model.CodeProject.CsvExpectedOutput = null;
             model.CodeProject.CsvCases = "1,2\r\n1,2";
             await model.TestCommand.ExecuteAsync();
@@ -220,7 +178,7 @@ namespace ConsoleApp1
         public async Task Fail_Should_ShowHint()
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
-               .Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystem } }.AsEnumerable()));
+               .Returns(Task.FromResult(new[] { new FileContent() { Content = SourceCodeStrings.taxSystem } }.AsEnumerable()));
             model.CodeProject.CsvCases = @"10,10
 20,10
 100,15";
@@ -243,7 +201,7 @@ $100,15%,$15,$test[Did you see this?]";
         {
 
             vsMock.Setup(p => p.GetCSharpFilesAsync())
-                .Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = SourceCodeStrings.helloWorldSrc } }.AsEnumerable()));
             model.CodeProject.CsvExpectedOutput = @"!Hello World";
 
             await model.TestCommand.ExecuteAsync();
@@ -256,7 +214,7 @@ $100,15%,$15,$test[Did you see this?]";
         public async Task HelloWorld_CaseInsensitive_Should_Pass()
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
-                .Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = SourceCodeStrings.helloWorldSrc } }.AsEnumerable()));
             model.CodeProject.CsvExpectedOutput = @"^ihello world!";
 
             await model.TestCommand.ExecuteAsync();
@@ -268,7 +226,7 @@ $100,15%,$15,$test[Did you see this?]";
         public async Task HelloWorld_Regex_Should_Pass()
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
-                .Returns(Task.FromResult(new[] { new FileContent() { Content = helloWorldSrc } }.AsEnumerable()));
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = SourceCodeStrings.helloWorldSrc } }.AsEnumerable()));
             model.CodeProject.CsvExpectedOutput = @"^r[a-zA-Z]";
 
             await model.TestCommand.ExecuteAsync();
@@ -279,7 +237,7 @@ $100,15%,$15,$test[Did you see this?]";
         public async Task Negate_Should_Pass()
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
-                .Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystem } }.AsEnumerable()));
+                .Returns(Task.FromResult(new[] { new FileContent() { Content =SourceCodeStrings.taxSystem } }.AsEnumerable()));
             model.CodeProject.CsvCases = @"10,10
 20,10
 100,15";
@@ -294,54 +252,12 @@ $100,15%,$15,!$test[Did you see this?]";
 
 
 
-        private const string longestWordProgram = @"
-using System;
-using System.Linq;
-namespace ConsoleApp1
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var item = Console.ReadLine();
-
-            var words = item.Split(' ');
-
-            var longestWord = words
-                .FirstOrDefault(p => p.ToList().Count == words.Max(r => r.Length));
-
-            Console.WriteLine(longestWord);
-        }
-    }
-}";
-
-        private const string longestWordProgramBestSolution = @"using System;
-using System.Linq;
-
-class MainClass {
-  public static string LongestWord(string sen) { 
-  
-    string[] words = sen.Split(' ');
-
-
-    return words.OrderByDescending( s => s.Length ).First();;
-            
-  }
-
-  static void Main() {  
-    // keep this function call here
-    Console.WriteLine(LongestWord(Console.ReadLine()));
-  } 
-   
-}";
-
-        private const string emptyMain = @"class MainClass {static void Main(){}}";
-
+       
         [Test]
         public async Task MainWithNoParameters_Should_NotThrowException()
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
-                .Returns(Task.FromResult(new[] { new FileContent() { Content = emptyMain } }.AsEnumerable()));
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = SourceCodeStrings.emptyMain } }.AsEnumerable()));
             model.CodeProject.CsvCases = "";
             model.CodeProject.CsvExpectedOutput = "";
 
@@ -352,8 +268,8 @@ class MainClass {
 
 
 
-        [TestCase(longestWordProgram, .75)]
-        [TestCase(longestWordProgramBestSolution, .75)]
+        [TestCase(SourceCodeStrings.longestWordProgram, .75)]
+        [TestCase(SourceCodeStrings.longestWordProgramBestSolution, .75)]
         public async Task LongestWordProgram_Should_Pass(string src, double result)
         {
             vsMock.Setup(p => p.GetCSharpFilesAsync())
@@ -374,35 +290,13 @@ fun& time
 
             model.Submission.Grade.Should().Be(result);
         }
-        string taxSystem = @"
-using System;
-
-class MainClass
-{
-    
-
-    static void Main()
-    {
-            Console.WriteLine(""Enter price"");
-            var price = double.Parse(Console.ReadLine());
-            Console.WriteLine(""Enter tax percent"");
-            var tax = double.Parse(Console.ReadLine());
-
-            Console.WriteLine($""Price: ${price}"");
-            Console.WriteLine($""Tax Percent: {tax}%"");
-            Console.WriteLine($""Tax Cost: ${tax / 100 * price}"");
-            Console.WriteLine($""Total Cost: ${price + (tax / 100 * price)}"");
-
-        }
-
-    }
-";
+      
         [Test]
         public async Task TaxSystem_FailingCase_ShouldNotifyWhichCaseFailed()
         {
 
             vsMock.Setup(p => p.GetCSharpFilesAsync())
-                .Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystem } }.AsEnumerable()));
+                .Returns(Task.FromResult(new[] { new FileContent() { Content = SourceCodeStrings.taxSystem } }.AsEnumerable()));
             model.CodeProject.CsvCases = @"10,10
 20,10
 100,15";
@@ -540,7 +434,7 @@ $100,15%,$15,$test";
         {
 
 
-            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent() { Content = taxSystemSrc } }.AsEnumerable()));
+            vsMock.Setup(p => p.GetCSharpFilesAsync()).Returns(Task.FromResult(new[] { new FileContent() { Content = SourceCodeStrings.taxSystemSrc } }.AsEnumerable()));
 
             model.CodeProject.CsvCases = "10\r\n12\r\ntest";
             model.CodeProject.CsvExpectedOutput = "11\r\n13.2\r\n";

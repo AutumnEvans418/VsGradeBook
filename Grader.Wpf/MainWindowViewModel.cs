@@ -44,6 +44,11 @@ namespace ConsoleApp1
             return new[] {new FileContent(){Content = Code, FileName = "Program.cs"}, };
         }
 
+        public async Task<IEnumerable<string>> GetReferences()
+        {
+            return null;
+        }
+
         public async Task OpenOrCreateCSharpFile(string fileName, string content)
         {
             Code = content;

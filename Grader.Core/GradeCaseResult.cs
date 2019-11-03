@@ -16,7 +16,7 @@ namespace Grader
             {
                 var errorMessage = exception.Message;
                 _hasErrors = true;
-                ErrorMessage = $"Case {@case.CaseNumber}: " + errorMessage + "\r\n";
+                ErrorMessage = $"Case {@case.CaseNumber}: {exception.GetType().Name}('{errorMessage}')\r\n";
             }
             Case = @case;
             ActualOutput = actualOutput;
@@ -27,13 +27,13 @@ namespace Grader
         private void Evaluate()
         {
             Pass = true;
-            if (_hasErrors && Case.ExpectedOutputs.Any(r=>r.Exception) != true)
+            if (_hasErrors && Case.ExpectedOutputs.Any(r => r.Exception) != true)
             {
                 Pass = false;
-                return;
             }
             foreach (var caseExpectedOutput in Case.ExpectedOutputs)
             {
+                var matchingValue = caseExpectedOutput.ValueToMatch;
                 var testResultFail = false;
                 if (caseExpectedOutput.CaseInsensitive)
                 {
@@ -44,23 +44,24 @@ namespace Grader
                     testResultFail = ActualOutput.All(p => p?.Contains(caseExpectedOutput.ValueToMatch) != true);
                 }
 
-                if (_exception != null && caseExpectedOutput.Exception)
+                if (caseExpectedOutput.Exception)
                 {
-                    var msg = _exception.Message;
+                    var msg = _exception?.Message;
 
-                    testResultFail = msg.Contains(caseExpectedOutput.ValueToMatch) != true;
+                    testResultFail = msg?.Contains(caseExpectedOutput.ValueToMatch) != true;
                 }
-                if (caseExpectedOutput.Regex)
+                else if (caseExpectedOutput.Regex)
                 {
                     testResultFail = ActualOutput.All(p => p != null && Regex.IsMatch(p, caseExpectedOutput.ValueToMatch) != true);
                 }
-                if (caseExpectedOutput.Negate)
+                else if (caseExpectedOutput.Negate)
                 {
                     testResultFail = !testResultFail;
                 }
                 if (testResultFail)
                 {
                     Pass = false;
+
                     if (string.IsNullOrWhiteSpace(caseExpectedOutput.Hint) != true)
                     {
                         ErrorMessage += $"Case {Case.CaseNumber}: '{caseExpectedOutput.Hint}'\r\n";
@@ -70,7 +71,15 @@ namespace Grader
                     {
                         expected = "Not Expected";
                     }
-                    ErrorMessage += $"Case {Case.CaseNumber}: {expected} '{caseExpectedOutput.ValueToMatch}'\r\n";
+
+                    if (caseExpectedOutput.Exception)
+                    {
+                        ErrorMessage += $"Case {Case.CaseNumber}: {expected} Exception('{caseExpectedOutput.ValueToMatch}')\r\n";
+                    }
+                    else
+                    {
+                        ErrorMessage += $"Case {Case.CaseNumber}: {expected} '{caseExpectedOutput.ValueToMatch}'\r\n";
+                    }
                 }
                 else
                 {
