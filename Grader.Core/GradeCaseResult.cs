@@ -35,29 +35,31 @@ namespace Grader
             {
                 var matchingValue = caseExpectedOutput.ValueToMatch;
                 var testResultFail = false;
+                Func<string, string, bool> get = (s, s1) => s?.Contains(s1) != true;
                 if (caseExpectedOutput.CaseInsensitive)
                 {
-                    testResultFail = ActualOutput.All(p => p?.ToLowerInvariant().Contains(caseExpectedOutput.ValueToMatch.ToLowerInvariant()) != true);
-                }
-                else
-                {
-                    testResultFail = ActualOutput.All(p => p?.Contains(caseExpectedOutput.ValueToMatch) != true);
+                    get = (s, s1) => s?.ToLowerInvariant()?.Contains(s1.ToLowerInvariant()) != true;
                 }
 
                 if (caseExpectedOutput.Exception)
                 {
                     var msg = _exception?.Message;
-
-                    testResultFail = msg?.Contains(caseExpectedOutput.ValueToMatch) != true;
+                    testResultFail = get(msg, matchingValue);
                 }
-                else if (caseExpectedOutput.Regex)
+                else
                 {
-                    testResultFail = ActualOutput.All(p => p != null && Regex.IsMatch(p, caseExpectedOutput.ValueToMatch) != true);
+                    testResultFail = ActualOutput.All(p => get(p, matchingValue));
                 }
-                else if (caseExpectedOutput.Negate)
+                if (caseExpectedOutput.Regex)
+                {
+                    var options = caseExpectedOutput.CaseInsensitive ? RegexOptions.IgnoreCase : RegexOptions.None;
+                    testResultFail = ActualOutput.All(p => p != null && Regex.IsMatch(p, caseExpectedOutput.ValueToMatch, options) != true);
+                }
+                if (caseExpectedOutput.Negate)
                 {
                     testResultFail = !testResultFail;
                 }
+               
                 if (testResultFail)
                 {
                     Pass = false;
@@ -85,9 +87,7 @@ namespace Grader
                 {
                     ErrorMessage = "";
                 }
-
             }
-
             if (!Pass)
             {
                 ErrorMessage += $"Case {Case.CaseNumber}: Failed";

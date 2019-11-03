@@ -33,6 +33,7 @@ Command | Details
 ``!`` | Negation
 ``[]`` | Hint Messages that show when an expected case fails
 ``""`` | You can put long strings in quotes so that commas are ignored
+``^ex`` | Specifies that an exception is expected with a certain message
 ## Plagiarism Service
 When students make submissions, the student's code is compared to other submissions.  If the code is likely been plagiarized, ``Plagiarized!`` will appear on the submissions screen for teachers.
 ## Problem Examples
@@ -254,5 +255,5 @@ Here is the main packages used in this project that makes this whole thing work.
 - [x] **Quotations and Commas** Handle commas and quotations in the CSV format.  At the moment, commas cannot be used in test cases 
 - [x] **3rd party assemblies** When testing the console apps, ensure that the dlls referenced in the code are loaded.
 - [x] **Improved error messages** Output the expected value when a case fails
-- [ ] **Exception Test Cases** create cases that test if a particular input causes or not causes an exception
+- [x] **Exception Test Cases** create cases that test if a particular input causes or not causes an exception
 - [x] **Test Case Visual Representation** - create a way to see when you are building a project what the cases will look like.  Create a representation that is less "code" like and more gui based.  Give the option to write in csv format or using a gui.
