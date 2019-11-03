@@ -34,6 +34,8 @@ Command | Details
 ``[]`` | Hint Messages that show when an expected case fails
 ``""`` | You can put long strings in quotes so that commas are ignored
 ``^ex`` | Specifies that an exception is expected with a certain message
+``^0 ^2 ^4`` | Specifies that the output is expected to be shown at a certain time or in a specific order in the program.  For example, ``Console.WriteLine("test"); Console.WriteLine("Test2");`` Could be specified as ``^0test,^1Test2``
+``^eq`` | Specifies an output to match exactly.  For example, the output "3 dollars" will pass expected output ``"3"``, but would fail if it was ``^eq"3"``
 ## Plagiarism Service
 When students make submissions, the student's code is compared to other submissions.  If the code is likely been plagiarized, ``Plagiarized!`` will appear on the submissions screen for teachers.
 ## Problem Examples
