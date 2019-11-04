@@ -370,14 +370,14 @@ $100,15%,$15,$test";
         [TestCase(@"""test")]
         public void ExpectedOutput_Should_Fail(string expected)
         {
-            var result = Assert.Throws<ParserException>(() => CsvGradeCaseGenerator.ConvertTextToGradeCases("", expected));
+            var result = Assert.Throws<ParserExceptionList>(() => CsvGradeCaseGenerator.ConvertTextToGradeCases("", expected));
             result.Exceptions.Should().HaveCount(1);
         }
 
         [Test]
         public void TwoErrors_Should_ThrowTwoExceptions()
         {
-            var exception = Assert.Throws<ParserException>(() =>
+            var exception = Assert.Throws<ParserExceptionList>(() =>
                 CsvGradeCaseGenerator.ConvertTextToGradeCases(@"""test """" test2 """, @"""test """" test2 """));
 
             exception.Exceptions.Should().HaveCount(2);

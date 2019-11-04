@@ -12,7 +12,7 @@ namespace AsyncToolWindowSample.ToolWindows
         public static List<IGradeCase> ConvertToGradeCases(string[] outputs, string[] inputs)
         {
             var gradeCases = new List<IGradeCase>();
-            var possibleException = new ParserException();
+            var possibleException = new ParserExceptionList();
             var highest = new[] { outputs.Length, inputs.Length }.Max();
 
             for (var index = 0; index < highest; index++)
@@ -36,7 +36,7 @@ namespace AsyncToolWindowSample.ToolWindows
                 catch (ParserException e)
                 {
                     Console.WriteLine(e);
-                    possibleException.Exceptions.Add(e);
+                    possibleException.Add(e);
                 }
 
             }
@@ -50,7 +50,7 @@ namespace AsyncToolWindowSample.ToolWindows
                 catch (ParserException e)
                 {
                     Console.WriteLine(e);
-                    possibleException.Exceptions.Add(e);
+                    possibleException.Add(e);
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Grader
@@ -7,13 +8,37 @@ namespace Grader
     {
         public GradeCase(string input, string expectedOutputs, int caseNumber)
         {
+            var list = new ParserExceptionList();
             var parser = new GraderCaseValueInterpreter();
             CaseNumber = caseNumber;
-            Inputs = parser.ParseInput(input);
-            ExpectedOutputs = parser.ParseOutput(expectedOutputs);
+
+            try
+            {
+                Inputs = parser.ParseInput(input);
+            }
+            catch (ParserException e)
+            {
+                System.Console.WriteLine(e);
+                list.Add(e);
+            }
+
+            try
+            {
+                ExpectedOutputs = parser.ParseOutput(expectedOutputs);
+            }
+            catch (ParserException e)
+            {
+                System.Console.WriteLine(e);
+                list.Add(e);
+            }
+
+            if (list.Exceptions.Any())
+            {
+                throw list;
+            }
         }
 
-       
+
         public GradeCase(int caseNumber)
         {
             CaseNumber = caseNumber;
