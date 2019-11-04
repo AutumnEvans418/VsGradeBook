@@ -5,48 +5,33 @@ namespace Grader
 {
     public class GraderParser
     {
-        public IList<string> ParseInput(string input)
+        private int index;
+        private List<Token> lst;
+        void Add(TokenType type, string val, bool increment = true)
         {
-            var result = Parse(input);
-            return result.Select(p=>p.ValueToMatch).ToList();
+            lst.Add(new Token() { TokenType = type, Value = val });
+            if (increment)
+            {
+                index++;
+            }
         }
-
-        public IList<CaseValue> ParseOutput(string output)
+        public IList<Token> Parse(string input)
         {
-            return Parse(output);
-          
-        }
-
-
-        
-
-        private IList<CaseValue> Parse(string input)
-        {
-            var lst = new List<Token>();
-
-            var index = 0;
-
+            lst = new List<Token>();
+            index = 0;
             char? get(int? i = null)
             {
                 if (i == null)
                 {
                     i = index;
-                }  
+                }
                 if (i < input.Length)
                 {
-                    return input[(int) i];
+                    return input[(int)i];
                 }
 
                 return null;
             }
-
-            void Add(TokenType type, string val, bool increment = true)
-            {
-                lst.Add(new Token() { TokenType = type, Value = val });
-                if (increment)
-                    index++;
-            }
-
             
             while (index < input.Length)
             {
@@ -89,18 +74,23 @@ namespace Grader
                     Add(TokenType.Exception, "^ex");
                     index += 2;
                 }
+                else if (c == '^' && get(index + 1) == 'e' && get(index + 2) == 'q')
+                {
+                    Add(TokenType.Equal, "^eq");
+                    index += 2;
+                }
                 else if(c == '^' && char.IsDigit(get(index + 1) ?? ' '))
                 {
+                    index++;
                     c = get();
                     var current = "^";
-                    index++;
                     while (c is char car && char.IsDigit(car))
                     {
                         current += c;
                         index++;
                         c = get();
                     }
-                    Add(TokenType.Order, current);
+                    Add(TokenType.Order, current, false);
                 }
                 else if (c == '^' && get(index + 1) == 'r')
                 {
@@ -153,87 +143,8 @@ namespace Grader
 
             }
 
-           
-
-            return CheckSyntax(lst);
+            return lst;
         }
 
-        private List<CaseValue> CheckSyntax(IEnumerable<Token> lst)
-        {
-            var values = new List<CaseValue>();
-            var data = lst.ToList();
-            var token = data.FirstOrDefault();
-
-            void Eat(TokenType tokenType)
-            {
-                if (data[0].TokenType == tokenType)
-                {
-                    data.RemoveAt(0);
-                    token = data.FirstOrDefault();
-                }
-                else
-                {
-                    throw new ParserException($"Expected type '{tokenType}' but was '{data[0]}'. Please check your syntax");
-                }
-            }
-
-            while (data.Count > 0)
-            {
-                var val = new CaseValue();
-                while (token != null && token.TokenType != TokenType.Id)
-                {
-                    if (token?.TokenType == TokenType.Bang)
-                    {
-                        val.Negate = true;
-                        Eat(TokenType.Bang);
-                    }
-                    else if (token?.TokenType == TokenType.CaseInsensitive)
-                    {
-                        val.CaseInsensitive = true;
-                        Eat(TokenType.CaseInsensitive);
-                    }
-                    else if (token?.TokenType == TokenType.Exception)
-                    {
-                        val.Exception = true;
-                        Eat(TokenType.Exception);
-                    }
-                    else if (token?.TokenType == TokenType.Regex)
-                    {
-                        val.Regex = true;
-                        Eat(TokenType.Regex);
-                        break;
-                    }
-                    else
-                    {
-                        throw new ParserException($"Did not recognize token {token}");
-                    }
-                }
-                val.ValueToMatch = token?.Value;
-                Eat(TokenType.Id);
-                if (token?.TokenType == TokenType.Comment)
-                {
-                    val.Hint = token.Value;
-                    Eat(TokenType.Comment);
-                }
-                //delete trailing spaces
-                if (token?.TokenType == TokenType.Id && string.IsNullOrWhiteSpace(token.Value))
-                {
-                    Eat(TokenType.Id);
-                }
-                if (token != null && token?.TokenType != TokenType.EndOfFile)
-                {
-                    Eat(TokenType.Comma);
-                }
-                else if(token != null)
-                {
-                    Eat(TokenType.EndOfFile);
-                }
-                values.Add(val);
-
-            }
-
-
-            return values;
-        }
     }
 }

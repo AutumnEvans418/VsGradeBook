@@ -46,6 +46,12 @@ namespace Grader.Tests
         [TestCase("-1", "11", false, "Case 1: Exception('Invalid Price')\r\nCase 1: Expected '11'\r\nCase 1: Failed", SourceCodeStrings.taxSystemExceptionHandling)]
         [TestCase("", "^i^exHello World!", false, "Case 1: Expected Exception('Hello World!')\r\nCase 1: Failed", SourceCodeStrings.helloWorldSrc)]
         [TestCase("", "^0Hello World!", true, "", SourceCodeStrings.helloWorldSrc)]
+        [TestCase("", "^1Hello World!", false, "Case 1: 'Expected 2 outputs but there was only 1 outputs\r\nCase 1: Expected 'Hello World!' at output index 1\r\nCase 1: Failed", SourceCodeStrings.helloWorldSrc)]
+        [TestCase("", @"^1""Hello, World 2.0!""", true, "", SourceCodeStrings.helloWorldCalledTwiceSrc)]
+        [TestCase("", @"^0""Hello, World 2.0!""", false, "Case 1: Expected 'Hello, World 2.0!' at output index 0\r\nCase 1: Failed", SourceCodeStrings.helloWorldCalledTwiceSrc)]
+        [TestCase("", "^eqHello World!", true, "", SourceCodeStrings.helloWorldSrc)]
+        [TestCase("", "^eqHello World", false, "Case 1: Expected 'Hello World'\r\nCase 1: Failed", SourceCodeStrings.helloWorldSrc)]
+        [TestCase("", "Hello World", true, "", SourceCodeStrings.helloWorldSrc)]
         public async Task Exception_Should_Do(string input, string output, bool pass, string message, string sourceCode)
         {
             var cases = CsvGradeCaseGenerator.ConvertTextToGradeCases(input, output);

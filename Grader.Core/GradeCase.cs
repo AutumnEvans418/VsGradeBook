@@ -7,7 +7,7 @@ namespace Grader
     {
         public GradeCase(string input, string expectedOutputs, int caseNumber)
         {
-            var parser = new GraderParser();
+            var parser = new GraderCaseValueInterpreter();
             CaseNumber = caseNumber;
             Inputs = parser.ParseInput(input);
             ExpectedOutputs = parser.ParseOutput(expectedOutputs);

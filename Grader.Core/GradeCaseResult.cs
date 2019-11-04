@@ -24,6 +24,26 @@ namespace Grader
         }
 
         private bool _hasErrors;
+
+
+        bool NotMatch(bool exact, string first, string second)
+        {
+            if (exact)
+            {
+                return first?.Equals(second) != true;
+            }
+            return first?.Contains(second) != true;
+        }
+
+        bool CaseSensitivity(CaseValue value, string first, string second)
+        {
+            if (value.CaseInsensitive)
+            {
+                return NotMatch(value.ExactMatch, first?.ToLowerInvariant(), second?.ToLowerInvariant());
+            }
+            return NotMatch(value.ExactMatch, first, second);
+        }
+
         private void Evaluate()
         {
             Pass = true;
@@ -35,20 +55,28 @@ namespace Grader
             {
                 var matchingValue = caseExpectedOutput.ValueToMatch;
                 var testResultFail = false;
-                Func<string, string, bool> get = (s, s1) => s?.Contains(s1) != true;
-                if (caseExpectedOutput.CaseInsensitive)
-                {
-                    get = (s, s1) => s?.ToLowerInvariant()?.Contains(s1.ToLowerInvariant()) != true;
-                }
 
                 if (caseExpectedOutput.Exception)
                 {
                     var msg = _exception?.Message;
-                    testResultFail = get(msg, matchingValue);
+                    testResultFail = CaseSensitivity(caseExpectedOutput, msg, matchingValue);
                 }
-                else
+                else if (caseExpectedOutput.MatchOutputIndex == null)
                 {
-                    testResultFail = ActualOutput.All(p => get(p, matchingValue));
+                    testResultFail = ActualOutput.All(p => CaseSensitivity(caseExpectedOutput, p, matchingValue));
+                }
+                else if (caseExpectedOutput.MatchOutputIndex is int i)
+                {
+                    var output = ActualOutput.ToList();
+                    if (i < output.Count)
+                    {
+                        testResultFail = CaseSensitivity(caseExpectedOutput, output[i], matchingValue);
+                    }
+                    else
+                    {
+                        testResultFail = true;
+                        ErrorMessage += $"Case {Case.CaseNumber}: 'Expected {i+1} outputs but there was only {output.Count} outputs\r\n";
+                    }
                 }
                 if (caseExpectedOutput.Regex)
                 {
@@ -59,7 +87,7 @@ namespace Grader
                 {
                     testResultFail = !testResultFail;
                 }
-               
+
                 if (testResultFail)
                 {
                     Pass = false;
@@ -74,13 +102,18 @@ namespace Grader
                         expected = "Not Expected";
                     }
 
+                    var index = "";
+                    if (caseExpectedOutput.MatchOutputIndex is int i)
+                    {
+                        index = $" at output index {i}";
+                    }
                     if (caseExpectedOutput.Exception)
                     {
                         ErrorMessage += $"Case {Case.CaseNumber}: {expected} Exception('{caseExpectedOutput.ValueToMatch}')\r\n";
                     }
                     else
                     {
-                        ErrorMessage += $"Case {Case.CaseNumber}: {expected} '{caseExpectedOutput.ValueToMatch}'\r\n";
+                        ErrorMessage += $"Case {Case.CaseNumber}: {expected} '{caseExpectedOutput.ValueToMatch}'{index}\r\n";
                     }
                 }
                 else

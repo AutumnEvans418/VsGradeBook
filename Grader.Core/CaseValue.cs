@@ -37,6 +37,8 @@
         public bool Regex { get; set; }
         public bool CaseInsensitive { get; set; }
         public bool Exception { get; set; }
+        public int? MatchOutputIndex { get; set; }
+        public bool ExactMatch { get; set; }
 
         public static implicit operator string(CaseValue value)
         {

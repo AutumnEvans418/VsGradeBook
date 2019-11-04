@@ -17,7 +17,22 @@ namespace HelloWorld
         }
     }
 }";
-
+        public const string helloWorldCalledTwiceSrc = @"
+using System.Collections;
+using System.Linq;
+using System.Text;
+ 
+namespace HelloWorld
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            System.Console.WriteLine(""Hello World!"");
+            System.Console.WriteLine(""Hello, World 2.0!"");
+        }
+    }
+}";
         public const string taxSystemSrc = @"
 using System;
 
