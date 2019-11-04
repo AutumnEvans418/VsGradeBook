@@ -45,7 +45,7 @@ namespace Grader
                 catch (Exception e)
 #pragma warning restore CA1031 // Do not catch general exception types
                 {
-                    exception = e.InnerException;
+                    exception = e.InnerException ?? e;
                 }
 
 
