@@ -252,8 +252,8 @@ Here is the main packages used in this project that makes this whole thing work.
 - [x] **Fix black text issue on submissions page**
 - [x] **Negative Test Cases** Create negative test cases: Cases that should fail, such as throwing exceptions or not showing the expected output
 - [x] **Test Hints** Add hints for a test case.  If a test case fails, allow the teacher to put a hint in the error message
-- [ ] **Exact Match** Add ability Match the output exactly
-- [ ] **Ordered Match** Add ability to create test case that must happen in a certain order.  This could be used to specify that output should occur in a certain order.
+- [x] **Exact Match** Add ability Match the output exactly
+- [x] **Ordered Match** Add ability to create test case that must happen in a certain order.  This could be used to specify that output should occur in a certain order.
 - [x] **Quotations and Commas** Handle commas and quotations in the CSV format.  At the moment, commas cannot be used in test cases 
 - [x] **3rd party assemblies** When testing the console apps, ensure that the dlls referenced in the code are loaded.
 - [x] **Improved error messages** Output the expected value when a case fails
