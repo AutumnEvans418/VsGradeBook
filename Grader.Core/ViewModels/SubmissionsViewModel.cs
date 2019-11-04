@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using AsyncToolWindowSample.Models;
 using Grader;
@@ -29,7 +30,7 @@ namespace AsyncToolWindowSample.ToolWindows
             if (SelectedSubmission != null)
             {
                 var name = SelectedSubmission.StudentName;
-                foreach (var selectedSubmissionSubmissionFile in SelectedSubmission.SubmissionFiles)
+                foreach (var selectedSubmissionSubmissionFile in SelectedSubmission.SubmissionFiles.Where(r=> Path.GetFileName(r.FileName) != "AssemblyInfo.cs"))
                 {
                     var fileName = name + "-" + Path.GetFileName(selectedSubmissionSubmissionFile.FileName);
                     _visualStudioService.OpenOrCreateCSharpFile(fileName, selectedSubmissionSubmissionFile.Content);
