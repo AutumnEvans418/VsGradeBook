@@ -1,4 +1,6 @@
 ﻿using System.Linq;
+using AutoFixture;
+using AutoFixture.AutoMoq;
 using FluentAssertions;
 using NUnit.Framework;
 
@@ -12,7 +14,9 @@ namespace Grader.Tests
         [SetUp]
         public void Setup()
         {
-            generator  = new CSharpGenerator();
+            var fixture = new Fixture();
+            fixture.Customize(new AutoMoqCustomization() { GenerateDelegates = true, ConfigureMembers = true });
+            generator = fixture.Build<CSharpGenerator>().OmitAutoProperties().Create();
         }
 
         [Test]

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using AutoFixture;
+using AutoFixture.AutoMoq;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
@@ -12,13 +14,18 @@ namespace Grader.Tests
     [TestFixture]
     public class ConsoleAppGraderTests
     {
-        ConsoleAppGrader grader ;
+        ConsoleAppGrader grader;
         private GradeCase gradeCase;
         [SetUp]
         public void Setup()
         {
-            gradeCase = new GradeCase("", @"""Hello, World!""",0);
-            grader = new ConsoleAppGrader(new CSharpGenerator());
+            var fixture = new Fixture();
+            fixture.Customize(new AutoMoqCustomization() { GenerateDelegates = true, ConfigureMembers = true });
+            fixture.Inject<ICSharpGenerator>(fixture.Create<CSharpGenerator>());
+
+            gradeCase = new GradeCase("", @"""Hello, World!""", 0);
+
+            grader = fixture.Build<ConsoleAppGrader>().OmitAutoProperties().Create();
             Grader.Console.Outputs.Clear();
         }
 

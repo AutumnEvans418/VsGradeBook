@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using Grader.Core.Interfaces;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -14,6 +15,13 @@ namespace Grader
 {
     public class CSharpGenerator : ICSharpGenerator
     {
+        private readonly ILogger _logger;
+
+        public CSharpGenerator(ILogger logger)
+        {
+            _logger = logger;
+        }
+
         public Action Generate(IEnumerable<string> program, IEnumerable<string> references)
         {
 
@@ -80,8 +88,9 @@ namespace Grader
             return newTrees.Select(p=>p.SyntaxTree).ToArray();
         }
 
-        private static Compilation CreateTestCompilation(SyntaxTree[] trees, IEnumerable<string> extraReferences)
+        private Compilation CreateTestCompilation(SyntaxTree[] trees, IEnumerable<string> extraReferences)
         {
+            _logger.Log("ExtraReferences",extraReferences);
             var references = new List<MetadataReference>();
             MetadataReference grader = MetadataReference.CreateFromFile(typeof(ConsoleAppGrader).Assembly.Location);
             references.Add(grader);
@@ -112,7 +121,7 @@ namespace Grader
 
                  references = new List<MetadataReference> { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, NetStandard, core, data };
             }
-            
+            _logger.Log("References", references.Select(p=>p.Display));
             return CSharpCompilation.Create("Test", trees, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
         }
     }

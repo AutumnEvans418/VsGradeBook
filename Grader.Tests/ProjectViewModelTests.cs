@@ -28,7 +28,8 @@ namespace Grader.Tests
         {
             fixture = new Fixture();
             fixture.Customize(new AutoMoqCustomization() { ConfigureMembers = true, GenerateDelegates = true });
-            consoleAppGrader = new ConsoleAppGrader(new CSharpGenerator());
+            fixture.Inject<ICSharpGenerator>(fixture.Create<CSharpGenerator>());
+            consoleAppGrader = fixture.Build<ConsoleAppGrader>().OmitAutoProperties().Create();
             fixture.Inject<IConsoleAppGrader>(consoleAppGrader);
 
             vsMock = fixture.Freeze<Mock<IVisualStudioService>>();
