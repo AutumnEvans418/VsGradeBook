@@ -65,7 +65,7 @@ namespace Grader
                     throw new CompilationException(msg);
                 }
             }
-           
+
         }
 
         public SyntaxTree[] CreateSyntaxTrees(IEnumerable<string> program, IEnumerable<string> references)
@@ -83,14 +83,20 @@ namespace Grader
             }).ToArray();
             if (newTrees.Any(p => p.HasChanges))
             {
-                return CreateSyntaxTrees(newTrees.Select(r=>r.SyntaxTree.GetText().ToString()), references);
+                return CreateSyntaxTrees(newTrees.Select(r => r.SyntaxTree.GetText().ToString()), references);
             }
-            return newTrees.Select(p=>p.SyntaxTree).ToArray();
+            return newTrees.Select(p => p.SyntaxTree).ToArray();
         }
-
+        public static IEnumerable<PortableExecutableReference> CreateNetCoreReferences()
+        {
+            foreach (var dllFile in Directory.GetFiles(@"C:\Program Files\dotnet\sdk\NuGetFallbackFolder\microsoft.netcore.app\2.0.0\ref\netcoreapp2.0", "*.dll"))
+            {
+                yield return MetadataReference.CreateFromFile(dllFile);
+            }
+        }
         private Compilation CreateTestCompilation(SyntaxTree[] trees, IEnumerable<string> extraReferences)
         {
-            _logger.Log("ExtraReferences",extraReferences);
+            _logger.Log("ExtraReferences", extraReferences);
             var references = new List<MetadataReference>();
             MetadataReference grader = MetadataReference.CreateFromFile(typeof(ConsoleAppGrader).Assembly.Location);
             references.Add(grader);
@@ -101,29 +107,26 @@ namespace Grader
                     references.Add(MetadataReference.CreateFromFile(extraReference));
                 }
             }
-            else
-            {
-                MetadataReference NetStandard = MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51").Location);
-                MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
+            MetadataReference NetStandard = MetadataReference.CreateFromFile(Assembly.Load("netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51").Location);
+            MetadataReference runtime = MetadataReference.CreateFromFile(typeof(System.Runtime.CompilerServices.AccessedThroughPropertyAttribute).Assembly.Location);
+            MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+            MetadataReference system = MetadataReference.CreateFromFile(typeof(Console).Assembly.Location);
+            MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
+            MetadataReference mscorlib =
                 MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-                MetadataReference system = MetadataReference.CreateFromFile(typeof(Console).Assembly.Location);
-                MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-                MetadataReference mscorlib =
-                    MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
-                MetadataReference codeAnalysis =
-                    MetadataReference.CreateFromFile(typeof(SyntaxTree).Assembly.Location);
-                MetadataReference csharpCodeAnalysis =
-                    MetadataReference.CreateFromFile(typeof(CSharpSyntaxTree).Assembly.Location);
+            MetadataReference codeAnalysis =
+                MetadataReference.CreateFromFile(typeof(SyntaxTree).Assembly.Location);
+            MetadataReference csharpCodeAnalysis =
+                MetadataReference.CreateFromFile(typeof(CSharpSyntaxTree).Assembly.Location);
 
 
-                var core = MetadataReference.CreateFromFile(typeof(System.Linq.IQueryable<>).Assembly.Location);
-                var data = MetadataReference.CreateFromFile(typeof(System.Data.DataColumn).Assembly.Location);
+            var core = MetadataReference.CreateFromFile(typeof(System.Linq.IQueryable<>).Assembly.Location);
+            var data = MetadataReference.CreateFromFile(typeof(System.Data.DataColumn).Assembly.Location);
 
-                 references = new List<MetadataReference> { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, NetStandard, core, data };
-            }
-            _logger.Log("References", references.Select(p=>p.Display));
+            references = new List<MetadataReference> { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, NetStandard, core, data };
+            _logger.Log("References", references.Select(p => p.Display));
             var options = new CSharpCompilationOptions(OutputKind.ConsoleApplication);
-            
+
             return CSharpCompilation.Create("Test", trees, references, options);
         }
     }

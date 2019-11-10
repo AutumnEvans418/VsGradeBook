@@ -16,16 +16,44 @@ using NUnit.Framework;
 
 namespace Grader.Tests
 {
-    [TestFixture]
+    public enum ReferenceType
+    {
+        None,
+        Core
+    }
+
+    [TestFixture(ReferenceType.Core)]
+    [TestFixture(ReferenceType.None)]
     public class ProjectViewModelTests
     {
+        private readonly ReferenceType _type;
         private Fixture fixture;
         private Mock<IVisualStudioService> vsMock;
         private ProjectViewModel model;
         private ConsoleAppGrader consoleAppGrader;
+
+     
+
+        public ProjectViewModelTests(ReferenceType type)
+        {
+            _type = type;
+        }
+
         [SetUp]
         public void Setup()
         {
+            IEnumerable<string> references = null;
+
+            switch (_type)
+            {
+                case ReferenceType.Core:
+                    references = CSharpGenerator.CreateNetCoreReferences().Select(p=>p.FilePath);
+                    break;
+                case ReferenceType.None:
+                    references = null;
+                    break;
+            }
+
             fixture = new Fixture();
             fixture.Customize(new AutoMoqCustomization() { ConfigureMembers = true, GenerateDelegates = true });
             fixture.Inject<ICSharpGenerator>(fixture.Create<CSharpGenerator>());
@@ -33,7 +61,7 @@ namespace Grader.Tests
             fixture.Inject<IConsoleAppGrader>(consoleAppGrader);
 
             vsMock = fixture.Freeze<Mock<IVisualStudioService>>();
-            vsMock.Setup(p => p.GetReferences()).Returns(Task.FromResult<IEnumerable<string>>(null));
+            vsMock.Setup(p => p.GetReferences()).Returns(Task.FromResult<IEnumerable<string>>(references));
             model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
 
         }
