@@ -122,7 +122,9 @@ namespace Grader
                  references = new List<MetadataReference> { mscorlib, codeAnalysis, csharpCodeAnalysis, system, runtime, NetStandard, core, data };
             }
             _logger.Log("References", references.Select(p=>p.Display));
-            return CSharpCompilation.Create("Test", trees, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication));
+            var options = new CSharpCompilationOptions(OutputKind.ConsoleApplication);
+            
+            return CSharpCompilation.Create("Test", trees, references, options);
         }
     }
 }
