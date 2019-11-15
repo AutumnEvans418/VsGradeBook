@@ -13,6 +13,7 @@ namespace Grader
         public ConsoleAppGrader(ICSharpGenerator cSharpGenerator)
         {
             _cSharpGenerator = cSharpGenerator;
+
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
@@ -57,9 +58,9 @@ namespace Grader
         }
 
 
-        public  Task<IGradeResult> Grade(string program, IEnumerable<IGradeCase> cases)
+        public  Task<IGradeResult> Grade(string program, IEnumerable<IGradeCase> cases, IEnumerable<string> references = null)
         {
-            return Grade(new[] {program}, cases);
+            return Grade(new[] {program}, cases, references);
         }
     }
 }

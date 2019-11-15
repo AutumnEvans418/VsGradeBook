@@ -2,6 +2,24 @@
 {
     public class SourceCodeStrings
     {
+        public const string JsonConvertSource = @"
+using System.Collections;
+using System.Linq;
+using System.Text;
+using Newtonsoft.Json;
+
+namespace HelloWorld
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            JsonConvert.SerializeObject(new { });
+            System.Console.WriteLine(""Hello World!"");
+        }
+    }
+}";
+
         public const string helloWorldSrc = @"
 using System.Collections;
 using System.Linq;

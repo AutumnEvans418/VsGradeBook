@@ -7,7 +7,10 @@ using AsyncToolWindowSample.ToolWindows;
 using AutoFixture;
 using AutoFixture.AutoMoq;
 using FluentAssertions;
+using Grader.Core;
+using Grader.Core.Interfaces;
 using Moq;
+using Newtonsoft.Json;
 using NUnit.Framework;
 
 
@@ -19,7 +22,7 @@ namespace Grader.Tests
     public enum ReferenceType
     {
         None,
-        Core
+        Core,
     }
 
     [TestFixture(ReferenceType.Core)]
@@ -38,23 +41,24 @@ namespace Grader.Tests
         {
             _type = type;
         }
+        IList<string> references;
 
         [SetUp]
         public void Setup()
         {
-            IEnumerable<string> references = null;
-
+            references = new List<string>();
             switch (_type)
             {
                 case ReferenceType.Core:
-                    references = CSharpGenerator.CreateNetCoreReferences().Select(p=>p.FilePath);
+                    references = CSharpGenerator.CreateNetCoreReferences().Select(p=>p.FilePath).ToList();
                     break;
                 case ReferenceType.None:
-                    references = null;
                     break;
             }
 
             fixture = new Fixture();
+            fixture.Inject<ILogger>(new Logger());
+
             fixture.Customize(new AutoMoqCustomization() { ConfigureMembers = true, GenerateDelegates = true });
             fixture.Inject<ICSharpGenerator>(fixture.Create<CSharpGenerator>());
             consoleAppGrader = fixture.Build<ConsoleAppGrader>().OmitAutoProperties().Create();
@@ -65,7 +69,21 @@ namespace Grader.Tests
             model = fixture.Build<ProjectViewModel>().OmitAutoProperties().Create();
 
         }
-        
+
+        [Test]
+        public async Task JsonConvertTest()
+        {
+            references.Add(typeof(JsonConvert).Assembly.Location);
+
+
+            var cases = CsvGradeCaseGenerator.ConvertTextToGradeCases("", "");
+
+            var results = await consoleAppGrader.Grade(SourceCodeStrings.JsonConvertSource, cases, references);
+
+            var caseResult = results.CaseResults.Single();
+            caseResult.Pass.Should().Be(true, caseResult.ErrorMessage);
+        }
+
         [TestCase("","^exTest", true, "", SourceCodeStrings.throwExceptionSrc)]
         [TestCase("", "^ex^itest", true, "", SourceCodeStrings.throwExceptionSrc)]
         [TestCase("", "^exNotTest", false, "Case 1: Exception('Test')\r\nCase 1: Expected Exception('NotTest')\r\nCase 1: Failed", SourceCodeStrings.throwExceptionSrc)]
